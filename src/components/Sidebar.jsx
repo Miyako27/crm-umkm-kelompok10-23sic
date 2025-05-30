@@ -1,3 +1,7 @@
+import { FaClipboardList } from "react-icons/fa"; 
+import { MdOutlinePointOfSale } from "react-icons/md"; 
+import { BsFillBarChartFill } from "react-icons/bs"; 
+import { MdPointOfSale } from "react-icons/md"; 
 import {
     LayoutDashboard,
     Users,         // untuk pelanggan
@@ -15,6 +19,7 @@ const menuItems = [
     { name: 'Dashboard', icon: <LayoutDashboard />, path: '/' },
     { name: 'Produk', icon: <Box />, path: '/produk' },
     { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
+    { name: 'Penjualan', icon:<FaClipboardList />, path: '/penjualan' },
 ]
 
 const accountItems = [
