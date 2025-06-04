@@ -1,3 +1,4 @@
+import { AiFillCar } from "react-icons/ai"; 
 import { FaClipboardList } from "react-icons/fa"; 
 import { MdOutlinePointOfSale } from "react-icons/md"; 
 import { BsFillBarChartFill } from "react-icons/bs"; 
@@ -22,6 +23,7 @@ const menuItems = [
     { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
     { name: 'Penjualan', icon:<FaClipboardList />, path: '/penjualan' },
     { name: 'Pelanggan', icon: <BsFillPeopleFill />, path: '/pelanggan' },
+    { name: 'Armada', icon: <AiFillCar />, path: '/armada' },
 ]
 
 
