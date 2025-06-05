@@ -3,10 +3,11 @@ import MainLayout from './components/MainLayout';
 import Dashboard from './pages/Dashboard';
 import SalesManagement from './pages/SalesManagement';
 import CustomerManagement from './pages/CustomerManagement';
-import FormSupirArmada from './pages/FormSupirArmada';
+import FAQ from './pages/FAQ';
 import Armada from './pages/Armada';
 import PemesananTiket from './pages/PemesananTiket';
 import DataFeedback from './pages/FeedbackPelanggan';
+import FormSupirArmada from './pages/FormSupirArmada';
 
 function App() {
   return (
@@ -15,8 +16,7 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/penjualan" element={<SalesManagement />} />
         <Route path="/pelanggan" element={<CustomerManagement />} />
-
-        {/* Armada Routes */}
+        <Route path="/faq" element={<FAQ />} />
         <Route path="/armada" element={<Armada />} />
         <Route path="/armada/form-armada" element={<FormSupirArmada />} />
 
