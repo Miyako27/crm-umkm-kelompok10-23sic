@@ -5,6 +5,8 @@ import SalesManagement from './pages/SalesManagement';
 import CustomerManagement from './pages/CustomerManagement';
 import FormSupirArmada from './pages/FormSupirArmada';
 import Armada from './pages/Armada';
+import PemesananTiket from './pages/PemesananTiket';
+import DataFeedback from './pages/FeedbackPelanggan';
 
 function App() {
   return (
@@ -17,6 +19,12 @@ function App() {
         {/* Armada Routes */}
         <Route path="/armada" element={<Armada />} />
         <Route path="/armada/form-armada" element={<FormSupirArmada />} />
+
+        {/* Pemesanan Tiket Routes */}
+        <Route path="/pemesanan_tiket" element={<PemesananTiket />} />
+
+        {/* Pemesanan Tiket Routes */}
+        <Route path="/feedback_pelanggan" element={<DataFeedback />} />
       </Route>
     </Routes>
   );

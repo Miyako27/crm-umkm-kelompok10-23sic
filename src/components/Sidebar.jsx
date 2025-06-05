@@ -1,8 +1,7 @@
+import { VscFeedback } from "react-icons/vsc";
+import { HiOutlineTicket } from "react-icons/hi"; 
 import { AiFillCar } from "react-icons/ai"; 
 import { FaClipboardList } from "react-icons/fa"; 
-import { MdOutlinePointOfSale } from "react-icons/md"; 
-import { BsFillBarChartFill } from "react-icons/bs"; 
-import { MdPointOfSale } from "react-icons/md"; 
 import { BsFillPeopleFill } from "react-icons/bs"; 
 import {
     LayoutDashboard,
@@ -24,6 +23,8 @@ const menuItems = [
     { name: 'Penjualan', icon:<FaClipboardList />, path: '/penjualan' },
     { name: 'Pelanggan', icon: <BsFillPeopleFill />, path: '/pelanggan' },
     { name: 'Armada', icon: <AiFillCar />, path: '/armada' },
+    { name: 'Pemesanan Tiket', icon: <HiOutlineTicket />, path: '/pemesanan_tiket' },
+    { name: 'Feedback Pelanggan', icon: <VscFeedback />, path: '/feedback_pelanggan' },
 ]
 
 
