@@ -70,9 +70,9 @@ export default function FAQ() {
 
       <button
         onClick={() => setShowForm((prev) => !prev)}
-        className="absolute top-6 right-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        className="absolute top-6 right-6 px-4 py-2 bg-purple-700 text-white rounded hover:bg-purple-700 transition"
       >
-        {showForm ? "Kembali" : "Tambah"}
+        {showForm ? "Kembali" : "Tambah Pertanyaan"}
       </button>
 
       {showForm && (

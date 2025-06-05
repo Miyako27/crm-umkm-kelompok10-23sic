@@ -27,7 +27,7 @@ const FormSupirArmada = () => {
       <nav className="text-sm mb-4" aria-label="Breadcrumb">
         <ol className="list-reset flex text-gray-600">
           <li>
-            <Link to="/" className="hover:text-pink-500">
+            <Link to="/" className="hover:text-purple-500">
               Home
             </Link>
           </li>
@@ -35,7 +35,7 @@ const FormSupirArmada = () => {
             <span className="mx-2">/</span>
           </li>
           <li>
-            <Link to="/armada" className="hover:text-pink-500">
+            <Link to="/armada" className="hover:text-purple-500">
               Armada
             </Link>
           </li>
@@ -144,7 +144,7 @@ const FormSupirArmada = () => {
         <div className="col-span-2 mt-4">
           <button
             type="submit"
-            className="bg-pink-400 hover:bg-pink-500 text-white px-4 py-2 rounded-lg"
+            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
           >
             Simpan
           </button>

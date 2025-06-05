@@ -30,9 +30,9 @@ const PemesananTiket = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+    <div className="flex items-start justify-center bg-gray-100 p-4 min-h-screen">
       {/* Card container */}
-      <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-8">
+      <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-8 mt-4">
         <h1 className="text-3xl font-bold mb-6 text-center text-purple-700">Form Pemesanan Tiket</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>

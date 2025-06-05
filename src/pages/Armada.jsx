@@ -70,7 +70,7 @@ const Armada = () => {
         </div>
         <button
           onClick={handleTambahData}
-          className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg text-sm shadow-md transition duration-300"
+          className="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded-lg text-sm shadow-md transition duration-300"
         >
           + Tambah Data
         </button>
@@ -78,7 +78,7 @@ const Armada = () => {
 
       <div className="overflow-x-auto rounded-lg shadow">
         <table className="min-w-full bg-white border border-gray-200 text-sm">
-          <thead className="bg-pink-100 text-gray-700">
+          <thead className="bg-purple-100 text-gray-700">
             <tr>
               <th className="p-3 text-left border-b">#</th>
               <th className="p-3 text-left border-b">Nama Supir</th>
