@@ -1,4 +1,3 @@
-import { BsFillPeopleFill } from "react-icons/bs"; 
 import {
     LayoutDashboard,
     Users,         // untuk pelanggan
@@ -11,13 +10,19 @@ import {
     UserPlus,
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
+import FAQ from '../assets/FAQ.png';
 
 const menuItems = [
     { name: 'Dashboard', icon: <LayoutDashboard />, path: '/' },
     { name: 'Produk', icon: <Box />, path: '/produk' },
     { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
-    { name: 'Pelanggan', icon: <BsFillPeopleFill />, path: '/pelanggan' },
+    {
+  name: 'FAQ',
+  icon: <img src={FAQ} alt="FAQ" className="w-5 h-5" />,
+  path: '/FAQ'
+},
 ]
+
 
 
 const accountItems = [
