@@ -18,40 +18,40 @@ const Profil = () => {
   return (
     <>
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-md">
-        <div className="container mx-auto max-w-screen-xl flex justify-between items-center px-6 py-4 min-h-[80px]">
+      <header className="bg-white border-b border-gray-200">
+        <div className="container mx-auto max-w-screen-xl flex justify-between items-center px-5 min-h-[80px]">
           <div className="flex items-center">
             <img
               src="https://www.mutiarasiaktravel.co.id/wp-content/uploads/2022/11/logo-mjm-e1668921353660.png"
               alt="Logo"
-              className="h-12 mr-4"
+              className="h-10 mr-2"
             />
           </div>
 
-          <nav>
-            <ul className="flex space-x-8 font-medium text-gray-700">
-              {navItems.map(({ label, path }) => (
-                <li key={label}>
-                  <Link
-                    to={path}
-                    className={`relative text-lg transition-colors duration-300 px-2 py-1 rounded-md ${location.pathname === path
-                      ? "text-orange-600 font-semibold after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-orange-600"
-                      : "hover:text-orange-500"
-                      }`}
-                  >
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          {/* Navigation */}
+          <div className="flex items-center space-x-6">
+            <nav>
+              <ul className="flex list-none m-0 p-0 space-x-6">
+                {navItems.map(({ label, path }) => (
+                  <li key={label}>
+                    <Link
+                      to={path}
+                      className="font-bold text-gray-800 text-lg hover:text-orange-500 transition-colors duration-300"
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
 
-          <Link
-            to="/login"
-            className="ml-6 bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300"
-          >
-            Login
-          </Link>
+            <Link
+              to="/login"
+              className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-5 rounded-md transition-colors duration-300"
+            >
+              Login
+            </Link>
+          </div>
         </div>
       </header>
 
