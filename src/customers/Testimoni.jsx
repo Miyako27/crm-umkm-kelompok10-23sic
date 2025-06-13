@@ -89,7 +89,7 @@ const Testimoni = () => {
             </div>
 
             {/* Section Testimoni */}
-            <section className="py-12 bg-white">
+            <section className="py-10 bg-white">
                 <div className="max-w-7xl mx-auto px-5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         {testimonials.map((t, index) => (

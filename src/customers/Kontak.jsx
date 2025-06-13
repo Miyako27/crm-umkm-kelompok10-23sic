@@ -71,7 +71,7 @@ const Kontak = () => {
       </div>
 
       {/* Konten Kontak */}
-      <section className="py-12">
+      <section className="mt-10">
         <div className="container mx-auto max-w-screen-xl px-5 flex flex-col md:flex-row gap-10 items-center">
           {/* Peta Google Maps */}
           <div className="md:w-1/2">
