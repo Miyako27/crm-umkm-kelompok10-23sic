@@ -1,15 +1,16 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react"; // Karena pakai useState buat FAQ (kalau mau nambah nanti)
 
 
 const navItems = [
   { label: 'Beranda', path: '/' },
-  { label: 'Profil', path: '#' },
+  { label: 'Profil', path: '/profil' },
   { label: 'Order', path: '/order-customer' },
   { label: 'Promo', path: '#' },
-  { label: 'Artikel', path: '#' },
-  { label: 'Testimoni', path: '#' },
-  { label: 'Kontak', path: '#' },
+  { label: 'Artikel', path: '/artikel' },
+  { label: 'Testimoni', path: '/testimoni' },
+  { label: 'Kontak', path: '/kontak' },
   { label: 'FAQ', path: '/faq-customer' },
 ];
 
@@ -23,52 +24,65 @@ const Order = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-     <header className="bg-white border-b border-gray-200 shadow-sm">
-           <div className="container mx-auto max-w-screen-xl flex justify-between items-center px-5 min-h-[80px]">
-             <div className="flex items-center">
-               <img
-                 src="https://www.mutiarasiaktravel.co.id/wp-content/uploads/2022/11/logo-mjm-e1668921353660.png"
-                 alt="Logo"
-                 className="h-10 mr-2"
-               />
-             </div>
-             <div className="flex items-center space-x-6">
-               <nav>
-                 <ul className="flex list-none m-0 p-0 space-x-6">
-                   {navItems.map(({ label, path }) => (
-                     <li key={label}>
-                       <Link
-                         to={path}
-                         className="font-bold text-gray-800 text-lg hover:text-orange-500 transition-colors"
-                       >
-                         {label}
-                       </Link>
-                     </li>
-                   ))}
-                 </ul>
-               </nav>
-               <Link
-                 to="/login"
-                 className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-5 rounded-md transition-colors"
-               >
-                 Login
-               </Link>
-             </div>
-           </div>
-         </header>
+      <header className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="container mx-auto max-w-screen-xl flex justify-between items-center px-5 min-h-[80px]">
+          <div className="flex items-center">
+            <img
+              src="https://www.mutiarasiaktravel.co.id/wp-content/uploads/2022/11/logo-mjm-e1668921353660.png"
+              alt="Logo"
+              className="h-10 mr-2"
+            />
+          </div>
+          <div className="flex items-center space-x-6">
+            <nav>
+              <ul className="flex list-none m-0 p-0 space-x-6">
+                {navItems.map(({ label, path }) => (
+                  <li key={label}>
+                    <Link
+                      to={path}
+                      className="font-bold text-gray-800 text-lg hover:text-orange-500 transition-colors"
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            <Link
+              to="/login"
+              className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-5 rounded-md transition-colors"
+            >
+              Login
+            </Link>
+          </div>
+        </div>
+      </header>
 
       {/* Breadcrumb */}
       <div className="bg-gray-50 py-4 border-b border-gray-200 mb-8">
-        <div className="max-w-7xl mx-auto px-5 flex flex-col space-y-1">
-          <h2 className="text-3xl font-extrabold text-gray-800">Halaman Order</h2>
-          <div className="text-sm text-gray-600">
-            <Link to="/" className="hover:underline text-orange-600 font-semibold">
-              Beranda
-            </Link>{" "}
-            / <span className="text-gray-700">Order</span>
+        <div className="max-w-7xl mx-auto px-5 flex flex-wrap md:flex-nowrap items-center justify-between gap-5">
+          <div className="flex flex-col space-y-1">
+            <h2 className="text-3xl font-extrabold text-gray-800">
+              Halaman Order
+            </h2>
+            <div className="text-sm text-gray-600">
+              <Link to="/" className="hover:underline text-orange-600 font-semibold">
+                Beranda
+              </Link>{" "}
+              / <span className="text-gray-700">Order</span>
+            </div>
+          </div>
+
+          <div className="ml-auto">
+            <input
+              type="text"
+              placeholder="Cari Wisata..."
+              className="px-4 py-2 w-64 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            />
           </div>
         </div>
       </div>
+
 
       {/* Konten Utama Halaman Order */}
       <div className="max-w-7xl mx-auto px-4">

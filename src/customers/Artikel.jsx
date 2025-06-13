@@ -4,12 +4,12 @@ import { Link, useLocation } from "react-router-dom";
 const navItems = [
   { label: 'Beranda', path: '/' },
   { label: 'Profil', path: '/profil' },
-  { label: 'Order', path: '#' },
+  { label: 'Order', path: '/order-customer' },
   { label: 'Promo', path: '#' },
   { label: 'Artikel', path: '/artikel' },
   { label: 'Testimoni', path: '/testimoni' },
   { label: 'Kontak', path: '/kontak' },
-  { label: 'FAQ', path: '#' },
+  { label: 'FAQ', path: '/faq-customer' },
 ];
 
 const Artikel = () => {

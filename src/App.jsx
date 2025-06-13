@@ -8,7 +8,6 @@ import PemesananTiket from './pages/PemesananTiket';
 import DataFeedback from './pages/FeedbackPelanggan';
 import FormSupirArmada from './pages/FormSupirArmada';
 import Home from './customers/Home';
-import Home from './customers/Home';
 import FAQ from './pages/FAQ';
 import Login from './customers/Login';
 import Artikel from './customers/Artikel';

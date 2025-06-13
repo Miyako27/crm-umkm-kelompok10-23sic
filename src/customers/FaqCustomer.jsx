@@ -4,12 +4,12 @@ import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 
 const navItems = [
   { label: 'Beranda', path: '/' },
-  { label: 'Profil', path: '#' },
+  { label: 'Profil', path: '/profil' },
   { label: 'Order', path: '/order-customer' },
   { label: 'Promo', path: '#' },
-  { label: 'Artikel', path: '#' },
-  { label: 'Testimoni', path: '#' },
-  { label: 'Kontak', path: '#' },
+  { label: 'Artikel', path: '/artikel' },
+  { label: 'Testimoni', path: '/testimoni' },
+  { label: 'Kontak', path: '/kontak' },
   { label: 'FAQ', path: '/faq-customer' },
 ];
 
