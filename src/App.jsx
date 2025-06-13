@@ -8,15 +8,20 @@ import Armada from './pages/Armada';
 import PemesananTiket from './pages/PemesananTiket';
 import DataFeedback from './pages/FeedbackPelanggan';
 import FormSupirArmada from './pages/FormSupirArmada';
-import Home from './customers/home';
+import Home from './customers/Home';
 import FAQ from './pages/FAQ';
 import Login from './customers/Login';
+import FaqCustomer from './customers/FaqCustomer';
+import Order from './customers/Order';
+
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home/>} />
       <Route path="/login" element={<Login/>} />
+      <Route path="/faq-customer" element={<FaqCustomer />} />
+      <Route path="/order-customer" element={<Order />} />
       
       <Route element={<MainLayout />}>
         <Route path="/dashboard" element={<Dashboard/>} />
@@ -31,6 +36,7 @@ function App() {
 
         {/* Pemesanan Tiket Routes */}
         <Route path="/feedback_pelanggan" element={<DataFeedback />} />
+
       </Route>
     </Routes>
   );

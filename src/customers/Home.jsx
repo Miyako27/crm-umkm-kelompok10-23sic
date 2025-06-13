@@ -2,14 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const navItems = [
-  { label: 'Beranda', path: '#' },
+  { label: 'Beranda', path: '/' },
   { label: 'Profil', path: '#' },
-  { label: 'Order', path: '#' },
+  { label: 'Order', path: '/order-customer' },
   { label: 'Promo', path: '#' },
   { label: 'Artikel', path: '#' },
   { label: 'Testimoni', path: '#' },
   { label: 'Kontak', path: '#' },
-  { label: 'FAQ', path: '#' },
+  { label: 'FAQ', path: '/faq-customer' },
 ];
 
 const Home = () => {
