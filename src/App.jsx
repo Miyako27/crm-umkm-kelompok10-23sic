@@ -3,11 +3,11 @@ import MainLayout from './components/MainLayout';
 import Dashboard from './pages/Dashboard';
 import SalesManagement from './pages/SalesManagement';
 import CustomerManagement from './pages/CustomerManagement';
-// import FAQ from './pages/FAQ';
 import Armada from './pages/Armada';
 import PemesananTiket from './pages/PemesananTiket';
 import DataFeedback from './pages/FeedbackPelanggan';
 import FormSupirArmada from './pages/FormSupirArmada';
+import Home from './customers/Home';
 import Home from './customers/Home';
 import FAQ from './pages/FAQ';
 import Login from './customers/Login';
@@ -16,6 +16,9 @@ import ArtikelDetail from './customers/ArtikelDetail';
 import Profil from './customers/Profil';
 import Kontak from './customers/Kontak';
 import Testimoni from './customers/Testimoni';
+import FaqCustomer from './customers/FaqCustomer';
+import Order from './customers/Order';
+
 
 function App() {
   return (
@@ -30,6 +33,8 @@ function App() {
       <Route path="/artikel/:id" element={<ArtikelDetail />} />
       <Route path="/profil" element={<Profil />} />
       <Route path="/login" element={<Login/>} />
+      <Route path="/faq-customer" element={<FaqCustomer />} />
+      <Route path="/order-customer" element={<Order />} />
       
       <Route element={<MainLayout />}>
         <Route path="/dashboard" element={<Dashboard />} />
@@ -44,6 +49,7 @@ function App() {
 
         {/* Pemesanan Tiket Routes */}
         <Route path="/feedback_pelanggan" element={<DataFeedback />} />
+
       </Route>
     </Routes>
   );
