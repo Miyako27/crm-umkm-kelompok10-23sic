@@ -3,17 +3,23 @@ import MainLayout from './components/MainLayout';
 import Dashboard from './pages/Dashboard';
 import SalesManagement from './pages/SalesManagement';
 import CustomerManagement from './pages/CustomerManagement';
-import FAQ from './pages/FAQ';
+// import FAQ from './pages/FAQ';
 import Armada from './pages/Armada';
 import PemesananTiket from './pages/PemesananTiket';
 import DataFeedback from './pages/FeedbackPelanggan';
 import FormSupirArmada from './pages/FormSupirArmada';
+import Home from './customers/home';
+import FAQ from './pages/FAQ';
+import Login from './customers/Login';
 
 function App() {
   return (
     <Routes>
+      <Route path="/" element={<Home/>} />
+      <Route path="/login" element={<Login/>} />
+      
       <Route element={<MainLayout />}>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/penjualan" element={<SalesManagement />} />
         <Route path="/pelanggan" element={<CustomerManagement />} />
         <Route path="/faq" element={<FAQ />} />
