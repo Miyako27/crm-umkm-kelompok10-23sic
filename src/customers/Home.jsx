@@ -1,15 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const navItems = [
-  { label: 'Beranda', path: '#' },
-  { label: 'Profil', path: '#' },
-  { label: 'Order', path: '#' },
-  { label: 'Promo', path: '#' },
-  { label: 'Artikel', path: '#' },
-  { label: 'Testimoni', path: '#' },
-  { label: 'Kontak', path: '#' },
-  { label: 'FAQ', path: '#' },
+  { label: "Beranda", path: "/" },
+  { label: "Profil", path: "#" },
+  { label: "Order", path: "#" },
+  { label: "Promo", path: "#" },
+  { label: "Artikel", path: "#" },
+  { label: "Testimoni", path: "/testimoni" },
+  { label: "Kontak", path: "/kontak" },
+  { label: "FAQ", path: "#" },
 ];
 
 const Home = () => {
@@ -112,8 +112,12 @@ const Home = () => {
               Diskon Spesial Akhir Tahun! 🎉
             </h3>
             <p className="text-lg md:text-xl leading-relaxed tracking-wide mb-6">
-              Dapatkan potongan hingga <span className="font-bold text-orange-600">30%</span> untuk semua paket wisata pilihan kami.<br />
-              Jangan lewatkan kesempatan liburan hemat dan seru bersama <span className="underline font-semibold">Tripenya</span>!
+              Dapatkan potongan hingga{" "}
+              <span className="font-bold text-orange-600">30%</span> untuk semua
+              paket wisata pilihan kami.
+              <br />
+              Jangan lewatkan kesempatan liburan hemat dan seru bersama{" "}
+              <span className="underline font-semibold">Tripenya</span>!
             </p>
           </div>
 
@@ -141,7 +145,10 @@ const Home = () => {
               Tentang Kami
             </h3>
             <p className="text-lg leading-relaxed text-gray-700">
-              Tripenya adalah platform perjalanan terpercaya yang menyediakan berbagai paket wisata menarik dan terjangkau. Kami berkomitmen memberikan pengalaman liburan terbaik bagi pelanggan kami dengan pelayanan profesional dan paket wisata berkualitas.
+              Tripenya adalah platform perjalanan terpercaya yang menyediakan
+              berbagai paket wisata menarik dan terjangkau. Kami berkomitmen
+              memberikan pengalaman liburan terbaik bagi pelanggan kami dengan
+              pelayanan profesional dan paket wisata berkualitas.
             </p>
           </div>
 
@@ -183,10 +190,16 @@ const Home = () => {
             <div className="p-5">
               <h3 className="text-xl font-bold mb-2">Bali 4 Hari 3 Malam</h3>
               <p className="text-gray-600 text-sm mb-4">
-                Eksplorasi keindahan Bali dari pantai hingga budaya lokal. Termasuk hotel & transportasi.
+                Eksplorasi keindahan Bali dari pantai hingga budaya lokal.
+                Termasuk hotel & transportasi.
               </p>
-              <span className="text-orange-600 font-bold text-lg block mb-2">Rp 2.500.000/orang</span>
-              <Link to="#" className="text-orange-600 font-semibold hover:underline">
+              <span className="text-orange-600 font-bold text-lg block mb-2">
+                Rp 2.500.000/orang
+              </span>
+              <Link
+                to="#"
+                className="text-orange-600 font-semibold hover:underline"
+              >
                 Pesan Sekarang →
               </Link>
             </div>
@@ -200,12 +213,20 @@ const Home = () => {
               className="w-full h-48 object-cover"
             />
             <div className="p-5">
-              <h3 className="text-xl font-bold mb-2">Yogyakarta Heritage Tour</h3>
+              <h3 className="text-xl font-bold mb-2">
+                Yogyakarta Heritage Tour
+              </h3>
               <p className="text-gray-600 text-sm mb-4">
-                Kunjungi candi, museum, dan tempat ikonik di Jogja bersama pemandu lokal.
+                Kunjungi candi, museum, dan tempat ikonik di Jogja bersama
+                pemandu lokal.
               </p>
-              <span className="text-orange-600 font-bold text-lg block mb-2">Rp 1.800.000/orang</span>
-              <Link to="#" className="text-orange-600 font-semibold hover:underline">
+              <span className="text-orange-600 font-bold text-lg block mb-2">
+                Rp 1.800.000/orang
+              </span>
+              <Link
+                to="#"
+                className="text-orange-600 font-semibold hover:underline"
+              >
                 Pesan Sekarang →
               </Link>
             </div>
@@ -219,12 +240,20 @@ const Home = () => {
               className="w-full h-48 object-cover"
             />
             <div className="p-5">
-              <h3 className="text-xl font-bold mb-2">Labuan Bajo & Komodo Adventure</h3>
+              <h3 className="text-xl font-bold mb-2">
+                Labuan Bajo & Komodo Adventure
+              </h3>
               <p className="text-gray-600 text-sm mb-4">
-                Petualangan laut dan pulau eksotis, termasuk kunjungan ke Pulau Komodo.
+                Petualangan laut dan pulau eksotis, termasuk kunjungan ke Pulau
+                Komodo.
               </p>
-              <span className="text-orange-600 font-bold text-lg block mb-2">Rp 3.900.000/orang</span>
-              <Link to="#" className="text-orange-600 font-semibold hover:underline">
+              <span className="text-orange-600 font-bold text-lg block mb-2">
+                Rp 3.900.000/orang
+              </span>
+              <Link
+                to="#"
+                className="text-orange-600 font-semibold hover:underline"
+              >
                 Pesan Sekarang →
               </Link>
             </div>
@@ -246,7 +275,8 @@ const Home = () => {
       <section className="mb-20 px-10 max-w-7xl mx-auto">
         {/* Header with Orange Line Above */}
         <div className="mb-10">
-          <div className="w-16 h-1 bg-orange-600 mb-3"></div> {/* Garis orange di atas */}
+          <div className="w-16 h-1 bg-orange-600 mb-3"></div>{" "}
+          {/* Garis orange di atas */}
           <h2 className="text-3xl font-extrabold text-left">
             Artikel & Tips Perjalanan
           </h2>
@@ -262,11 +292,17 @@ const Home = () => {
               className="w-full h-48 object-cover"
             />
             <div className="p-5">
-              <h3 className="text-xl font-bold mb-2">Tips Liburan Hemat di Musim Libur</h3>
+              <h3 className="text-xl font-bold mb-2">
+                Tips Liburan Hemat di Musim Libur
+              </h3>
               <p className="text-gray-600 text-sm mb-4">
-                Pelajari cara mengatur budget agar liburan tetap menyenangkan tanpa menguras dompet.
+                Pelajari cara mengatur budget agar liburan tetap menyenangkan
+                tanpa menguras dompet.
               </p>
-              <Link to="#" className="text-orange-600 font-semibold hover:underline">
+              <Link
+                to="#"
+                className="text-orange-600 font-semibold hover:underline"
+              >
                 Baca Selengkapnya →
               </Link>
             </div>
@@ -280,11 +316,17 @@ const Home = () => {
               className="w-full h-48 object-cover"
             />
             <div className="p-5">
-              <h3 className="text-xl font-bold mb-2">Destinasi Alam Terbaik untuk Tahun Ini</h3>
+              <h3 className="text-xl font-bold mb-2">
+                Destinasi Alam Terbaik untuk Tahun Ini
+              </h3>
               <p className="text-gray-600 text-sm mb-4">
-                Jelajahi keindahan alam Indonesia yang wajib masuk dalam daftar perjalananmu.
+                Jelajahi keindahan alam Indonesia yang wajib masuk dalam daftar
+                perjalananmu.
               </p>
-              <Link to="#" className="text-orange-600 font-semibold hover:underline">
+              <Link
+                to="#"
+                className="text-orange-600 font-semibold hover:underline"
+              >
                 Baca Selengkapnya →
               </Link>
             </div>
@@ -298,11 +340,17 @@ const Home = () => {
               className="w-full h-48 object-cover"
             />
             <div className="p-5">
-              <h3 className="text-xl font-bold mb-2">Mengenal Budaya Lokal Saat Bepergian</h3>
+              <h3 className="text-xl font-bold mb-2">
+                Mengenal Budaya Lokal Saat Bepergian
+              </h3>
               <p className="text-gray-600 text-sm mb-4">
-                Panduan berinteraksi dengan penduduk lokal untuk pengalaman yang lebih otentik.
+                Panduan berinteraksi dengan penduduk lokal untuk pengalaman yang
+                lebih otentik.
               </p>
-              <Link to="#" className="text-orange-600 font-semibold hover:underline">
+              <Link
+                to="#"
+                className="text-orange-600 font-semibold hover:underline"
+              >
                 Baca Selengkapnya →
               </Link>
             </div>
@@ -339,9 +387,36 @@ const Home = () => {
           <div className="md:w-1/3">
             <h3 className="font-bold text-xl mb-2">Ikuti Kami</h3>
             <ul className="space-y-1">
-              <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-orange-500">Facebook</a></li>
-              <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-orange-500">Twitter</a></li>
-              <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-orange-500">Instagram</a></li>
+              <li>
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-orange-500"
+                >
+                  Facebook
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://twitter.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-orange-500"
+                >
+                  Twitter
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-orange-500"
+                >
+                  Instagram
+                </a>
+              </li>
             </ul>
           </div>
 

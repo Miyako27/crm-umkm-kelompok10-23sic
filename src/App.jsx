@@ -10,12 +10,16 @@ import FormSupirArmada from "./pages/FormSupirArmada";
 import FAQ from "./pages/FAQ";
 import Login from "./customers/Login";
 import Home from "./customers/Home";
+import Kontak from "./customers/Kontak";
+import Testimoni from "./customers/Testimoni";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/kontak" element={<Kontak />} />
+      <Route path="/testimoni" element={<Testimoni />} />
 
       <Route element={<MainLayout />}>
         <Route path="/dashboard" element={<Dashboard />} />
