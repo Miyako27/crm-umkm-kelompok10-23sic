@@ -27,12 +27,9 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/kontak" element={<Kontak />} />
       <Route path="/testimoni" element={<Testimoni />} />
-
-      <Route path="/" element={<Home/>} />
       <Route path="/artikel" element={<Artikel />} />
       <Route path="/artikel/:id" element={<ArtikelDetail />} />
       <Route path="/profil" element={<Profil />} />
-      <Route path="/login" element={<Login/>} />
       <Route path="/faq-customer" element={<FaqCustomer />} />
       <Route path="/order-customer" element={<Order />} />
       
