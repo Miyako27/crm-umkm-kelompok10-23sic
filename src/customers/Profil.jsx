@@ -163,17 +163,17 @@ const Profil = () => {
             {[
               {
                 name: "Miyako Juliana Otsu",
-                role: "Ketua Tim",
+                role: "Pendiri Tripenya",
                 image: "/images/miyako.jpeg",
               },
               {
                 name: "Muhammad Rayhan Effendi",
-                role: "Anggota 1",
+                role: "Pendiri Tripenya",
                 image: "/images/rayhan.jpg",
               },
               {
                 name: "Nuraisyah",
-                role: "Anggota 2",
+                role: "Pendiri Tripenya",
                 image: "/images/nuraisyah.jpeg",
               },
             ].map(({ name, role, image }) => (
