@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const navItems = [
   { label: 'Beranda', path: '#' },
-  { label: 'Profil', path: '#' },
+  { label: 'Profil', path: '/profil' },
   { label: 'Order', path: '#' },
   { label: 'Promo', path: '#' },
   { label: 'Artikel', path: '#' },
@@ -312,7 +312,7 @@ const Home = () => {
         {/* Selengkapnya Button */}
         <div className="text-center mt-10">
           <Link
-            to="#"
+            to="/artikel"
             className="inline-block border-2 border-orange-600 text-orange-600 font-semibold rounded-full px-8 py-3 hover:bg-orange-100 hover:text-orange-700 transition"
           >
             Lihat Semua Artikel
