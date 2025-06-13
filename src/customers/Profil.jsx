@@ -169,7 +169,7 @@ const Profil = () => {
               {
                 name: "Muhammad Rayhan Effendi",
                 role: "Pendiri Tripenya",
-                image: "/images/rayhan.jpg",
+                image: "/images/pendi.jpeg",
               },
               {
                 name: "Nuraisyah",
