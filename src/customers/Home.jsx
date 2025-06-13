@@ -59,7 +59,7 @@ const Home = () => {
       {/* Hero Banner */}
       <div className="relative w-full h-full">
         <img
-          src="public/images/GambarHome.png"
+          src="images/GambarHome.png"
           alt="Hero Banner"
           className="w-full h-full object-cover"
         />

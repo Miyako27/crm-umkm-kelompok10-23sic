@@ -120,7 +120,7 @@ const FaqCustomer = () => {
           {/* Gambar Kiri */}
           <div className="md:w-1/2 w-full flex justify-center">
             <img 
-              src="public/images/FAQ.png" 
+              src="images/FAQ.png" 
               alt="Gambar Travel" 
               className="w-full max-w-sm object-cover" 
             />
