@@ -2,14 +2,14 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const navItems = [
-  { label: 'Beranda', path: '/' },
-  { label: 'Profil', path: '/profil' },
-  { label: 'Order', path: '#' },
-  { label: 'Promo', path: '#' },
-  { label: 'Artikel', path: '/artikel' },
-  { label: 'Testimoni', path: '/testimoni' },
-  { label: 'Kontak', path: '/kontak' },
-  { label: 'FAQ', path: '#' },
+  { label: "Beranda", path: "/" },
+  { label: "Profil", path: "/profil" },
+  { label: "Order", path: "#" },
+  { label: "Promo", path: "#" },
+  { label: "Artikel", path: "/artikel" },
+  { label: "Testimoni", path: "/testimoni" },
+  { label: "Kontak", path: "/kontak" },
+  { label: "FAQ", path: "#" },
 ];
 
 const Profil = () => {
@@ -18,95 +18,96 @@ const Profil = () => {
   return (
     <>
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="container mx-auto max-w-screen-xl flex justify-between items-center px-5 min-h-[80px]">
+      <header className="bg-white border-b border-gray-200 shadow-md">
+        <div className="container mx-auto max-w-screen-xl flex justify-between items-center px-6 py-4 min-h-[80px]">
           <div className="flex items-center">
             <img
               src="https://www.mutiarasiaktravel.co.id/wp-content/uploads/2022/11/logo-mjm-e1668921353660.png"
               alt="Logo"
-              className="h-10 mr-2"
+              className="h-12 mr-4"
             />
           </div>
 
-          <div className="flex items-center space-x-6">
-            <nav>
-              <ul className="flex list-none m-0 p-0 space-x-6">
-                {navItems.map(({ label, path }) => (
-                  <li key={label}>
-                    <Link
-                      to={path}
-                      className={`font-bold text-lg transition-colors duration-300 ${
-                        location.pathname === path
-                          ? "text-orange-500"
-                          : "text-gray-800 hover:text-orange-500"
+          <nav>
+            <ul className="flex space-x-8 font-medium text-gray-700">
+              {navItems.map(({ label, path }) => (
+                <li key={label}>
+                  <Link
+                    to={path}
+                    className={`relative text-lg transition-colors duration-300 px-2 py-1 rounded-md ${location.pathname === path
+                      ? "text-orange-600 font-semibold after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-orange-600"
+                      : "hover:text-orange-500"
                       }`}
-                    >
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-            <Link
-              to="/login"
-              className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-5 rounded-md transition-colors duration-300"
-            >
-              Login
-            </Link>
-          </div>
+          <Link
+            to="/login"
+            className="ml-6 bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300"
+          >
+            Login
+          </Link>
         </div>
       </header>
 
       {/* Breadcrumb */}
-      <div className="bg-gray-50 py-4 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-5 flex flex-wrap items-center justify-between gap-5">
-          <div className="flex flex-col space-y-1">
-            <h2 className="text-3xl font-extrabold">Profil Kami</h2>
-            <div className="text-sm text-gray-600">
-              <Link
-                to="/"
-                className="hover:underline text-orange-600 font-semibold"
-              >
-                Beranda
-              </Link>{" "}
-              / <span className="text-gray-700">Profil</span>
-            </div>
+      <div className="bg-gray-50 py-4 border-b border-gray-200 mb-8">
+        <div className="max-w-7xl mx-auto px-5 flex flex-col space-y-1">
+          <h2 className="text-3xl font-extrabold text-gray-800">Profil Kami</h2>
+          <div className="text-sm text-gray-600">
+            <Link
+              to="/"
+              className="hover:underline text-orange-600 font-semibold"
+            >
+              Beranda
+            </Link>{" "}
+            / <span className="text-gray-700">Profil</span>
           </div>
         </div>
       </div>
 
       {/* Konten Profil */}
-      <div className="max-w-5xl mx-auto px-6 py-10 space-y-12">
+      <main className="max-w-7xl mx-auto px-6 py-12 space-y-16">
         {/* Tentang */}
-        <section>
-          <h1 className="text-4xl font-bold mb-4 text-orange-600">Tentang Tripenya</h1>
-          <p className="text-gray-700 leading-relaxed">
+        <section className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl font-extrabold mb-6">
+            Selamat Datang di{" "}
+            <span className="text-orange-600">Tripenya</span>!
+          </h2>
+          <p className="text-gray-700 leading-relaxed text-lg max-w-3xl mx-auto">
             <strong>Tripenya</strong> adalah platform perjalanan digital yang menyediakan artikel informatif, tips liburan hemat, inspirasi destinasi, serta layanan pemesanan perjalanan. Kami berkomitmen memberikan pengalaman terbaik agar setiap perjalanan terasa mudah, menyenangkan, dan penuh makna.
           </p>
         </section>
 
         {/* Sejarah Singkat */}
-        <section>
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Sejarah Singkat</h2>
-          <p className="text-gray-700 leading-relaxed">
-            Tripenya berdiri sejak tahun 2020 dengan tujuan menghubungkan pelancong dengan destinasi lokal yang autentik. Berawal dari blog perjalanan sederhana, kini kami berkembang menjadi platform terpercaya yang digunakan oleh ribuan pengguna di seluruh Indonesia.
+        {/* <section className="max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">Sejarah Singkat</h2>
+          <p className="text-gray-700 leading-relaxed text-lg">
+            Tripenya berdiri sejak tahun 2025 dengan tujuan menghubungkan pelancong dengan destinasi lokal yang autentik. Berawal dari blog perjalanan sederhana, kini kami berkembang menjadi platform terpercaya yang digunakan oleh ribuan pengguna di seluruh Indonesia.
           </p>
-        </section>
+        </section> */}
 
         {/* Visi & Misi */}
-        <section>
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Visi & Misi</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="text-xl font-semibold text-orange-600 mb-2">Visi</h3>
-              <p className="text-gray-700">
+        <section className="max-w-6xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Visi & Misi</h2>
+          <div className="bg-orange-50 p-10 rounded-2xl shadow-md space-y-10">
+            {/* Visi */}
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-orange-200">
+              <h3 className="text-2xl font-semibold text-orange-600 mb-3">Visi</h3>
+              <p className="text-gray-700 text-lg leading-relaxed">
                 Menjadi platform perjalanan digital terpercaya yang membantu masyarakat merencanakan perjalanan dengan nyaman, aman, dan penuh inspirasi.
               </p>
             </div>
-            <div>
-              <h3 className="text-xl font-semibold text-orange-600 mb-2">Misi</h3>
-              <ul className="list-disc list-inside text-gray-700 space-y-2">
+
+            {/* Misi */}
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-orange-200">
+              <h3 className="text-2xl font-semibold text-orange-600 mb-3">Misi</h3>
+              <ul className="list-disc pl-5 text-gray-700 space-y-3 text-lg leading-relaxed">
                 <li>Menyediakan informasi perjalanan yang akurat dan terkini.</li>
                 <li>Memberikan tips liburan hemat dan efisien.</li>
                 <li>Mendukung mitra lokal dalam mempromosikan destinasi wisata mereka.</li>
@@ -117,116 +118,135 @@ const Profil = () => {
         </section>
 
         {/* Nilai Perusahaan */}
-        <section>
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Nilai-Nilai Kami</h2>
-          <div className="grid md:grid-cols-3 gap-6">
+        <section className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">Nilai-Nilai Kami</h2>
+          <div className="grid md:grid-cols-3 gap-8">
             {[
-              { title: "Inovasi", desc: "Kami terus mencari cara baru untuk meningkatkan pengalaman perjalanan digital Anda." },
-              { title: "Integritas", desc: "Kami menjunjung tinggi kejujuran dan transparansi dalam semua layanan kami." },
-              { title: "Kepuasan Pelanggan", desc: "Kebutuhan dan kenyamanan pelanggan adalah prioritas utama kami." },
+              {
+                title: "Inovasi",
+                desc: "Kami terus mencari cara baru untuk meningkatkan pengalaman perjalanan digital Anda.",
+              },
+              {
+                title: "Integritas",
+                desc: "Kami menjunjung tinggi kejujuran dan transparansi dalam semua layanan kami.",
+              },
+              {
+                title: "Kepuasan Pelanggan",
+                desc: "Kebutuhan dan kenyamanan pelanggan adalah prioritas utama kami.",
+              },
             ].map(({ title, desc }) => (
-              <div key={title} className="bg-orange-50 p-5 rounded-lg shadow-sm">
-                <h4 className="font-semibold text-orange-600 text-lg mb-2">{title}</h4>
-                <p className="text-gray-700">{desc}</p>
+              <div
+                key={title}
+                className="bg-white p-6 rounded-xl shadow-lg border border-orange-200 hover:shadow-2xl transition-shadow duration-300"
+              >
+                <h4 className="font-semibold text-orange-600 text-xl mb-3">
+                  {title}
+                </h4>
+                <p className="text-gray-700 text-base">{desc}</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* Partner */}
-        <section>
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Partner & Kolaborasi</h2>
-          <p className="text-gray-700">
+        <section className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">Partner & Kolaborasi</h2>
+          <p className="text-gray-700 text-lg leading-relaxed text-center">
             Kami bangga bermitra dengan berbagai pelaku industri pariwisata, termasuk hotel lokal, tour guide profesional, dan platform transportasi online. Kolaborasi ini memastikan layanan yang terintegrasi dan terpercaya untuk pengguna Tripenya.
           </p>
         </section>
 
         {/* Tim */}
-        <section>
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">Tim Kami</h2>
-          <div className="grid md:grid-cols-3 gap-6">
+        <section className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-800 mb-10 text-center">Tim Kami</h2>
+          <div className="grid md:grid-cols-3 gap-10">
             {[
-              { name: "Rizky Ramadhan", role: "CEO & Founder" },
-              { name: "Dewi Anindya", role: "CTO & Product Lead" },
-              { name: "Arif Wicaksono", role: "Marketing Manager" },
-            ].map(({ name, role }) => (
-              <div key={name} className="text-center">
+              {
+                name: "Miyako Juliana Otsu",
+                role: "Ketua Tim",
+                image: "/images/miyako.jpeg",
+              },
+              {
+                name: "Muhammad Rayhan Effendi",
+                role: "Anggota 1",
+                image: "/images/rayhan.jpg",
+              },
+              {
+                name: "Nuraisyah",
+                role: "Anggota 2",
+                image: "/images/nuraisyah.jpeg",
+              },
+            ].map(({ name, role, image }) => (
+              <div
+                key={name}
+                className="text-center bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300"
+              >
                 <img
-                  src="https://via.placeholder.com/150"
+                  src={image}
                   alt={name}
-                  className="w-32 h-32 mx-auto rounded-full mb-3 object-cover"
+                  className="w-36 h-36 mx-auto rounded-full object-cover mb-5 border-4 border-orange-300"
                 />
-                <h4 className="text-lg font-semibold text-orange-600">{name}</h4>
-                <p className="text-gray-700 text-sm">{role}</p>
+                <h4 className="text-xl font-semibold text-orange-600">{name}</h4>
+                <p className="text-gray-700 text-sm mt-1">{role}</p>
               </div>
             ))}
           </div>
         </section>
-      </div>
+      </main>
 
       {/* Footer */}
-      <footer className="mt-8 bg-gray-900 text-gray-200">
-        <div className="container mx-auto max-w-screen-xl px-5 py-12 flex flex-col md:flex-row justify-between gap-8">
+      <footer className="mt-16 bg-gray-900 text-gray-300">
+        <div className="container mx-auto max-w-screen-xl px-6 py-12 flex flex-col md:flex-row justify-between gap-12">
           {/* Logo dan Deskripsi */}
           <div className="md:w-1/3">
             <img
               src="https://www.mutiarasiaktravel.co.id/wp-content/uploads/2022/11/logo-mjm-e1668921353660.png"
               alt="Logo Footer"
-              className="h-12 mb-4"
+              className="h-14 mb-5"
             />
-            <p className="text-sm max-w-xs">
+            <p className="text-sm max-w-xs leading-relaxed">
               Tripenya - Healing Gak Pake Drama, Cuma Disini!
             </p>
           </div>
 
           {/* Media Sosial */}
           <div className="md:w-1/3">
-            <h3 className="font-bold text-xl mb-2">Ikuti Kami</h3>
-            <ul className="space-y-1">
-              <li>
-                <a
-                  href="https://facebook.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-orange-500"
-                >
-                  Facebook
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://twitter.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-orange-500"
-                >
-                  Twitter
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-orange-500"
-                >
-                  Instagram
-                </a>
-              </li>
+            <h3 className="font-semibold text-xl mb-4 text-orange-500">
+              Ikuti Kami
+            </h3>
+            <ul className="space-y-2 text-gray-400">
+              {[
+                { name: "Facebook", url: "https://facebook.com" },
+                { name: "Twitter", url: "https://twitter.com" },
+                { name: "Instagram", url: "https://instagram.com" },
+              ].map(({ name, url }) => (
+                <li key={name}>
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-orange-500 transition-colors duration-200"
+                  >
+                    {name}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Kontak dan Jam Buka */}
           <div className="md:w-1/3">
-            <h3 className="font-bold text-xl mb-2">Hubungi Kami</h3>
-            <p>Telp: +62 812-3456-7890</p>
-            <p>Alamat: Jl. Sudirman No.123, Pekanbaru, Riau</p>
+            <h3 className="font-semibold text-xl mb-4 text-orange-500">
+              Hubungi Kami
+            </h3>
+            <p className="mb-1">Telp: <a href="tel:+6281234567890" className="hover:text-orange-500">+62 812-3456-7890</a></p>
+            <p className="mb-1">Alamat: Jl. Sudirman No.123, Pekanbaru, Riau</p>
             <p>Jam Buka: Senin - Minggu, 08.00 - 20.00 WIB</p>
           </div>
         </div>
         {/* Copyright */}
-        <div className="border-t border-gray-700 py-4 text-center text-sm text-gray-400">
-          © Copyright {new Date().getFullYear()} by Miyako, Pendy, Nuraisyah.
+        <div className="border-t border-gray-700 py-4 text-center text-sm text-gray-500 select-none">
+          © {new Date().getFullYear()} by Miyako, Pendy, Nuraisyah.
         </div>
       </footer>
     </>
