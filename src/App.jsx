@@ -14,6 +14,8 @@ import Login from './customers/Login';
 import Artikel from './customers/Artikel';
 import ArtikelDetail from './customers/ArtikelDetail';
 import Profil from './customers/Profil';
+import Kontak from './customers/Kontak';
+import Testimoni from './customers/Testimoni';
 
 function App() {
   return (
