@@ -68,9 +68,9 @@ const FaqCustomer = () => {
       </div>
 
       {/* FAQ Section */}
-      <main className="min-h-screen px-6 pb-12 flex flex-col">
+      <main className="min-h-screen px-6 pb-12 flex flex-col item-center">
         {/* Header with Orange Line Above */}
-        <div className="mb-10">
+        <div className="mb-10 px-18">
           <div className="w-16 h-1 bg-orange-600 mb-3"></div>
           <h2 className="text-xl font-semibold text-left text-gray-700 leading-relaxed">
             Punya pertanyaan seputar paket wisata kami? Temukan jawabannya di sini!

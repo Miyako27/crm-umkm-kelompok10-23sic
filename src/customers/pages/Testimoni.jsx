@@ -45,7 +45,7 @@ const Testimoni = () => {
 
             {/* Section Testimoni */}
             <section className="bg-white">
-                <div className="max-w-7xl mx-auto px-12">
+                <div className="max-w-7xl mx-auto px-10">
                     {/* Header with Orange Line Above */}
                     <div className="mb-10">
                         <div className="w-16 h-1 bg-orange-600 mb-3"></div>
