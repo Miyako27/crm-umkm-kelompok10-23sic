@@ -120,16 +120,6 @@ const Promo = () => {
                         </div>
                     </div>
                 </div>
-
-                {/* Selengkapnya Button */}
-                <div className="text-center mt-10">
-                    <Link
-                        to="#"
-                        className="inline-block border-2 border-orange-600 text-orange-600 font-semibold rounded-full px-8 py-3 hover:bg-orange-100 hover:text-orange-700 transition"
-                    >
-                        Lihat Semua Paket
-                    </Link>
-                </div>
             </section>
         </div>
     );

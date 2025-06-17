@@ -70,7 +70,7 @@ const Home = () => {
           </div>
 
           <Link
-            to="#"
+            to="/promo"
             className="self-start border-2 border-orange-600 text-orange-600 font-semibold rounded-full px-10 py-2 hover:bg-orange-100 hover:text-orange-700 transition transform duration-300"
           >
             Lihat Promo
