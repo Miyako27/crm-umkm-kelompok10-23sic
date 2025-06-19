@@ -49,7 +49,7 @@ function App() {
         <Route path="/penjualan" element={<SalesManagement />} />
         <Route path="/pelanggan" element={<CustomerManagement />} />
         <Route path="/faq" element={<FAQ />} />
-        <Route path="/armada" element={<Armada />} />
+        <Route path="/mitra" element={<Armada />} />
         <Route path="/armada/form-armada" element={<FormSupirArmada />} />
         <Route path="/pemesanan_tiket" element={<PemesananTiket />} />
         <Route path="/feedback_pelanggan" element={<DataFeedback />} />
