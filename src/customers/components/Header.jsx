@@ -19,7 +19,7 @@ export default function Header() {
         {/* Logo */}
         <div className="flex items-center">
           <img
-            src="https://www.mutiarasiaktravel.co.id/wp-content/uploads/2022/11/logo-mjm-e1668921353660.png"
+            src="/images/logoo.png"
             alt="Logo"
             className="h-10 mr-2"
           />
