@@ -25,6 +25,10 @@ import Order from './customers/pages/Order';
 import Promo from './customers/pages/Promo';
 import ArtikelAdmin from './pages/ArtikelAdmin';
 import FormArtikel from './pages/FormArtikel';
+import FormFaq from './pages/FormFaq';
+import FAQAdmin from './pages/FAQAdmin';
+import UserForm from './pages/UserForm';
+import User from './pages/User';
 
 function App() {
   return (
@@ -57,6 +61,10 @@ function App() {
         <Route path="/feedback_pelanggan" element={<DataFeedback />} />
         <Route path="/artikel-list" element={< FormArtikel />} />
         <Route path="/artikel_admin" element={< ArtikelAdmin />} />
+        <Route path="/faq-list" element={< FormFaq />} />
+        <Route path="/faqadmin" element={< FAQAdmin />} />
+        <Route path="/user-list" element={< UserForm />} />
+        <Route path="/user" element={< User />} />
       </Route>
     </Routes>
   );
