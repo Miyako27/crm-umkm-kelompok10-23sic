@@ -1,72 +1,51 @@
-import React from 'react';
+import { useState } from 'react';
 
-const dataFeedback = [
-  {
-    id: 1,
-    nama: 'Andi',
-    feedback:
-      'Pelayanan sangat baik dan cepat, stafnya ramah sekali. Saya merasa sangat puas dengan pengalaman pemesanan tiket ini.',
-    tanggal: '2025-06-01',
-  },
-  {
-    id: 2,
-    nama: 'Sari',
-    feedback:
-      'Proses pemesanan mudah dan tidak ribet. Namun, saya berharap ada fitur pilihan kursi supaya bisa lebih nyaman saat menonton.',
-    tanggal: '2025-06-02',
-  },
-  {
-    id: 3,
-    nama: 'Budi',
-    feedback:
-      'Harga tiket cukup terjangkau, tapi saya berharap ada diskon untuk pembelian tiket dalam jumlah banyak.',
-    tanggal: '2025-06-03',
-  },
-  {
-    id: 4,
-    nama: 'Lia',
-    feedback:
-      'Websitenya responsif dan tampilannya menarik. Saran saya agar menambahkan fitur notifikasi untuk update jadwal acara.',
-    tanggal: '2025-06-04',
-  },
-  {
-    id: 5,
-    nama: 'Rizky',
-    feedback:
-      'Sangat membantu, terutama karena bisa memilih tanggal dengan mudah. Namun, pilihan metode pembayaran harus ditambah.',
-    tanggal: '2025-06-05',
-  },
-];
+const FeedbackForm = ({ addFeedback }) => {
+  const [form, setForm] = useState({
+    feedback: '',
+    tanggal: new Date().toISOString().split('T')[0] // default today (YYYY-MM-DD)
+  });
 
-const DataFeedback = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!form.feedback || !form.tanggal) return;
+
+    // Fungsi eksternal untuk simpan (misal ke Supabase)
+    addFeedback(form);
+
+    // Reset form
+    setForm({
+      feedback: '',
+      tanggal: new Date().toISOString().split('T')[0]
+    });
+  };
+
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-center text-purple-700">Data Feedback Pelanggan</h1>
+    <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded shadow border max-w-xl mx-auto">
+      <h2 className="text-2xl font-semibold text-orange-600 mb-4">Form Feedback</h2>
 
-      <div className="overflow-x-auto border rounded-lg shadow-md">
-        <table className="min-w-full w-full divide-y divide-gray-200">
-          <thead className="bg-purple-600 text-white">
-            <tr>
-              <th className="px-6 py-3 text-left text-sm font-semibold w-12">No</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold w-40">Nama</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">Feedback</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold w-36">Tanggal</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {dataFeedback.map(({ id, nama, feedback, tanggal }, index) => (
-              <tr key={id} className="hover:bg-gray-50 align-top">
-                <td className="px-6 py-4 whitespace-nowrap text-sm align-top">{index + 1}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 align-top">{nama}</td>
-                <td className="px-6 py-4 text-sm text-gray-700 align-top whitespace-normal">{feedback}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 align-top">{tanggal}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+      <textarea
+        placeholder="Masukkan feedback Anda..."
+        className="w-full border border-gray-300 rounded-lg p-3 h-24 resize-none focus:outline-orange-500"
+        value={form.feedback}
+        onChange={(e) => setForm({ ...form, feedback: e.target.value })}
+      />
+
+      <input
+        type="date"
+        className="w-full border border-gray-300 rounded-lg p-3 text-gray-600 focus:outline-orange-500"
+        value={form.tanggal}
+        onChange={(e) => setForm({ ...form, tanggal: e.target.value })}
+      />
+
+      <button
+        type="submit"
+        className="bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-700 transition"
+      >
+        Kirim Feedback
+      </button>
+    </form>
   );
 };
 
-export default DataFeedback;
+export default FeedbackForm;

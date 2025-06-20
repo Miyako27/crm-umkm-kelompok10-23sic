@@ -23,7 +23,7 @@ const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/' },
   { name: 'Produk', icon: <Box />, path: '/produk' },
   { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
-  { name: 'Artikel', icon: <MdNewspaper />, path: '/laporan' },
+  { name: 'Artikel', icon: <MdNewspaper />, path: '/artikel_admin' },
   { name: 'Testimoni', icon: <MdOutlineRateReview />, path: '/laporan' },
   { name: 'Penjualan', icon: <FaClipboardList />, path: '/penjualan' },
   { name: 'Pelanggan', icon: <BsFillPeopleFill />, path: '/user' },
