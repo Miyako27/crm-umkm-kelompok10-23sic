@@ -23,6 +23,8 @@ import Testimoni from './customers/pages/Testimoni';
 import FaqCustomer from './customers/pages/FaqCustomer';
 import Order from './customers/pages/Order';
 import Promo from './customers/pages/Promo';
+import UserForm from './pages/UserForm';
+import User from './pages/User';
 
 function App() {
   return (
@@ -53,6 +55,9 @@ function App() {
         <Route path="/armada/form-armada" element={<FormSupirArmada />} />
         <Route path="/pemesanan_tiket" element={<PemesananTiket />} />
         <Route path="/feedback_pelanggan" element={<DataFeedback />} />
+        <Route path="/user-list" element={< UserForm />} />
+        <Route path="/user" element={< User />} />
+      
       </Route>
     </Routes>
   );
