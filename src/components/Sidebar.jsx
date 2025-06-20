@@ -26,7 +26,7 @@ const menuItems = [
   { name: 'Artikel', icon: <MdNewspaper />, path: '/laporan' },
   { name: 'Testimoni', icon: <MdOutlineRateReview />, path: '/laporan' },
   { name: 'Penjualan', icon: <FaClipboardList />, path: '/penjualan' },
-  { name: 'Pelanggan', icon: <BsFillPeopleFill />, path: '/pelanggan' },
+  { name: 'Pelanggan', icon: <BsFillPeopleFill />, path: '/user' },
   { name: 'Mitra', icon: <AiFillCar />, path: '/mitra' },
   { name: 'Pemesanan', icon: <BsTicketPerforatedFill />, path: '/pemesanan_tiket' },
   { name: 'Feedback Pelanggan', icon: <VscFeedback />, path: '/feedback_pelanggan' },
