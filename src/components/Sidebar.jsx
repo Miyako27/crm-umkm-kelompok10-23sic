@@ -30,7 +30,7 @@ const menuItems = [
   { name: 'Mitra', icon: <AiFillCar />, path: '/mitra' },
   { name: 'Pemesanan', icon: <BsTicketPerforatedFill />, path: '/pemesanan_tiket' },
   { name: 'Feedback Pelanggan', icon: <VscFeedback />, path: '/feedback_pelanggan' },
-  { name: 'FAQ', icon: <FaQuestionCircle />, path: '/faq' },
+  { name: 'FAQ', icon: <FaQuestionCircle />, path: '/faqadmin' },
 ];
 
 const accountItems = [
