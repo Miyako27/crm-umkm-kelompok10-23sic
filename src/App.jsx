@@ -34,7 +34,7 @@ import PaketWisataAdmin from './pages/PaketWisataAdmin';
 function App() {
   return (
     <Routes>
-      {/* Login tidak perlu layout */}
+      {/* Tidak perlu layout */}
       <Route path="/login" element={<Login />} />
       <Route path="/registrasi" element={< Registrasi />} />
 
