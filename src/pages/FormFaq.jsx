@@ -67,7 +67,7 @@ const FormFaq = ({ addFAQ, updateFAQ, editingFAQ }) => {
         <div className="pt-2">
           <button
             type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md"
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md"
           >
             {editingFAQ ? 'Perbarui' : 'Simpan'}
           </button>
