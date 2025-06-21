@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,143 +9,188 @@ import {
   Title,
   Tooltip,
   Legend,
+  ArcElement,
 } from "chart.js";
-
-import { Bar, Line } from "react-chartjs-2";
+import { Bar, Line, Pie } from "react-chartjs-2";
 
 ChartJS.register(
   CategoryScale,
-
   LinearScale,
-
   BarElement,
-
   LineElement,
-
   PointElement,
-
   Title,
-
   Tooltip,
-
-  Legend
+  Legend,
+  ArcElement
 );
+
 const Dashboard = () => {
-  // Data summary cards
-  const stats = [
-    {
-      label: "Pendapatan Hari Ini",
-      value: "$53,000",
-      percent: "+55%",
-      color: "green",
-    },
-    {
-      label: "Pengguna Hari Ini",
-      value: "2,300",
-      percent: "+3%",
-      color: "blue",
-    },
-    { label: "Klien Baru", value: "+3,462", percent: "-2%", color: "red" },
-    { label: "Penjualan", value: "$103,430", percent: "+5%", color: "purple" },
+  const keyStats = [
+    { label: "Total Pengguna", value: "100", color: "sky" },
+    { label: "Total Pemesanan", value: "220", color: "green" },
+    { label: "Total Pendapatan", value: "Rp 1,2M", color: "violet" },
+    { label: "Jadwal Terkonfirmasi", value: "220", color: "amber" },
+    { label: "Kepuasan Pelanggan", value: "92%", color: "emerald" },
   ];
 
-  // Data untuk grafik Penjualan Bulanan (Bar Chart)
-  const barData = {
-    labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "Mei",
-      "Jun",
-      "Jul",
-      "Agu",
-      "Sep",
-      "Okt",
-      "Nov",
-      "Des",
-    ],
+  const bookingLine = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"],
     datasets: [
       {
-        label: "Penjualan (dalam ribuan $)",
-        data: [12, 19, 14, 17, 22, 30, 28, 26, 32, 35, 40, 45],
-        backgroundColor: "rgba(99, 102, 241, 0.7)", // purple-600
-      },
-    ],
-  };
-
-  const barOptions = {
-    responsive: true,
-    plugins: {
-      legend: { position: "top" },
-      title: { display: true, text: "Penjualan Bulanan Tahun Ini" },
-    },
-  };
-
-  // Data untuk grafik Pertumbuhan Pelanggan (Line Chart)
-  const lineData = {
-    labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "Mei",
-      "Jun",
-      "Jul",
-      "Agu",
-      "Sep",
-      "Okt",
-      "Nov",
-      "Des",
-    ],
-    datasets: [
-      {
-        label: "Jumlah Pelanggan",
-        data: [50, 75, 120, 180, 220, 260, 300, 350, 400, 430, 460, 500],
-        borderColor: "rgba(59, 130, 246, 1)", // blue-500
-        backgroundColor: "rgba(59, 130, 246, 0.3)",
+        label: "Booking Bulanan",
+        data: [700, 900, 850, 950, 1200, 1500, 1600, 1550, 1400, 1700, 1800, 2000],
         fill: true,
-        tension: 0.3,
-        pointRadius: 4,
+        borderColor: "#3b82f6",
+        backgroundColor: "rgba(59, 130, 246, 0.3)",
+        tension: 0.4,
       },
     ],
   };
 
-  const lineOptions = {
-    responsive: true,
-    plugins: {
-      legend: { position: "top" },
-      title: { display: true, text: "Pertumbuhan Pelanggan Tahun Ini" },
-    },
+  const funnelData = {
+    labels: ["Selesai", "Bayar", "Tertarik", "Pengunjung"],
+    datasets: [
+      {
+        label: "Funnel Tahapan Pemesanan",
+        data: [2300, 2500, 5000, 10000],
+        backgroundColor: ["#1d4ed8", "#3b82f6", "#60a5fa", "#93c5fd"],
+        barPercentage: 0.5,
+        categoryPercentage: 1.0,
+      },
+    ],
   };
+
+  const destinationForecast = {
+    labels: ["Bali", "Yogyakarta", "Lombok", "Labuan Bajo", "Raja Ampat"],
+    datasets: [
+      {
+        label: "Musim Panas",
+        data: [1500, 800, 900, 1000, 1300],
+        backgroundColor: "#facc15",
+      },
+      {
+        label: "Musim Hujan",
+        data: [1000, 1200, 700, 900, 1100],
+        backgroundColor: "#3b82f6",
+      },
+    ],
+  };
+
+  const destinationAssociation = {
+    labels: ["Bali - Lombok", "Yogyakarta - Bali", "Lombok - Labuan Bajo", "Bali - Raja Ampat"],
+    datasets: [
+      {
+        label: "Frekuensi Bersamaan",
+        data: [420, 310, 275, 190],
+        backgroundColor: "#f472b6",
+      },
+    ],
+  };
+
+  const popularDestinations = {
+    labels: ["Bali", "Yogyakarta", "Lombok", "Labuan Bajo", "Raja Ampat"],
+    datasets: [
+      {
+        label: "Jumlah Kunjungan",
+        data: [1200, 950, 850, 770, 680],
+        backgroundColor: [
+          "#60a5fa",
+          "#818cf8",
+          "#34d399",
+          "#fbbf24",
+          "#f87171",
+        ],
+      },
+    ],
+  };
+
+  const paymentMethods = {
+    labels: ["Transfer Bank", "E-Wallet", "Kartu Kredit"],
+    datasets: [
+      {
+        data: [5000, 3000, 1800],
+        backgroundColor: ["#0284c7", "#10b981", "#eab308"],
+      },
+    ],
+  };
+
+  const customerSegments = {
+    labels: ["Mahasiswa", "Karyawan", "Keluarga", "Wisatawan Asing"],
+    datasets: [
+      {
+        label: "Segmentasi",
+        data: [2500, 3400, 2100, 1600],
+        backgroundColor: ["#8b5cf6", "#6366f1", "#a78bfa", "#c4b5fd"],
+      },
+    ],
+  };
+
+  const leadSources = {
+    labels: ["Instagram", "Google Ads", "Referral", "TikTok"],
+    datasets: [
+      {
+        label: "Jumlah Leads",
+        data: [1300, 1100, 900, 750],
+        backgroundColor: ["#f43f5e", "#f87171", "#fb7185", "#fda4af"],
+      },
+    ],
+  };
+
+  const chartOptions = (title, horizontal = false) => ({
+    indexAxis: horizontal ? 'y' : 'x',
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: false,
+    resizeDelay: 200,
+    plugins: {
+      title: { display: true, text: title },
+    },
+  });
 
   return (
     <div className="p-6 space-y-8">
-      {/* Statistik utama */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map(({ label, value, percent, color }) => (
-          <div key={label} className="bg-white rounded-xl shadow p-5">
-            <p className="text-sm text-gray-500">{label}</p>
-            <h2
-              className={`text-2xl font-bold text-${color}-600 flex items-center gap-2`}
-            >
-              {value}
-              <span className={`text-xs font-semibold text-${color}-500`}>
-                {percent}
-              </span>
-            </h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+        {keyStats.map(({ label, value, color }) => (
+          <div key={label} className="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-md p-5 hover:shadow-lg transition duration-300 ease-in-out">
+            <p className="text-sm text-gray-500 font-medium mb-1">{label}</p>
+            <h2 className={`text-2xl font-bold text-${color}-600`}>{value}</h2>
           </div>
         ))}
       </div>
 
-      {/* Grafik Penjualan Bulanan */}
-      <div className="bg-white rounded-xl shadow p-6">
-        <Bar options={barOptions} data={barData} />
-      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white rounded-xl shadow p-6 min-h-[350px]">
+          <Line data={bookingLine} options={chartOptions("Booking per Bulan")} />
+        </div>
 
-      {/* Grafik Pertumbuhan Pelanggan */}
-      <div className="bg-white rounded-xl shadow p-6">
-        <Line options={lineOptions} data={lineData} />
+        <div className="bg-white rounded-xl shadow p-6 min-h-[350px]">
+          <Bar data={funnelData} options={chartOptions("Funnel Tahapan Pemesanan", true)} />
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-6 min-h-[350px]">
+          <Bar data={customerSegments} options={chartOptions("Segmentasi Pelanggan")} />
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-6 min-h-[350px]">
+          <Bar data={leadSources} options={chartOptions("Sumber Leads / Referral")} />
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-6 min-h-[350px]">
+          <Bar data={popularDestinations} options={chartOptions("Destinasi Terpopuler")} />
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-6 min-h-[350px]">
+          <Pie data={paymentMethods} options={chartOptions("Metode Pembayaran Terbanyak")} />
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-6 min-h-[350px]">
+          <Bar data={destinationForecast} options={chartOptions("Prediksi Tren Destinasi per Musim")} />
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-6 min-h-[350px]">
+          <Bar data={destinationAssociation} options={chartOptions("Asosiasi Destinasi")} />
+        </div>
       </div>
     </div>
   );

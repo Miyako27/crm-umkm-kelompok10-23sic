@@ -5,12 +5,16 @@ import CustomerLayout from './customers/components/CustomerLayout'; // Tambahkan
 // Admin Pages
 import Dashboard from './pages/Dashboard';
 import SalesManagement from './pages/SalesManagement';
-import CustomerManagement from './pages/CustomerManagement';
-import Armada from './pages/Armada';
+import Mitra from './pages/Mitra';
 import PemesananTiket from './pages/PemesananTiket';
-import DataFeedback from './pages/FeedbackPelanggan';
-import FormSupirArmada from './pages/FormSupirArmada';
+import TestimoniAdmin from './pages/TestimoniAdmin';
 import FAQ from './pages/FAQ';
+import ArtikelAdmin from './pages/ArtikelAdmin';
+import FormArtikel from './pages/FormArtikel';
+import FormFaq from './pages/FormFaq';
+import FAQAdmin from './pages/FAQAdmin';
+import User from './pages/User';
+
 
 // Customer Pages
 import Home from './customers/pages/Home';
@@ -23,18 +27,17 @@ import Testimoni from './customers/pages/Testimoni';
 import FaqCustomer from './customers/pages/FaqCustomer';
 import Order from './customers/pages/Order';
 import Promo from './customers/pages/Promo';
-import ArtikelAdmin from './pages/ArtikelAdmin';
-import FormArtikel from './pages/FormArtikel';
-import FormFaq from './pages/FormFaq';
-import FAQAdmin from './pages/FAQAdmin';
-import UserForm from './pages/UserForm';
-import User from './pages/User';
+import Registrasi from './customers/pages/Registrasi';
+import PaketWisataAdmin from './pages/PaketWisataAdmin';
+
+
 
 function App() {
   return (
     <Routes>
       {/* Login tidak perlu layout */}
       <Route path="/login" element={<Login />} />
+      <Route path="/registrasi" element={< Registrasi />} />
 
       {/* Customer Routes */}
       <Route element={<CustomerLayout />}>
@@ -53,18 +56,16 @@ function App() {
       <Route element={<MainLayout />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/penjualan" element={<SalesManagement />} />
-        <Route path="/pelanggan" element={<CustomerManagement />} />
         <Route path="/faq" element={<FAQ />} />
-        <Route path="/mitra" element={<Armada />} />
-        <Route path="/armada/form-armada" element={<FormSupirArmada />} />
+        <Route path="/mitra" element={<Mitra />} />
         <Route path="/pemesanan_tiket" element={<PemesananTiket />} />
-        <Route path="/feedback_pelanggan" element={<DataFeedback />} />
         <Route path="/artikel-list" element={< FormArtikel />} />
         <Route path="/artikel_admin" element={< ArtikelAdmin />} />
         <Route path="/faq-list" element={< FormFaq />} />
         <Route path="/faqadmin" element={< FAQAdmin />} />
-        <Route path="/user-list" element={< UserForm />} />
-        <Route path="/user" element={< User />} />
+        <Route path="/pelanggan" element={< User />} />
+        <Route path="/testimoni-admin" element={< TestimoniAdmin />} />
+        <Route path="/produk/paket-wisata" element={< PaketWisataAdmin />} />
       </Route>
     </Routes>
   );

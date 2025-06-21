@@ -1,26 +1,26 @@
-import { Search, User } from 'lucide-react'
+import { Search, User } from 'lucide-react';
 
 const Header = () => {
-    return (
-        <header className="flex justify-between items-center px-6 py-4 bg-white shadow-sm border-b sticky top-0 z-10">
+  return (
+    <header className="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-white to-gray-50 shadow-sm border-b sticky top-0 z-10">
+      
+      {/* Search - kiri */}
+      <div className="relative w-full max-w-xs">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <input
+          type="text"
+          placeholder="Cari sesuatu..."
+          className="w-full pl-10 pr-4 py-2 text-sm rounded-full border border-gray-300 focus:ring-2 focus:ring-orange-400 focus:outline-none transition"
+        />
+      </div>
 
-            {/* Search - di kiri */}
-            <div className="relative">
-                <input
-                    type="text"
-                    placeholder="Type here..."
-                    className="px-4 py-2 pl-10 text-sm border rounded-full focus:outline-none"
-                />
-                <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
-            </div>
+      {/* Sign In - kanan */}
+      <div className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-orange-500 transition cursor-pointer">
+        <User className="w-4 h-4" />
+        Admin
+      </div>
+    </header>
+  );
+};
 
-            {/* Sign In - di kanan */}
-            <div className="flex items-center gap-2 text-sm cursor-pointer text-gray-700 hover:text-purple-700">
-                <User className="w-4 h-4" />
-                Sign In
-            </div>
-        </header>
-    )
-}
-
-export default Header
+export default Header;

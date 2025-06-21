@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const FormArtikel = ({ addArtikel, updateArtikel, editingArtikel }) => {
+export default function FormArtikel({ addArtikel, updateArtikel, editingArtikel }) {
   const [form, setForm] = useState({
     judul: '',
     slug: '',
@@ -11,8 +11,9 @@ const FormArtikel = ({ addArtikel, updateArtikel, editingArtikel }) => {
   });
 
   useEffect(() => {
-    if (editingArtikel) setForm(editingArtikel);
-    else {
+    if (editingArtikel) {
+      setForm(editingArtikel);
+    } else {
       setForm({
         judul: '',
         slug: '',
@@ -23,6 +24,11 @@ const FormArtikel = ({ addArtikel, updateArtikel, editingArtikel }) => {
       });
     }
   }, [editingArtikel]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,62 +47,58 @@ const FormArtikel = ({ addArtikel, updateArtikel, editingArtikel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded shadow-md max-w-2xl mx-auto">
-      <h2 className="text-2xl font-bold text-orange-600 mb-2">
-        {editingArtikel ? 'Edit Artikel' : 'Tambah Artikel'}
-      </h2>
+    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-md border border-gray-200 max-w-4xl mx-auto">
+      <h2 className="text-lg font-semibold text-gray-700 mb-4">{editingArtikel ? 'Edit Artikel' : 'Tambah Artikel'}</h2>
 
-      <input
-        type="text"
-        placeholder="Judul"
-        className="w-full p-3 border rounded"
-        value={form.judul}
-        onChange={e => setForm({ ...form, judul: e.target.value })}
-      />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {[{ label: 'Judul', name: 'judul' },
+          { label: 'Slug (misal: wisata-bali)', name: 'slug' },
+          { label: 'Link Gambar (URL)', name: 'gambar' },
+          { label: 'Penulis', name: 'penulis' }].map(({ label, name }) => (
+          <div key={name}>
+            <label className="block text-sm font-medium mb-1">{label}</label>
+            <input
+              type="text"
+              name={name}
+              value={form[name]}
+              onChange={handleChange}
+              placeholder={label}
+              className="w-full border border-gray-300 rounded-md p-2"
+            />
+          </div>
+        ))}
 
-      <input
-        type="text"
-        placeholder="Slug (misal: wisata-bali-2025)"
-        className="w-full p-3 border rounded"
-        value={form.slug}
-        onChange={e => setForm({ ...form, slug: e.target.value })}
-      />
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium mb-1">Tanggal Terbit</label>
+          <input
+            type="date"
+            name="tanggal_terbit"
+            value={form.tanggal_terbit}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded-md p-2"
+          />
+        </div>
 
-      <input
-        type="text"
-        placeholder="Link Gambar (URL)"
-        className="w-full p-3 border rounded"
-        value={form.gambar}
-        onChange={e => setForm({ ...form, gambar: e.target.value })}
-      />
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium mb-1">Isi Artikel</label>
+          <textarea
+            name="isi"
+            value={form.isi}
+            onChange={handleChange}
+            placeholder="Isi Artikel"
+            className="w-full border border-gray-300 rounded-md p-2 h-40 resize-none"
+          />
+        </div>
+      </div>
 
-      <textarea
-        placeholder="Isi Artikel"
-        className="w-full p-3 border rounded h-32 resize-none"
-        value={form.isi}
-        onChange={e => setForm({ ...form, isi: e.target.value })}
-      />
-
-      <input
-        type="text"
-        placeholder="Penulis"
-        className="w-full p-3 border rounded"
-        value={form.penulis}
-        onChange={e => setForm({ ...form, penulis: e.target.value })}
-      />
-
-      <input
-        type="date"
-        className="w-full p-3 border rounded"
-        value={form.tanggal_terbit}
-        onChange={e => setForm({ ...form, tanggal_terbit: e.target.value })}
-      />
-
-      <button type="submit" className="bg-orange-600 text-white px-6 py-3 rounded hover:bg-orange-700 w-full">
-        {editingArtikel ? 'Perbarui Artikel' : 'Simpan Artikel'}
-      </button>
+      <div className="mt-6">
+        <button
+          type="submit"
+          className="w-full bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-semibold"
+        >
+          {editingArtikel ? 'Perbarui' : 'Simpan'}
+        </button>
+      </div>
     </form>
   );
-};
-
-export default FormArtikel;
+}

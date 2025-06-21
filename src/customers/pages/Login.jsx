@@ -29,7 +29,7 @@ export default function Login() {
                 {/* Logo MJM */}
                 <div className="flex justify-center mb-6">
                     <img
-                        src="https://www.mutiarasiaktravel.co.id/wp-content/uploads/2022/11/logo-mjm-e1668921353660.png"
+                        src="/images/logoo.png"
                         alt="Logo MJM"
                         className="h-12"
                     />
@@ -94,7 +94,7 @@ export default function Login() {
 
                     <p className="mt-4 text-center text-sm text-[#797A7C]">
                         Don’t have an account?{' '}
-                        <a href="#" className="text-[#5A8CFF] underline">
+                        <a href="/registrasi" className="text-[#5A8CFF] underline">
                             Create Account
                         </a>
                     </p>
