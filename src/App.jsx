@@ -6,7 +6,6 @@ import CustomerLayout from './customers/components/CustomerLayout'; // Tambahkan
 import Dashboard from './pages/Dashboard';
 import SalesManagement from './pages/SalesManagement';
 import Mitra from './pages/Mitra';
-import PemesananTiket from './pages/PemesananTiket';
 import TestimoniAdmin from './pages/TestimoniAdmin';
 import FAQ from './pages/FAQ';
 import ArtikelAdmin from './pages/ArtikelAdmin';
@@ -58,7 +57,6 @@ function App() {
         <Route path="/penjualan" element={<SalesManagement />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/mitra" element={<Mitra />} />
-        <Route path="/pemesanan_tiket" element={<PemesananTiket />} />
         <Route path="/artikel-list" element={< FormArtikel />} />
         <Route path="/artikel_admin" element={< ArtikelAdmin />} />
         <Route path="/faq-list" element={< FormFaq />} />

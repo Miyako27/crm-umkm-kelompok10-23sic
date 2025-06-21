@@ -39,7 +39,6 @@ const Sidebar = () => {
     { name: 'Penjualan', icon: <ClipboardList size={20} />, path: '/penjualan' },
     { name: 'Pelanggan', icon: <Users size={20} />, path: '/pelanggan' },
     { name: 'Mitra', icon: <Car size={20} />, path: '/mitra' },
-    { name: 'Pemesanan', icon: <Ticket size={20} />, path: '/pemesanan_tiket' },
     { name: 'FAQ', icon: <HelpCircle size={20} />, path: '/faqadmin' },
   ];
 
