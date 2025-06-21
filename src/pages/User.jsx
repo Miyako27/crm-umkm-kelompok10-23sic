@@ -47,7 +47,7 @@ function User() {
   return (
     <div className="w-full max-w-7xl mx-auto p-6">
       {/* Breadcrumb */}
-      <div className="py-4 border-b border-gray-200 mb-8">
+      <div className="py-4 mb-8">
         <div className="max-w-7xl mx-auto px-5 flex flex-col space-y-1">
           <h2 className="text-3xl font-extrabold text-gray-800">Data Pelanggan</h2>
           <div className="text-sm text-gray-600">
