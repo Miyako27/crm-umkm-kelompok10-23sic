@@ -15,13 +15,13 @@ const Order = () => {
         <div className="max-w-7xl mx-auto px-5 flex flex-wrap md:flex-nowrap items-center justify-between gap-5">
           <div className="flex flex-col space-y-1">
             <h2 className="text-3xl font-extrabold text-gray-800">
-              Order
+              Order Paket Wisata
             </h2>
             <div className="text-sm text-gray-600">
               <Link to="/" className="hover:underline text-orange-600 font-semibold">
                 Beranda
               </Link>{" "}
-              / <span className="text-gray-700">Order</span>
+              / <span className="text-gray-700">Order Paket Wisata</span>
             </div>
           </div>
 

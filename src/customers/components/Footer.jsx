@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="mt-8 bg-gray-900 text-gray-200">
+    <footer className="bg-gray-900 text-gray-200">
       <div className="container mx-auto max-w-screen-xl px-5 py-12 flex flex-col md:flex-row justify-between gap-8">
         {/* Logo dan Deskripsi */}
         <div className="md:w-1/3">
