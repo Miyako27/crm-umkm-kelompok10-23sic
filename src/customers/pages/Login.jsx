@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -20,10 +20,13 @@ export default function Login() {
     );
 
     if (foundAccount) {
-      localStorage.setItem("user_login", JSON.stringify({
-        email: foundAccount.email,
-        role: foundAccount.role
-      }));
+      localStorage.setItem(
+        "user_login",
+        JSON.stringify({
+          email: foundAccount.email,
+          role: foundAccount.role,
+        })
+      );
 
       if (foundAccount.role === "admin") {
         navigate("/dashboard");
@@ -84,6 +87,13 @@ export default function Login() {
             Login
           </button>
         </form>
+
+        <p className="mt-4 text-center text-sm text-gray-600">
+          Belum punya akun?{" "}
+          <Link to="/registrasi" className="text-orange-500 hover:underline">
+            Daftar di sini
+          </Link>
+        </p>
       </div>
     </div>
   );

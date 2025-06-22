@@ -137,7 +137,7 @@ export default function FormTravel({ addTravel, updateTravel, editingTravel }) {
       <div className="mt-6">
         <button
           type="submit"
-          className="w-full bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-md font-semibold"
+          className="w-full bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-semibold"
         >
           {editingTravel ? 'Perbarui' : 'Simpan'}
         </button>
