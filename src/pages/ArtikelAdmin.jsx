@@ -28,7 +28,7 @@ function ArtikelAdmin() {
     const { error } = await supabase
       .from('artikel')
       .update(updatedArtikel)
-      .eq('id', updatedArtikel.id);
+      .eq('id_artikel', updatedArtikel.id_artikel);
 
     if (error) console.error(error);
     else {
@@ -37,11 +37,11 @@ function ArtikelAdmin() {
     }
   };
 
-  const deleteArtikel = async (id) => {
+  const deleteArtikel = async (id_artikel) => {
     const { error } = await supabase
       .from('artikel')
       .delete()
-      .eq('id', id);
+      .eq('id_artikel', id_artikel);
 
     if (error) console.error(error);
     else fetchArtikel();
@@ -69,14 +69,16 @@ function ArtikelAdmin() {
         </div>
       </div>
 
+      {/* Form */}
       <div className="max-w-5xl mx-auto">
         <FormArtikel
           addArtikel={addArtikel}
           updateArtikel={updateArtikel}
-          editingArtikel={editingArtikel}
+          editingArtikel={artikel.find(a => a.id_artikel === editingArtikel) || null}
         />
       </div>
 
+      {/* Table */}
       <div className="mt-10 overflow-x-auto">
         <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
           <table className="min-w-full divide-y divide-gray-200">
@@ -91,21 +93,21 @@ function ArtikelAdmin() {
             </thead>
             <tbody className="bg-white divide-y divide-gray-100">
               {artikel.map((a) => (
-                <tr key={a.id} className="hover:bg-gray-50">
+                <tr key={a.id_artikel} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-gray-800">{a.judul}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-gray-800">{a.slug}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-gray-800">{a.penulis}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-gray-800">{a.tanggal_terbit}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-center">
                     <button
-                      onClick={() => setEditingArtikel(a)}
+                      onClick={() => setEditingArtikel(a.id_artikel)}
                       className="text-blue-600 hover:text-blue-800 mx-2 text-lg"
                       aria-label="Edit"
                     >
                       <FaEdit />
                     </button>
                     <button
-                      onClick={() => deleteArtikel(a.id)}
+                      onClick={() => deleteArtikel(a.id_artikel)}
                       className="text-red-600 hover:text-red-800 mx-2 text-lg"
                       aria-label="Hapus"
                     >
@@ -114,6 +116,13 @@ function ArtikelAdmin() {
                   </td>
                 </tr>
               ))}
+              {artikel.length === 0 && (
+                <tr>
+                  <td colSpan="5" className="text-center py-6 text-gray-500">
+                    Belum ada artikel.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

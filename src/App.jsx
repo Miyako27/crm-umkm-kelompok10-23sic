@@ -30,6 +30,7 @@ import Registrasi from './customers/pages/Registrasi';
 import PaketWisataAdmin from './pages/PaketWisataAdmin';
 import TravelAdmin from './pages/TravelAdmin';
 import ProfilCustomer from './customers/pages/ProfilCustomer';
+import TiketPesawat from './pages/TiketPesawatAdmin';
 
 
 
@@ -68,6 +69,7 @@ function App() {
         <Route path="/testimoni-admin" element={< TestimoniAdmin />} />
         <Route path="/produk/paket-wisata" element={< PaketWisataAdmin />} />
         <Route path="/produk/travel" element={< TravelAdmin />} />
+        <Route path="/produk/tiket-pesawat" element={< TiketPesawat />} />
       </Route>
     </Routes>
   );
