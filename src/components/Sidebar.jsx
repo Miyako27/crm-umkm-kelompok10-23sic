@@ -7,18 +7,20 @@ import {
   ClipboardList,
   Users,
   Car,
-  Ticket,
   HelpCircle,
   Settings,
   ChevronDown,
-  ChevronRight
+  ChevronRight,
+  LogOut
 } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 const Sidebar = () => {
   const location = useLocation();
-  const [openProduk, setOpenProduk] = useState(true); // default terbuka
+  const navigate = useNavigate();
+  const [openProduk, setOpenProduk] = useState(true);
+
   const isActive = (path) => location.pathname === path;
 
   const menuItems = [
@@ -42,9 +44,11 @@ const Sidebar = () => {
     { name: 'FAQ', icon: <HelpCircle size={20} />, path: '/faqadmin' },
   ];
 
-  const accountItems = [
-    { name: 'Pengaturan Akun', icon: <Settings size={20} />, path: '/akun' },
-  ];
+  const handleLogout = () => {
+    localStorage.removeItem("user_login");
+    window.dispatchEvent(new Event("userLogout"));
+    navigate("/");
+  };
 
   return (
     <aside className="bg-white w-64 h-screen shadow-lg px-4 py-6 hidden md:block overflow-y-auto">
@@ -105,23 +109,15 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      {/* <div className="mt-8 text-xs font-semibold text-gray-500">AKUN</div>
-      <nav className="mt-2 space-y-1">
-        {accountItems.map((item) => (
-          <Link
-            key={item.name}
-            to={item.path}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-orange-100 transition ${
-              isActive(item.path)
-                ? 'bg-orange-200 text-orange-800 font-semibold'
-                : 'text-gray-700'
-            }`}
-          >
-            <span className="w-5 h-5">{item.icon}</span>
-            {item.name}
-          </Link>
-        ))}
-      </nav> */}
+      <div className="mt-8 pt-6 border-t space-y-1">
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-3 w-full px-3 py-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition"
+        >
+          <LogOut size={20} />
+          Logout
+        </button>
+      </div>
     </aside>
   );
 };
