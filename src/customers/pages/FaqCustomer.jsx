@@ -68,41 +68,46 @@ const FaqCustomer = () => {
       </div>
 
       {/* FAQ Section */}
-      <main className="min-h-screen px-6 pb-12 flex flex-col item-center">
-        {/* Header with Orange Line Above */}
-        <div className="mb-10 px-18">
-          <div className="w-16 h-1 bg-orange-600 mb-3"></div>
-          <h2 className="text-xl font-semibold text-left text-gray-700 leading-relaxed">
-            Punya pertanyaan seputar paket wisata kami? Temukan jawabannya di sini!
-          </h2>
-        </div>
-
-        <div className="flex flex-col md:flex-row items-start gap-8 w-full max-w-6xl">
-          {/* Gambar Kiri */}
-          <div className="md:w-1/2 w-full flex justify-center">
-            <img 
-              src="images/FAQ.png" 
-              alt="Gambar Travel" 
-              className="w-full max-w-sm object-cover" 
-            />
+      <main className="min-h-screen px-6 pb-12 flex flex-col items-center">
+        <div className="max-w-7xl mx-auto w-full">
+          {/* Header with Orange Line Above */}
+          <div className="mb-10">
+            <div className="w-16 h-1 bg-orange-600 mb-3"></div>
+            <h2 className="text-xl font-semibold text-left text-gray-700 leading-relaxed">
+              Punya pertanyaan seputar paket wisata kami? Temukan jawabannya di sini!
+            </h2>
           </div>
 
-          {/* FAQ Kanan */}
-          <div className="md:w-1/2 w-full space-y-4">
-            {faqData.map((faq, index) => (
-              <div key={index} className="bg-white border border-[#FF6900] rounded-xl shadow-md overflow-hidden transition-all">
-                <button
-                  onClick={() => toggleFAQ(index)}
-                  className="w-full text-left px-5 py-4 bg-[#FF6900] text-white font-semibold flex justify-between items-center hover:bg-orange-600 transition-colors"
-                >
-                  {faq.question}
-                  {openIndex === index ? <FiChevronUp size={20} /> : <FiChevronDown size={20} />}
-                </button>
-                {openIndex === index && (
-                  <div className="px-5 py-4 bg-orange-100 text-gray-700 text-sm">{faq.answer}</div>
-                )}
+          {/* Mengatur agar gambar dan FAQ berada di tengah relatif terhadap kolom masing-masing */}
+          <div className="flex flex-col md:flex-row items-center gap-8 w-full"> {/* items-center agar vertikalnya sama rata */}
+            {/* Gambar Kiri - Centered in its half */}
+            <div className="md:w-1/2 w-full flex justify-center"> {/* Hapus md:justify-end */}
+              <img
+                src="images/FAQ.png"
+                alt="Gambar Travel"
+                className="w-full max-w-sm object-cover"
+              />
+            </div>
+
+            {/* FAQ Kanan - Centered in its half, but still left-aligned for content */}
+            <div className="md:w-1/2 w-full flex flex-col items-center"> {/* Tambahkan flex flex-col items-center */}
+              <div className="w-full space-y-4 max-w-lg"> {/* Tambahkan max-w-lg untuk membatasi lebar FAQ agar bisa di tengah */}
+                {faqData.map((faq, index) => (
+                  <div key={index} className="bg-white border border-[#FF6900] rounded-xl shadow-md overflow-hidden transition-all">
+                    <button
+                      onClick={() => toggleFAQ(index)}
+                      className="w-full text-left px-5 py-4 bg-[#FF6900] text-white font-semibold flex justify-between items-center hover:bg-orange-600 transition-colors"
+                    >
+                      {faq.question}
+                      {openIndex === index ? <FiChevronUp size={20} /> : <FiChevronDown size={20} />}
+                    </button>
+                    {openIndex === index && (
+                      <div className="px-5 py-4 bg-orange-100 text-gray-700 text-sm">{faq.answer}</div>
+                    )}
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </main>
