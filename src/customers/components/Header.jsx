@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
 const navItems = [
   { label: 'Beranda', path: '/' },
-  { label: 'Order', path: '/order-customer' },
   { label: 'Promo', path: '/promo' },
   { label: 'Artikel', path: '/artikel' },
   { label: 'Testimoni', path: '/testimoni' },
@@ -13,7 +12,9 @@ const navItems = [
 
 export default function Header() {
   const [user, setUser] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation(); // untuk deteksi URL
 
   useEffect(() => {
     const updateUser = () => {
@@ -24,8 +25,16 @@ export default function Header() {
     window.addEventListener("userLogout", updateUser);
     updateUser();
 
+    const handleClickOutside = (e) => {
+      if (!e.target.closest(".dropdown-order")) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+
     return () => {
       window.removeEventListener("userLogout", updateUser);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
@@ -62,6 +71,9 @@ export default function Header() {
     );
   };
 
+  // Cek apakah halaman saat ini termasuk dalam menu Order
+  const isOrderActive = location.pathname.startsWith("/order-customer");
+
   return (
     <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
       <div className="container mx-auto max-w-screen-xl flex justify-between items-center px-5 min-h-[80px]">
@@ -71,7 +83,7 @@ export default function Header() {
 
         <div className="flex items-center space-x-6">
           <nav>
-            <ul className="flex list-none m-0 p-0 space-x-6">
+            <ul className="flex list-none m-0 p-0 space-x-6 relative">
               {navItems.map(({ label, path }) => (
                 <li key={label}>
                   <NavLink
@@ -86,6 +98,75 @@ export default function Header() {
                   </NavLink>
                 </li>
               ))}
+
+              {/* Dropdown Menu Order */}
+              <li className="relative dropdown-order">
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className={`font-bold text-lg transition-colors duration-300 focus:outline-none flex items-center gap-1 ${
+                    isOrderActive ? 'text-orange-500' : 'text-gray-800 hover:text-orange-500'
+                  }`}
+                  type="button"
+                >
+                  Order
+                  <svg
+                    className={`w-4 h-4 transition-transform duration-300 ${
+                      isDropdownOpen ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </button>
+
+                {isDropdownOpen && (
+                  <ul className="absolute top-full left-0 bg-white border border-gray-200 shadow-lg rounded-md mt-2 z-50 min-w-[160px]">
+                    <li>
+                      <NavLink
+                        to="/order-customer/travel"
+                        className={({ isActive }) =>
+                          `block px-4 py-2 transition-colors duration-200 ${
+                            isActive ? 'text-orange-500 font-semibold' : 'text-gray-700 hover:bg-orange-100'
+                          }`
+                        }
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        Travel
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        to="/order-customer/tiket-pesawat"
+                        className={({ isActive }) =>
+                          `block px-4 py-2 transition-colors duration-200 ${
+                            isActive ? 'text-orange-500 font-semibold' : 'text-gray-700 hover:bg-orange-100'
+                          }`
+                        }
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        Tiket Pesawat
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        to="/order-customer/paket-wisata"
+                        className={({ isActive }) =>
+                          `block px-4 py-2 transition-colors duration-200 ${
+                            isActive ? 'text-orange-500 font-semibold' : 'text-gray-700 hover:bg-orange-100'
+                          }`
+                        }
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        Paket Wisata
+                      </NavLink>
+                    </li>
+                  </ul>
+                )}
+              </li>
             </ul>
           </nav>
           {renderRightButton()}

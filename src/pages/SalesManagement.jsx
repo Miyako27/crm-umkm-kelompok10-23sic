@@ -1,263 +1,116 @@
-import React, { useState } from "react";
+import { useEffect, useState } from 'react';
+import { supabase } from '../supabase';
+import { Link } from 'react-router-dom';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
-const dummyCustomers = [
-    { id: 1, name: "Budi Santoso" },
-    { id: 2, name: "Siti Aminah" },
-    { id: 3, name: "Andi Wijaya" },
-];
+function PenjualanTiketAdmin() {
+  const [penjualan, setPenjualan] = useState([]);
+  const [editing, setEditing] = useState(null);
 
-const initialSales = [
-    {
-        id: 1,
-        invoice: "INV-001",
-        customerId: 1,
-        date: "2025-05-10",
-        total: 1500000,
-        status: "Lunas",
-    },
-    {
-        id: 2,
-        invoice: "INV-002",
-        customerId: 2,
-        date: "2025-05-11",
-        total: 250000,
-        status: "Belum Lunas",
-    },
-];
+  const fetchPenjualan = async () => {
+    const { data, error } = await supabase
+      .from('PenjualanTiket')
+      .select(`
+        *,
+        tiketPesawat: tiket_id (
+          id, maskapai, kode_penerbangan
+        )
+      `)
+      .order('tanggal_transaksi', { ascending: false });
 
-function formatCurrency(num) {
-    return new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-    }).format(num);
-}
+    if (error) console.error(error);
+    else setPenjualan(data);
+  };
 
-export default function SalesManagement() {
-    const [sales, setSales] = useState(initialSales);
-    const [showForm, setShowForm] = useState(false);
-    const [formData, setFormData] = useState({
-        invoice: "",
-        customerId: "",
-        date: "",
-        total: "",
-        status: "Belum Lunas",
-    });
+  const deletePenjualan = async (id) => {
+    const { error } = await supabase
+      .from('PenjualanTiket')
+      .delete()
+      .eq('id', id);
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
+    if (error) console.error(error);
+    else fetchPenjualan();
+  };
 
-    const handleAddSale = () => {
-        if (
-            !formData.invoice ||
-            !formData.customerId ||
-            !formData.date ||
-            !formData.total
-        ) {
-            alert("Semua field wajib diisi!");
-            return;
-        }
-        const newSale = {
-            id: sales.length + 1,
-            invoice: formData.invoice,
-            customerId: Number(formData.customerId),
-            date: formData.date,
-            total: Number(formData.total),
-            status: formData.status,
-        };
-        setSales([...sales, newSale]);
-        setFormData({
-            invoice: "",
-            customerId: "",
-            date: "",
-            total: "",
-            status: "Belum Lunas",
-        });
-        setShowForm(false);
-    };
+  useEffect(() => {
+    fetchPenjualan();
+  }, []);
 
-    const handleDelete = (id) => {
-        if (window.confirm("Yakin ingin menghapus penjualan ini?")) {
-            setSales(sales.filter((s) => s.id !== id));
-        }
-    };
-
-    const getCustomerName = (id) => {
-        const cust = dummyCustomers.find((c) => c.id === id);
-        return cust ? cust.name : "-";
-    };
-
-    return (
-        <div className="p-6 max-w-5xl mx-auto">
-            <h1 className="text-2xl font-semibold mb-4">Management Penjualan</h1>
-
-            <button
-                onClick={() => setShowForm((prev) => !prev)}
-                className="mb-4 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition"
-            >
-                {showForm ? "Batal Tambah Penjualan" : "Tambah Penjualan"}
-            </button>
-
-            {showForm && (
-                <div className="mb-6 p-4 border border-gray-300 rounded shadow-sm bg-white">
-                    <div className="mb-2">
-                        <label className="block font-medium mb-1">Nomor Invoice</label>
-                        <input
-                            type="text"
-                            name="invoice"
-                            value={formData.invoice}
-                            onChange={handleInputChange}
-                            placeholder="Misal: INV-003"
-                            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                        />
-                    </div>
-
-                    <div className="mb-2">
-                        <label className="block font-medium mb-1">Pelanggan</label>
-                        <select
-                            name="customerId"
-                            value={formData.customerId}
-                            onChange={handleInputChange}
-                            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                        >
-                            <option value="">-- Pilih Pelanggan --</option>
-                            {dummyCustomers.map((c) => (
-                                <option key={c.id} value={c.id}>
-                                    {c.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="mb-2">
-                        <label className="block font-medium mb-1">Tanggal</label>
-                        <input
-                            type="date"
-                            name="date"
-                            value={formData.date}
-                            onChange={handleInputChange}
-                            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                        />
-                    </div>
-
-                    <div className="mb-2">
-                        <label className="block font-medium mb-1">Total (Rp)</label>
-                        <input
-                            type="number"
-                            name="total"
-                            value={formData.total}
-                            onChange={handleInputChange}
-                            placeholder="Jumlah total penjualan"
-                            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                            min="0"
-                        />
-                    </div>
-
-                    <div className="mb-4">
-                        <label className="block font-medium mb-1">Status</label>
-                        <select
-                            name="status"
-                            value={formData.status}
-                            onChange={handleInputChange}
-                            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                        >
-                            <option value="Belum Lunas">Belum Lunas</option>
-                            <option value="Lunas">Lunas</option>
-                            <option value="Batal">Batal</option>
-                        </select>
-                    </div>
-
-                    <button
-                        onClick={handleAddSale}
-                        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
-                    >
-                        Simpan
-                    </button>
-                </div>
-            )}
-
-            <div className="overflow-x-auto bg-white rounded shadow">
-                <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                        <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Invoice
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Pelanggan
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Tanggal
-                            </th>
-                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Total
-                            </th>
-                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status
-                            </th>
-                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Aksi
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                        {sales.map((sale) => (
-                            <tr key={sale.id} className="hover:bg-gray-50">
-                                <td className="px-6 py-4 whitespace-nowrap">{sale.invoice}</td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    {getCustomerName(sale.customerId)}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">{sale.date}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-right">
-                                    {formatCurrency(sale.total)}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-center">
-                                    {sale.status === "Lunas" ? (
-                                        <span className="inline-flex px-2 text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                            Lunas
-                                        </span>
-                                    ) : sale.status === "Belum Lunas" ? (
-                                        <span className="inline-flex px-2 text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                            Belum Lunas
-                                        </span>
-                                    ) : (
-                                        <span className="inline-flex px-2 text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                            Batal
-                                        </span>
-                                    )}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-center space-x-2">
-                                    <button
-                                        className="text-indigo-600 hover:text-indigo-900 font-semibold"
-                                        onClick={() => alert("Fitur Edit belum tersedia")}
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        className="text-red-600 hover:text-red-900 font-semibold"
-                                        onClick={() => handleDelete(sale.id)}
-                                    >
-                                        Hapus
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                        {sales.length === 0 && (
-                            <tr>
-                                <td colSpan={6} className="text-center py-4 text-gray-500">
-                                    Tidak ada data penjualan
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
+  return (
+    <div className="w-full max-w-7xl mx-auto p-6">
+      {/* Breadcrumb */}
+      <div className="py-4 mb-8">
+        <div className="max-w-7xl mx-auto px-5 flex flex-col space-y-1">
+          <h2 className="text-3xl font-extrabold text-gray-800">Data Penjualan Tiket</h2>
+          <div className="text-sm text-gray-600">
+            <Link to="/dashboard" className="hover:underline text-orange-600 font-semibold">
+              Dashboard
+            </Link>{' '}
+            / <span className="text-gray-700">Penjualan</span>
+          </div>
         </div>
-    );
+      </div>
+
+      {/* Tabel Penjualan */}
+      <div className="mt-10 overflow-x-auto">
+        <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
+          <table className="min-w-full divide-y divide-gray-200 text-sm">
+            <thead className="bg-gray-100 text-left">
+              <tr>
+                <th className="px-4 py-3 font-semibold">No</th>
+                <th className="px-4 py-3 font-semibold">Nama Pelanggan</th>
+                <th className="px-4 py-3 font-semibold">Tanggal Transaksi</th>
+                <th className="px-4 py-3 font-semibold">Tiket</th>
+                <th className="px-4 py-3 font-semibold">Jumlah</th>
+                <th className="px-4 py-3 font-semibold">Total</th>
+                <th className="px-4 py-3 font-semibold">Status</th>
+                <th className="px-4 py-3 font-semibold text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-100">
+              {penjualan.map((item, index) => (
+                <tr key={item.id} className="hover:bg-gray-50">
+                  <td className="px-4 py-3">{index + 1}</td>
+                  <td className="px-4 py-3">{item.nama_pelanggan}</td>
+                  <td className="px-4 py-3">{new Date(item.tanggal_transaksi).toLocaleString()}</td>
+                  <td className="px-4 py-3">
+                    {item.tiketPesawat
+                      ? `${item.tiketPesawat.maskapai} (${item.tiketPesawat.kode_penerbangan})`
+                      : '—'}
+                  </td>
+                  <td className="px-4 py-3">{item.jumlah}</td>
+                  <td className="px-4 py-3">Rp {parseFloat(item.total).toLocaleString()}</td>
+                  <td className="px-4 py-3 capitalize">{item.status_pembayaran}</td>
+                  <td className="px-4 py-3 text-center space-x-2">
+                    {/* Optional Edit Button */}
+                    {/* <button
+                      onClick={() => setEditing(item)}
+                      className="text-yellow-600 hover:text-yellow-800"
+                    >
+                      <FaEdit />
+                    </button> */}
+                    <button
+                      onClick={() => deletePenjualan(item.id)}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      <FaTrash />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              {penjualan.length === 0 && (
+                <tr>
+                  <td colSpan="8" className="px-4 py-6 text-center text-gray-500">
+                    Belum ada data penjualan.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-
+export default PenjualanTiketAdmin;
