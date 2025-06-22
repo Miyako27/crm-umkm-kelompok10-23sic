@@ -31,7 +31,8 @@ import PaketWisataAdmin from './pages/PaketWisataAdmin';
 import TravelAdmin from './pages/TravelAdmin';
 import ProfilCustomer from './customers/pages/ProfilCustomer';
 import TiketPesawat from './pages/TiketPesawatAdmin';
-
+import FormOrderTravel from './customers/pages/FormOrderTravel'; 
+import FormOrderTiketPesawat from './customers/pages/FormOrderTiketPesawat';
 
 
 function App() {
@@ -50,9 +51,11 @@ function App() {
         <Route path="/artikel/:id" element={<ArtikelDetail />} />
         <Route path="/profil" element={<Profil />} />
         <Route path="/faq-customer" element={<FaqCustomer />} />
-        <Route path="/order-customer" element={<Order />} />
+        <Route path="/order-customer/paket-wisata" element={<Order />} />
         <Route path="/promo" element={<Promo />} />
         <Route path="/profilcustomer" element={<ProfilCustomer />} />
+        <Route path="/order-customer/travel" element={<FormOrderTravel />} />
+        <Route path="/order-customer/tiket-pesawat" element={< FormOrderTiketPesawat />} /> 
       </Route>
 
       {/* Admin Routes */}
@@ -70,6 +73,7 @@ function App() {
         <Route path="/produk/paket-wisata" element={< PaketWisataAdmin />} />
         <Route path="/produk/travel" element={< TravelAdmin />} />
         <Route path="/produk/tiket-pesawat" element={< TiketPesawat />} />
+        <Route path="/produk/travel" element={< TravelAdmin />} /> 
       </Route>
     </Routes>
   );
