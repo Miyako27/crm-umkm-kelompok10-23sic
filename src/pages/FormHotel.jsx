@@ -183,7 +183,7 @@ function FormHotel({ addHotel, updateHotel, editingHotel }) {
         {/* Rating Bintang */}
         <div>
           <label htmlFor="rating_bintang" className="block text-sm font-medium text-gray-700">
-            Rating Bintang (1.0 - 5.0)
+            Rating Bintang
           </label>
           <input
             type="number"

@@ -89,7 +89,7 @@ export default function FormTravel({ addTravel, updateTravel, editingTravel }) {
         <div>
           <label className="block text-sm font-medium mb-1">Tanggal Berangkat</label>
           <input
-            type="date"
+            type="datetime-local"
             name="tanggal_berangkat"
             value={form.tanggal_berangkat}
             onChange={handleChange}
@@ -99,7 +99,7 @@ export default function FormTravel({ addTravel, updateTravel, editingTravel }) {
         <div>
           <label className="block text-sm font-medium mb-1">Tanggal Pulang</label>
           <input
-            type="date"
+            type="datetime-local"
             name="tanggal_pulang"
             value={form.tanggal_pulang}
             onChange={handleChange}
