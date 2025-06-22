@@ -28,6 +28,8 @@ import Order from './customers/pages/Order';
 import Promo from './customers/pages/Promo';
 import Registrasi from './customers/pages/Registrasi';
 import PaketWisataAdmin from './pages/PaketWisataAdmin';
+import TravelAdmin from './pages/TravelAdmin';
+import ProfilCustomer from './customers/pages/ProfilCustomer';
 
 
 
@@ -49,6 +51,7 @@ function App() {
         <Route path="/faq-customer" element={<FaqCustomer />} />
         <Route path="/order-customer" element={<Order />} />
         <Route path="/promo" element={<Promo />} />
+        <Route path="/profilcustomer" element={<ProfilCustomer />} />
       </Route>
 
       {/* Admin Routes */}
@@ -64,6 +67,7 @@ function App() {
         <Route path="/pelanggan" element={< User />} />
         <Route path="/testimoni-admin" element={< TestimoniAdmin />} />
         <Route path="/produk/paket-wisata" element={< PaketWisataAdmin />} />
+        <Route path="/produk/travel" element={< TravelAdmin />} />
       </Route>
     </Routes>
   );
