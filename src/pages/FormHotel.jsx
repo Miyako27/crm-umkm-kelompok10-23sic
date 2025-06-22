@@ -1,3 +1,4 @@
+// src/components/admin/FormHotel.jsx
 import { useEffect, useState } from 'react';
 
 function FormHotel({ addHotel, updateHotel, editingHotel }) {
@@ -16,7 +17,6 @@ function FormHotel({ addHotel, updateHotel, editingHotel }) {
         nama_hotel: editingHotel.nama_hotel || '',
         lokasi: editingHotel.lokasi || '',
         harga_per_malam: editingHotel.harga_per_malam ? String(editingHotel.harga_per_malam) : '',
-        // Pastikan rating_bintang juga dikonversi ke string
         rating_bintang: editingHotel.rating_bintang ? String(editingHotel.rating_bintang) : '',
         fasilitas: editingHotel.fasilitas || '',
         deskripsi: editingHotel.deskripsi || '',
@@ -51,7 +51,6 @@ function FormHotel({ addHotel, updateHotel, editingHotel }) {
       }
     } else if (name === 'rating_bintang') {
       // Logika khusus untuk rating_bintang: hanya izinkan angka dan satu titik desimal
-      // Juga, pastikan hanya angka valid untuk rating (1.0 - 5.0)
       newValue = newValue.replace(/[^0-9.]/g, ''); // Hapus non-angka/titik
 
       const parts = newValue.split('.');
@@ -63,7 +62,6 @@ function FormHotel({ addHotel, updateHotel, editingHotel }) {
       if (newValue.length > 3 && newValue.includes('.')) {
         newValue = newValue.substring(0, 3);
       } else if (newValue.length > 1 && !newValue.includes('.') && parseFloat(newValue) > 5) {
-         // Jika user mengetik angka > 5 tanpa desimal, batasi
          newValue = "5";
       }
     }
@@ -77,13 +75,8 @@ function FormHotel({ addHotel, updateHotel, editingHotel }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Buat salinan formData untuk diolah sebelum dikirim
     const dataToSend = { ...formData };
-
-    // Konversi harga_per_malam menjadi float (numeric)
     dataToSend.harga_per_malam = parseFloat(dataToSend.harga_per_malam);
-
-    // Konversi rating_bintang menjadi float (untuk desimal)
     dataToSend.rating_bintang = parseFloat(dataToSend.rating_bintang);
 
     // --- Validasi Sederhana ---
@@ -101,7 +94,6 @@ function FormHotel({ addHotel, updateHotel, editingHotel }) {
     if (!dataToSend.deskripsi) {
       errors.push("Deskripsi wajib diisi.");
     }
-    // Validasi Rating Bintang
     if (isNaN(dataToSend.rating_bintang) || dataToSend.rating_bintang < 1 || dataToSend.rating_bintang > 5) {
       errors.push("Rating Bintang harus berupa angka desimal antara 1.0 hingga 5.0.");
     }
@@ -118,7 +110,6 @@ function FormHotel({ addHotel, updateHotel, editingHotel }) {
       addHotel(dataToSend);
     }
 
-    // Reset form setelah submit
     setFormData({
       nama_hotel: '',
       lokasi: '',
@@ -130,10 +121,10 @@ function FormHotel({ addHotel, updateHotel, editingHotel }) {
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
-      <h3 className="text-xl font-semibold mb-6 text-gray-800">
+    <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 max-w-4xl mx-auto">
+      <h2 className="text-lg font-semibold text-gray-700 mb-4">
         {editingHotel ? 'Edit Data Hotel' : 'Tambah Data Hotel'}
-      </h3>
+      </h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
         {/* Nama Hotel */}
         <div>
@@ -147,7 +138,8 @@ function FormHotel({ addHotel, updateHotel, editingHotel }) {
             value={formData.nama_hotel}
             onChange={handleChange}
             placeholder="Nama Hotel"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-sm px-3 py-2"
+            // Diselaraskan dengan FormPaketWisata
+            className="w-full border border-gray-300 rounded-md p-2 focus:border-orange-500 focus:ring-orange-500"
             required
           />
         </div>
@@ -158,13 +150,14 @@ function FormHotel({ addHotel, updateHotel, editingHotel }) {
             Harga Per Malam
           </label>
           <input
-            type="text" // Menggunakan type="text" untuk kontrol input manual yang lebih baik
+            type="text"
             id="harga_per_malam"
             name="harga_per_malam"
             value={formData.harga_per_malam}
             onChange={handleChange}
-            placeholder="Contoh: 150000"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-sm px-3 py-2"
+            placeholder="Contoh: 150000.00"
+            // Diselaraskan dengan FormPaketWisata
+            className="w-full border border-gray-300 rounded-md p-2 focus:border-orange-500 focus:ring-orange-500"
             required
           />
         </div>
@@ -181,7 +174,8 @@ function FormHotel({ addHotel, updateHotel, editingHotel }) {
             value={formData.lokasi}
             onChange={handleChange}
             placeholder="Lokasi"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-sm px-3 py-2"
+            // Diselaraskan dengan FormPaketWisata
+            className="w-full border border-gray-300 rounded-md p-2 focus:border-orange-500 focus:ring-orange-500"
             required
           />
         </div>
@@ -189,10 +183,10 @@ function FormHotel({ addHotel, updateHotel, editingHotel }) {
         {/* Rating Bintang */}
         <div>
           <label htmlFor="rating_bintang" className="block text-sm font-medium text-gray-700">
-            Rating Bintang
+            Rating Bintang (1.0 - 5.0)
           </label>
           <input
-            type="number" // Tetap 'number' untuk mendapatkan keyboard numerik dan validasi bawaan browser
+            type="number"
             id="rating_bintang"
             name="rating_bintang"
             value={formData.rating_bintang}
@@ -200,13 +194,14 @@ function FormHotel({ addHotel, updateHotel, editingHotel }) {
             placeholder="Contoh: 4.5"
             min="1"
             max="5"
-            step="0.1" // Izinkan angka desimal satu digit
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-sm px-3 py-2"
+            step="0.1"
+            // Diselaraskan dengan FormPaketWisata
+            className="w-full border border-gray-300 rounded-md p-2 focus:border-orange-500 focus:ring-orange-500"
             required
           />
         </div>
 
-        {/* Fasilitas (bisa jadi textarea atau multiple select di masa depan) */}
+        {/* Fasilitas */}
         <div className="md:col-span-2">
           <label htmlFor="fasilitas" className="block text-sm font-medium text-gray-700">
             Fasilitas (pisahkan dengan koma)
@@ -218,7 +213,8 @@ function FormHotel({ addHotel, updateHotel, editingHotel }) {
             onChange={handleChange}
             placeholder="Kolam renang, WiFi, Restoran, dll."
             rows="2"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-sm px-3 py-2"
+            // Diselaraskan dengan FormPaketWisata (p-2, h-auto/resize-none jika ada di aslinya)
+            className="w-full border border-gray-300 rounded-md p-2 resize-none"
           ></textarea>
         </div>
 
@@ -234,15 +230,18 @@ function FormHotel({ addHotel, updateHotel, editingHotel }) {
             onChange={handleChange}
             placeholder="Deskripsi lengkap hotel"
             rows="3"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-sm px-3 py-2"
+            // Diselaraskan dengan FormPaketWisata (p-2, h-32 resize-none)
+            className="w-full border border-gray-300 rounded-md p-2 h-32 resize-none"
             required
           ></textarea>
         </div>
 
-        <div className="md:col-span-2 mt-4">
+        {/* Tombol Submit */}
+        <div className="md:col-span-2 mt-6">
           <button
             type="submit"
-            className="w-full bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 font-semibold"
+            // Diselaraskan dengan FormPaketWisata (bg-orange-500, hover:bg-orange-600, px-6 py-3)
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-semibold"
           >
             {editingHotel ? 'Update' : 'Simpan'}
           </button>
