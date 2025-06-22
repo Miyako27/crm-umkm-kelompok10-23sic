@@ -1,4 +1,3 @@
-// src/components/admin/FormHotel.jsx
 import { useEffect, useState } from 'react';
 
 function FormHotel({ addHotel, updateHotel, editingHotel }) {
