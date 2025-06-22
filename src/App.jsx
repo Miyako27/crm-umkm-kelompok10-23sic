@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from './components/MainLayout';
-import CustomerLayout from './customers/components/CustomerLayout'; // Tambahkan ini
+import CustomerLayout from './customers/components/CustomerLayout';
 
 // Admin Pages
 import Dashboard from './pages/Dashboard';
@@ -13,6 +13,9 @@ import FormArtikel from './pages/FormArtikel';
 import FormFaq from './pages/FormFaq';
 import FAQAdmin from './pages/FAQAdmin';
 import User from './pages/User';
+import TravelAdmin from './pages/TravelAdmin';
+import HotelAdmin from './pages/HotelAdmin';
+import PaketWisataAdmin from './pages/PaketWisataAdmin';
 
 
 // Customer Pages
@@ -27,9 +30,8 @@ import FaqCustomer from './customers/pages/FaqCustomer';
 import Order from './customers/pages/Order';
 import Promo from './customers/pages/Promo';
 import Registrasi from './customers/pages/Registrasi';
-import PaketWisataAdmin from './pages/PaketWisataAdmin';
-import TravelAdmin from './pages/TravelAdmin';
 import ProfilCustomer from './customers/pages/ProfilCustomer';
+import SalesReportAdmin from './pages/SalesReportAdmin';
 import TiketPesawat from './pages/TiketPesawatAdmin';
 import FormOrderTravel from './customers/pages/FormOrderTravel'; 
 import FormOrderTiketPesawat from './customers/pages/FormOrderTiketPesawat';
@@ -72,6 +74,8 @@ function App() {
         <Route path="/testimoni-admin" element={< TestimoniAdmin />} />
         <Route path="/produk/paket-wisata" element={< PaketWisataAdmin />} />
         <Route path="/produk/travel" element={< TravelAdmin />} />
+        <Route path="/produk/hotel" element={< HotelAdmin />} />
+        <Route path="/laporan" element={< SalesReportAdmin />} />
         <Route path="/produk/tiket-pesawat" element={< TiketPesawat />} />
         <Route path="/produk/travel" element={< TravelAdmin />} /> 
       </Route>
