@@ -11,7 +11,7 @@ export default function Login() {
 
     // Data Dummy
     const dummyAccounts = [
-      { email: "admino@gmail.com", password: "123", role: "admin" },
+      { email: "admin@gmail.com", password: "123", role: "admin" },
       { email: "user@gmail.com", password: "123", role: "user" },
     ];
 
