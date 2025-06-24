@@ -1,35 +1,25 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../supabase';
 import { Link } from 'react-router-dom';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEnvelope } from 'react-icons/fa';
 
 function PenjualanTiketAdmin() {
   const [penjualan, setPenjualan] = useState([]);
-  const [editing, setEditing] = useState(null);
 
   const fetchPenjualan = async () => {
     const { data, error } = await supabase
-      .from('PenjualanTiket')
-      .select(`
-        *,
-        tiketPesawat: tiket_id (
-          id, maskapai, kode_penerbangan
-        )
-      `)
+      .from('penjualan')
+      .select('*')
       .order('tanggal_transaksi', { ascending: false });
 
     if (error) console.error(error);
     else setPenjualan(data);
   };
 
-  const deletePenjualan = async (id) => {
-    const { error } = await supabase
-      .from('PenjualanTiket')
-      .delete()
-      .eq('id', id);
-
-    if (error) console.error(error);
-    else fetchPenjualan();
+  const handleKirimEmail = (item) => {
+    // Ganti logika ini dengan pengiriman email aktual
+    // KOREKSI: Gunakan backticks (`) untuk template literals
+    alert(`Kirim email ke: ${item.nama_pelanggan}`);
   };
 
   useEffect(() => {
@@ -60,47 +50,43 @@ function PenjualanTiketAdmin() {
                 <th className="px-4 py-3 font-semibold">No</th>
                 <th className="px-4 py-3 font-semibold">Nama Pelanggan</th>
                 <th className="px-4 py-3 font-semibold">Tanggal Transaksi</th>
-                <th className="px-4 py-3 font-semibold">Tiket</th>
+                <th className="px-4 py-3 font-semibold">Jenis Pesanan</th>
                 <th className="px-4 py-3 font-semibold">Jumlah</th>
-                <th className="px-4 py-3 font-semibold">Total</th>
+                <th className="px-4 py-3 font-semibold">Total Harga</th>
+                <th className="px-4 py-3 font-semibold">Metode Pembayaran</th>
                 <th className="px-4 py-3 font-semibold">Status</th>
-                <th className="px-4 py-3 font-semibold text-center">Aksi</th>
+                <th className="px-4 py-3 text-center font-semibold">Aksi</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-100">
               {penjualan.map((item, index) => (
-                <tr key={item.id} className="hover:bg-gray-50">
+                <tr key={item.id_penjualan} className="hover:bg-gray-50">
                   <td className="px-4 py-3">{index + 1}</td>
                   <td className="px-4 py-3">{item.nama_pelanggan}</td>
-                  <td className="px-4 py-3">{new Date(item.tanggal_transaksi).toLocaleString()}</td>
-                  <td className="px-4 py-3">
-                    {item.tiketPesawat
-                      ? `${item.tiketPesawat.maskapai} (${item.tiketPesawat.kode_penerbangan})`
-                      : '—'}
-                  </td>
-                  <td className="px-4 py-3">{item.jumlah}</td>
-                  <td className="px-4 py-3">Rp {parseFloat(item.total).toLocaleString()}</td>
-                  <td className="px-4 py-3 capitalize">{item.status_pembayaran}</td>
-                  <td className="px-4 py-3 text-center space-x-2">
-                    {/* Optional Edit Button */}
-                    {/* <button
-                      onClick={() => setEditing(item)}
-                      className="text-yellow-600 hover:text-yellow-800"
-                    >
-                      <FaEdit />
-                    </button> */}
-                    <button
-                      onClick={() => deletePenjualan(item.id)}
-                      className="text-red-600 hover:text-red-800"
-                    >
-                      <FaTrash />
-                    </button>
+                  <td className="px-4 py-3">{new Date(item.tanggal_transaksi).toLocaleDateString()}</td>
+                  <td className="px-4 py-3">{item.jenis_pesanan}</td>
+                  <td className="px-4 py-3">{item.jumlah_pesanan}</td>
+                  <td className="px-4 py-3">Rp {parseFloat(item.total_harga).toLocaleString()}</td>
+                  <td className="px-4 py-3 capitalize">{item.metode_pembayaran}</td>
+                  <td className="px-4 py-3 capitalize">{item.status}</td>
+                  <td className="px-4 py-3 text-center">
+                    {item.status.toLowerCase() !== 'lunas' ? (
+                      <button
+                        onClick={() => handleKirimEmail(item)}
+                        className="text-orange-600 hover:text-blue-800 text-xl"
+                        title="Kirim Email Pengingat"
+                      >
+                        <FaEnvelope />
+                      </button>
+                    ) : (
+                      <span className="text-gray-500">N/A</span>
+                    )}
                   </td>
                 </tr>
               ))}
               {penjualan.length === 0 && (
                 <tr>
-                  <td colSpan="8" className="px-4 py-6 text-center text-gray-500">
+                  <td colSpan="9" className="text-center py-6 text-gray-500">
                     Belum ada data penjualan.
                   </td>
                 </tr>

@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 const Order = () => {
   const [openIndex, setOpenIndex] = useState(null);
 
+  // This function and state are currently unused in the rendered JSX,
+  // but kept as they were in your original code.
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
@@ -60,7 +62,8 @@ const Order = () => {
                 Eksplorasi keindahan Bali dari pantai hingga budaya lokal. Termasuk hotel & transportasi.
               </p>
               <span className="text-orange-600 font-bold text-lg block mb-2">Rp 2.500.000/orang</span>
-              <Link to="#" className="text-orange-600 font-semibold hover:underline">
+              {/* Updated Link to /checkout */}
+              <Link to="/checkout" className="text-orange-600 font-semibold hover:underline">
                 Pesan Sekarang →
               </Link>
             </div>
@@ -79,7 +82,8 @@ const Order = () => {
                 Kunjungi candi, museum, dan tempat ikonik di Jogja bersama pemandu lokal.
               </p>
               <span className="text-orange-600 font-bold text-lg block mb-2">Rp 1.800.000/orang</span>
-              <Link to="#" className="text-orange-600 font-semibold hover:underline">
+              {/* Updated Link to /checkout */}
+              <Link to="/checkout" className="text-orange-600 font-semibold hover:underline">
                 Pesan Sekarang →
               </Link>
             </div>
@@ -88,6 +92,7 @@ const Order = () => {
           {/* Paket 3 */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
             <img
+            
               src="https://lingkarwilis.com/wp-content/uploads/2024/10/labuannnnnn.webp"
               alt="Labuan Bajo"
               className="w-full h-48 object-cover"
@@ -98,7 +103,8 @@ const Order = () => {
                 Petualangan laut dan pulau eksotis, termasuk kunjungan ke Pulau Komodo.
               </p>
               <span className="text-orange-600 font-bold text-lg block mb-2">Rp 3.900.000/orang</span>
-              <Link to="#" className="text-orange-600 font-semibold hover:underline">
+              {/* Updated Link to /checkout */}
+              <Link to="/checkout" className="text-orange-600 font-semibold hover:underline">
                 Pesan Sekarang →
               </Link>
             </div>
@@ -117,7 +123,8 @@ const Order = () => {
                 Jalan-jalan santai di Lembang, Dago, dan pusat belanja Bandung. Termasuk akomodasi hotel bintang 3.
               </p>
               <span className="text-orange-600 font-bold text-lg block mb-2">Rp 1.200.000/orang</span>
-              <Link to="#" className="text-orange-600 font-semibold hover:underline">
+              {/* Updated Link to /checkout */}
+              <Link to="/checkout" className="text-orange-600 font-semibold hover:underline">
                 Pesan Sekarang →
               </Link>
             </div>
@@ -136,7 +143,8 @@ const Order = () => {
                 Nikmati diving di spot terindah dunia, Raja Ampat. Termasuk peralatan diving dan guide profesional.
               </p>
               <span className="text-orange-600 font-bold text-lg block mb-2">Rp 5.500.000/orang</span>
-              <Link to="#" className="text-orange-600 font-semibold hover:underline">
+              {/* Updated Link to /checkout */}
+              <Link to="/checkout" className="text-orange-600 font-semibold hover:underline">
                 Pesan Sekarang →
               </Link>
             </div>
@@ -155,7 +163,8 @@ const Order = () => {
                 Saksikan sunrise dari puncak Bromo, plus jeep tour dan pemandu lokal profesional.
               </p>
               <span className="text-orange-600 font-bold text-lg block mb-2">Rp 900.000/orang</span>
-              <Link to="#" className="text-orange-600 font-semibold hover:underline">
+              {/* Updated Link to /checkout */}
+              <Link to="/checkout" className="text-orange-600 font-semibold hover:underline">
                 Pesan Sekarang →
               </Link>
             </div>
