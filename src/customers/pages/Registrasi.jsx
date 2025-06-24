@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { supabase } from '../../supabase';
+import CryptoJS from 'crypto-js';
 
 export default function Registrasi() {
   const [form, setForm] = useState({
@@ -30,7 +31,7 @@ export default function Registrasi() {
     }
 
     try {
-      // 1. Registrasi ke Supabase Auth
+      // 1. Registrasi ke Supabase Auth (pakai password asli)
       const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email: form.email,
         password: form.password,
@@ -42,12 +43,15 @@ export default function Registrasi() {
         return;
       }
 
-      // 2. Insert ke tabel pelanggan
+      // 2. Hash password sebelum disimpan ke tabel pelanggan
+      const hashedPassword = CryptoJS.SHA256(form.password).toString();
+
+      // 3. Insert ke tabel pelanggan
       const { error: insertError } = await supabase.from('pelanggan').insert([
         {
           email: form.email,
           nama: form.nama,
-          password: form.password,
+          password: hashedPassword,
           telepon: form.telepon,
           jenis_kelamin: form.jenis_kelamin,
           tanggal_lahir: form.tanggal_lahir,
@@ -121,7 +125,7 @@ export default function Registrasi() {
               </select>
             </div>
 
-            <div className="md:col-span-1">
+            <div className="md:col-span-2">
               <label className="block text-sm font-medium mb-1">Tanggal Lahir</label>
               <input type="date" name="tanggal_lahir" value={form.tanggal_lahir} onChange={handleChange} className="w-full border border-gray-300 rounded-md p-2" />
             </div>
