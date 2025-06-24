@@ -7,7 +7,8 @@ export default function FormArtikel({ addArtikel, updateArtikel, editingArtikel 
     gambar: '',
     isi: '',
     penulis: '',
-    tanggal_terbit: ''
+    tanggal_terbit: '',
+    deskripsi_artikel: ''
   });
 
   useEffect(() => {
@@ -20,7 +21,8 @@ export default function FormArtikel({ addArtikel, updateArtikel, editingArtikel 
         gambar: '',
         isi: '',
         penulis: '',
-        tanggal_terbit: ''
+        tanggal_terbit: '',
+        deskripsi_artikel: ''
       });
     }
   }, [editingArtikel]);
@@ -42,7 +44,8 @@ export default function FormArtikel({ addArtikel, updateArtikel, editingArtikel 
       gambar: '',
       isi: '',
       penulis: '',
-      tanggal_terbit: ''
+      tanggal_terbit: '',
+      deskripsi_artikel: ''
     });
   };
 
@@ -76,6 +79,18 @@ export default function FormArtikel({ addArtikel, updateArtikel, editingArtikel 
             value={form.tanggal_terbit}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md p-2"
+          />
+        </div>
+
+        {/* Deskripsi Artikel di atas Isi Artikel */}
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium mb-1">Deskripsi Artikel</label>
+          <textarea
+            name="deskripsi_artikel"
+            value={form.deskripsi_artikel}
+            onChange={handleChange}
+            placeholder="Deskripsi singkat artikel"
+            className="w-full border border-gray-300 rounded-md p-2 h-24 resize-none"
           />
         </div>
 
