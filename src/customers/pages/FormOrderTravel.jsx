@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function FormOrderTravel() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     dari: "",
     ke: "",
@@ -56,7 +59,7 @@ export default function FormOrderTravel() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Travel Dipesan:", formData);
-    // panggil API atau redirect
+    navigate("/order-customer/travel/list"); // ✅ redirect setelah klik tombol
   };
 
   return (
@@ -69,11 +72,8 @@ export default function FormOrderTravel() {
           Form Order Travel
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Dari */}
           <div>
-            <label htmlFor="dari" className="block font-semibold text-gray-700 mb-1">
-              Dari
-            </label>
+            <label className="block font-semibold text-gray-700 mb-1">Dari</label>
             <input
               type="text"
               name="dari"
@@ -85,11 +85,8 @@ export default function FormOrderTravel() {
             />
           </div>
 
-          {/* Ke */}
           <div>
-            <label htmlFor="ke" className="block font-semibold text-gray-700 mb-1">
-              Ke
-            </label>
+            <label className="block font-semibold text-gray-700 mb-1">Ke</label>
             <input
               type="text"
               name="ke"
@@ -101,11 +98,8 @@ export default function FormOrderTravel() {
             />
           </div>
 
-          {/* Waktu Pergi */}
           <div>
-            <label htmlFor="waktuPergi" className="block font-semibold text-gray-700 mb-1">
-              Waktu Pergi
-            </label>
+            <label className="block font-semibold text-gray-700 mb-1">Waktu Pergi</label>
             <input
               type="datetime-local"
               name="waktuPergi"
@@ -116,9 +110,8 @@ export default function FormOrderTravel() {
             />
           </div>
 
-          {/* Waktu Pulang */}
           <div>
-            <label htmlFor="waktuPulang" className="block font-semibold text-gray-700 mb-1">
+            <label className="block font-semibold text-gray-700 mb-1">
               Waktu Pulang <span className="text-sm text-gray-400">(opsional)</span>
             </label>
             <input
@@ -130,11 +123,8 @@ export default function FormOrderTravel() {
             />
           </div>
 
-          {/* Jumlah Penumpang */}
           <div>
-            <label htmlFor="jumlahPenumpang" className="block font-semibold text-gray-700 mb-1">
-              Jumlah Penumpang
-            </label>
+            <label className="block font-semibold text-gray-700 mb-1">Jumlah Penumpang</label>
             <input
               type="text"
               name="jumlahPenumpang"
@@ -142,7 +132,7 @@ export default function FormOrderTravel() {
               onChange={handleChange}
               onBlur={handleBlurJumlah}
               className="w-full border border-gray-300 rounded-md px-4 py-2"
-              placeholder="1 - 5"
+              placeholder="1 - 10"
             />
           </div>
 
@@ -173,7 +163,6 @@ export default function FormOrderTravel() {
             ))}
           </div>
 
-          {/* Tombol Cari */}
           <button
             type="submit"
             className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded-md transition"

@@ -147,6 +147,7 @@ export default function FormOrderTiketPesawat() {
               <option value="Ekonomi">Ekonomi</option>
               <option value="Bisnis">Bisnis</option>
               <option value="First Class">First Class</option>
+              <option value="First Class">Premium Ekonomi</option>
             </select>
           </div>
 
@@ -193,33 +194,6 @@ export default function FormOrderTiketPesawat() {
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-md px-4 py-2"
             />
-          </div>
-
-          {/* Kursi */}
-          <div className="text-center">
-            <img
-              src="/images/seat.png"
-              alt="Gambar Kursi"
-              className="mx-auto mb-4 w-48 h-48 object-contain"
-            />
-            {formData.kursi.map((value, index) => (
-              <div key={index} className="mb-3 text-left">
-                <label className="block font-semibold text-gray-700 mb-1">
-                  Kursi Penumpang {index + 1}
-                </label>
-                <select
-                  value={value}
-                  onChange={(e) => handleKursiChange(index, e.target.value)}
-                  required
-                  className="w-full border border-gray-300 rounded-md px-4 py-2"
-                >
-                  <option value="">Pilih Kursi</option>
-                  {[...Array(30)].map((_, i) => (
-                    <option key={i} value={`Kursi ${i + 1}`}>{`Kursi ${i + 1}`}</option>
-                  ))}
-                </select>
-              </div>
-            ))}
           </div>
 
           {/* Tombol */}

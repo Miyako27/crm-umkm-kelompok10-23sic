@@ -18,7 +18,6 @@ function PenjualanTiketAdmin() {
 
   const handleKirimEmail = (item) => {
     // Ganti logika ini dengan pengiriman email aktual
-    // KOREKSI: Gunakan backticks (`) untuk template literals
     alert(`Kirim email ke: ${item.nama_pelanggan}`);
   };
 
@@ -82,6 +81,7 @@ function PenjualanTiketAdmin() {
                       <span className="text-gray-500">N/A</span>
                     )}
                   </td>
+
                 </tr>
               ))}
               {penjualan.length === 0 && (
