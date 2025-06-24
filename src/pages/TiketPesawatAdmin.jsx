@@ -90,6 +90,7 @@ export default function TiketPesawatAdmin() {
                 <th className="px-4 py-3 font-semibold">Harga</th>
                 <th className="px-4 py-3 font-semibold">Kursi</th>
                 <th className="px-4 py-3 font-semibold">Waktu Berangkat</th>
+                <th className="px-4 py-3 font-semibold">Promo</th>
                 <th className="px-4 py-3 text-center font-semibold">Aksi</th>
               </tr>
             </thead>
@@ -105,6 +106,14 @@ export default function TiketPesawatAdmin() {
                   <td className="px-4 py-2">Rp{parseInt(t.harga).toLocaleString()}</td>
                   <td className="px-4 py-2 text-center">{t.jumlah_kursi}</td>
                   <td className="px-4 py-2">{new Date(t.waktu_berangkat).toLocaleString()}</td>
+                  <td className="px-4 py-2">
+                    {t.promo_tiketpesawat === 1 || t.promo_tiketpesawat === true ? (
+                      <span className="text-green-600 font-semibold">Promo</span>
+                    ) : (
+                      <span className="text-gray-500">Tidak Promo</span>
+                    )}
+                  </td>
+
                   <td className="px-4 py-2 text-center">
                     <button
                       onClick={() => setEditingTiket(t)}
@@ -125,7 +134,7 @@ export default function TiketPesawatAdmin() {
               ))}
               {tiketList.length === 0 && (
                 <tr>
-                  <td colSpan="10" className="px-4 py-4 text-center text-gray-500">
+                  <td colSpan="11" className="px-4 py-4 text-center text-gray-500">
                     Belum ada data tiket.
                   </td>
                 </tr>

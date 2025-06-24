@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { RiAdminLine } from 'react-icons/ri';
 
 const Sidebar = () => {
   const location = useLocation();
@@ -31,12 +32,12 @@ const Sidebar = () => {
       submenus: [
         { name: 'Travel', path: '/produk/travel' },
         { name: 'Tiket Pesawat', path: '/produk/tiket-pesawat' },
-        { name: 'Hotel', path: '/produk/hotel' },
         { name: 'Paket Wisata', path: '/produk/paket-wisata' },
       ]
     },
     { name: 'Laporan', icon: <BarChart2 size={20} />, path: '/laporan' },
     { name: 'Artikel', icon: <Newspaper size={20} />, path: '/artikel_admin' },
+    { name: 'Daftar Admin', icon: <RiAdminLine size={20} />, path: '/daftar-admin' },
     { name: 'Testimoni', icon: <MessageSquare size={20} />, path: '/testimoni-admin' },
     { name: 'Penjualan', icon: <ClipboardList size={20} />, path: '/penjualan' },
     { name: 'Pelanggan', icon: <Users size={20} />, path: '/pelanggan' },

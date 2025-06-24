@@ -14,7 +14,6 @@ import FormFaq from './pages/FormFaq';
 import FAQAdmin from './pages/FAQAdmin';
 import User from './pages/User';
 import TravelAdmin from './pages/TravelAdmin';
-import HotelAdmin from './pages/HotelAdmin';
 import PaketWisataAdmin from './pages/PaketWisataAdmin';
 
 
@@ -35,6 +34,10 @@ import SalesReportAdmin from './pages/SalesReportAdmin';
 import TiketPesawat from './pages/TiketPesawatAdmin';
 import FormOrderTravel from './customers/pages/FormOrderTravel'; 
 import FormOrderTiketPesawat from './customers/pages/FormOrderTiketPesawat';
+import ListTiketPesawatCustomer from './customers/pages/ListTiketPesawatCustomer';
+import FormFinalTiketPesawat from './customers/pages/FormFinalTiketPesawat';
+import KonfirmasiPembayaran from './customers/pages/KonfirmasiPembayaranTiketPesawat';
+import DaftarAdmin from './pages/DaftarAdmin';
 
 
 function App() {
@@ -58,6 +61,9 @@ function App() {
         <Route path="/profilcustomer" element={<ProfilCustomer />} />
         <Route path="/order-customer/travel" element={<FormOrderTravel />} />
         <Route path="/order-customer/tiket-pesawat" element={< FormOrderTiketPesawat />} /> 
+        <Route path="/list-tiket-pesawat" element={< ListTiketPesawatCustomer />} /> 
+        <Route path="/form-final-tiket" element={<FormFinalTiketPesawat />} />
+        <Route path="/konfirmasi-pembayaran" element={<KonfirmasiPembayaran />} />
       </Route>
 
       {/* Admin Routes */}
@@ -74,10 +80,10 @@ function App() {
         <Route path="/testimoni-admin" element={< TestimoniAdmin />} />
         <Route path="/produk/paket-wisata" element={< PaketWisataAdmin />} />
         <Route path="/produk/travel" element={< TravelAdmin />} />
-        <Route path="/produk/hotel" element={< HotelAdmin />} />
         <Route path="/laporan" element={< SalesReportAdmin />} />
         <Route path="/produk/tiket-pesawat" element={< TiketPesawat />} />
         <Route path="/produk/travel" element={< TravelAdmin />} /> 
+        <Route path="/daftar-admin" element={< DaftarAdmin />} /> 
       </Route>
     </Routes>
   );
