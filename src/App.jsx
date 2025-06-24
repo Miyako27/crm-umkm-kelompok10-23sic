@@ -35,6 +35,8 @@ import SalesReportAdmin from './pages/SalesReportAdmin';
 import TiketPesawat from './pages/TiketPesawatAdmin';
 import FormOrderTravel from './customers/pages/FormOrderTravel'; 
 import FormOrderTiketPesawat from './customers/pages/FormOrderTiketPesawat';
+import ListTiketTravelCustomer from './customers/pages/ListTiketTravelCustomer';
+import FormFinalTravel from './customers/pages/FormFinalTravel';
 
 
 function App() {
@@ -58,6 +60,8 @@ function App() {
         <Route path="/profilcustomer" element={<ProfilCustomer />} />
         <Route path="/order-customer/travel" element={<FormOrderTravel />} />
         <Route path="/order-customer/tiket-pesawat" element={< FormOrderTiketPesawat />} /> 
+        <Route path="/order-customer/travel/list" element={<ListTiketTravelCustomer />} />
+        <Route path="/order-customer/travel/pemesanan" element={<FormFinalTravel />} />
       </Route>
 
       {/* Admin Routes */}
