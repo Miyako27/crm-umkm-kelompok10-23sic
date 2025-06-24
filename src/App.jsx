@@ -14,7 +14,6 @@ import FormFaq from './pages/FormFaq';
 import FAQAdmin from './pages/FAQAdmin';
 import User from './pages/User';
 import TravelAdmin from './pages/TravelAdmin';
-import HotelAdmin from './pages/HotelAdmin';
 import PaketWisataAdmin from './pages/PaketWisataAdmin';
 
 
@@ -78,7 +77,6 @@ function App() {
         <Route path="/testimoni-admin" element={< TestimoniAdmin />} />
         <Route path="/produk/paket-wisata" element={< PaketWisataAdmin />} />
         <Route path="/produk/travel" element={< TravelAdmin />} />
-        <Route path="/produk/hotel" element={< HotelAdmin />} />
         <Route path="/laporan" element={< SalesReportAdmin />} />
         <Route path="/produk/tiket-pesawat" element={< TiketPesawat />} />
         <Route path="/produk/travel" element={< TravelAdmin />} /> 

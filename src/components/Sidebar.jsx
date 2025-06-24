@@ -31,7 +31,6 @@ const Sidebar = () => {
       submenus: [
         { name: 'Travel', path: '/produk/travel' },
         { name: 'Tiket Pesawat', path: '/produk/tiket-pesawat' },
-        { name: 'Hotel', path: '/produk/hotel' },
         { name: 'Paket Wisata', path: '/produk/paket-wisata' },
       ]
     },

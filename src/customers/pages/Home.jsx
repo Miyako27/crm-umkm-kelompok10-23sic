@@ -1,7 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { supabase } from '../../supabase';
 
 const Home = () => {
+  const [paketWisata, setPaketWisata] = useState([]);
+  const [artikelList, setArtikelList] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data: paketData } = await supabase
+        .from("paketwisata")
+        .select("*")
+        .order("id_paket", { ascending: false })
+        .limit(3);
+
+      const { data: artikelData } = await supabase
+        .from("artikel")
+        .select("*")
+        .order("id_artikel", { ascending: false })
+        .limit(3);
+
+      setPaketWisata(paketData || []);
+      setArtikelList(artikelData || []);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="font-sans">
       {/* Hero Banner */}
@@ -12,25 +37,16 @@ const Home = () => {
           className="w-full h-full object-cover"
         />
 
-        {/* Gradient overlay */}
-        {/* <div className="absolute inset-0 bg-gradient-to-r from-[rgba(230,80,40,0.7)] to-[rgba(255,165,0,0.3)]"></div> */}
-
-        {/* Hero content placeholder */}
-        <div className="absolute bottom-12 left-5 z-10 text-white">
-          {/* Jika ada teks atau logo di sini bisa ditambahkan */}
-        </div>
+        <div className="absolute bottom-12 left-5 z-10 text-white"></div>
       </div>
 
       {/* Promo */}
       <section className="mt-14 mb-14 bg-[#FAF9F6] text-black py-10 px-20 flex flex-col md:flex-row items-center relative overflow-hidden rounded-xl max-w-full mx-auto">
-        {/* Decorative circles */}
         <div className="absolute -top-12 -left-12 w-36 h-36 bg-yellow-400 rounded-full opacity-30 animate-pulse blur-xl"></div>
         <div className="absolute -bottom-14 -right-14 w-44 h-44 bg-yellow-300 rounded-full opacity-20 animate-pulse blur-2xl"></div>
 
-        {/* Left side: Big Discount Circle with Icon */}
         <div className="flex-shrink-0 flex items-center justify-center md:w-1/3 mr-8">
           <div className="relative flex items-center justify-center w-56 h-56 rounded-full bg-orange-600 shadow-lg">
-            {/* Discount tag icon inside circle */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="absolute top-5 left-5 h-12 w-12 text-yellow-300"
@@ -45,30 +61,24 @@ const Home = () => {
                 d="M7 7h.01M7 7L3 11l5 5 4-4-5-5zm4 4l5 5 4-4-5-5-4 4z"
               />
             </svg>
-
-            {/* Diskon Text */}
             <h2 className="text-7xl font-extrabold text-white leading-none z-10 select-none">
               30%
             </h2>
           </div>
         </div>
 
-        {/* Right side: Text + Button */}
         <div className="flex flex-col justify-between md:w-2/3 h-52 md:h-44 z-10 ml-8">
           <div>
             <h3 className="text-3xl md:text-4xl font-extrabold mb-4">
               Diskon Spesial Akhir Tahun! 🎉
             </h3>
             <p className="text-lg md:text-xl leading-relaxed tracking-wide mb-6">
-              Dapatkan potongan hingga{" "}
-              <span className="font-bold text-orange-600">30%</span> untuk semua
+              Dapatkan potongan hingga <span className="font-bold text-orange-600">30%</span> untuk semua
               paket wisata pilihan kami.
               <br />
-              Jangan lewatkan kesempatan liburan hemat dan seru bersama{" "}
-              <span className="underline font-semibold">Tripenya</span>!
+              Jangan lewatkan kesempatan liburan hemat dan seru bersama <span className="underline font-semibold">Tripenya</span>!
             </p>
           </div>
-
           <Link
             to="/promo"
             className="self-start border-2 border-orange-600 text-orange-600 font-semibold rounded-full px-10 py-2 hover:bg-orange-100 hover:text-orange-700 transition transform duration-300"
@@ -80,27 +90,18 @@ const Home = () => {
 
       {/* Tentang Kami Section */}
       <section className="mb-20 px-10 max-w-7xl mx-auto">
-        {/* Header */}
         <h2 className="text-4xl font-extrabold text-center mb-10">
           Selamat Datang di <span className="text-orange-600">Tripenya</span>!
         </h2>
-
-        {/* Content Row */}
         <div className="flex flex-col md:flex-row gap-12 md:gap-20">
-          {/* Left: Tentang Kami */}
           <div className="md:w-1/2">
             <h3 className="text-2xl font-bold mb-4 border-l-4 border-orange-600 pl-4">
               Tentang Kami
             </h3>
             <p className="text-lg leading-relaxed text-gray-700">
-              Tripenya adalah platform perjalanan terpercaya yang menyediakan
-              berbagai paket wisata menarik dan terjangkau. Kami berkomitmen
-              memberikan pengalaman liburan terbaik bagi pelanggan kami dengan
-              pelayanan profesional dan paket wisata berkualitas.
+              Tripenya adalah platform perjalanan terpercaya yang menyediakan berbagai paket wisata menarik dan terjangkau. Kami berkomitmen memberikan pengalaman liburan terbaik bagi pelanggan kami dengan pelayanan profesional dan paket wisata berkualitas.
             </p>
           </div>
-
-          {/* Right: Kenapa Memilih Kami */}
           <div className="md:w-1/2">
             <h3 className="text-2xl font-bold mb-4 border-l-4 border-orange-600 pl-4">
               Kenapa Memilih Kami
@@ -118,7 +119,6 @@ const Home = () => {
 
       {/* Paket Wisata Section */}
       <section className="mb-20 px-10 max-w-7xl mx-auto">
-        {/* Header with Orange Line Above */}
         <div className="mb-10">
           <div className="w-16 h-1 bg-orange-600 mb-3"></div>
           <h2 className="text-3xl font-extrabold text-left">
@@ -126,92 +126,27 @@ const Home = () => {
           </h2>
         </div>
 
-        {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Paket 1 */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
-            <img
-              src="https://cdn.audleytravel.com/2478/1770/79/16027396-pura-ulun-danu-bratan-bali.jpg"
-              alt="Bali"
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-5">
-              <h3 className="text-xl font-bold mb-2">Bali 4 Hari 3 Malam</h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Eksplorasi keindahan Bali dari pantai hingga budaya lokal.
-                Termasuk hotel & transportasi.
-              </p>
-              <span className="text-orange-600 font-bold text-lg block mb-2">
-                Rp 2.500.000/orang
-              </span>
-              <Link
-                to="#"
-                className="text-orange-600 font-semibold hover:underline"
-              >
-                Pesan Sekarang →
-              </Link>
+          {paketWisata.map((paket, index) => (
+            <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
+              <img src={paket.gambar_url} alt={paket.nama_paket} className="w-full h-48 object-cover" />
+              <div className="p-5">
+                <h3 className="text-xl font-bold mb-2">{paket.nama_paket}</h3>
+                <p className="text-gray-600 text-sm mb-4">{paket.deskripsi}</p>
+                <span className="text-orange-600 font-bold text-lg block mb-2">
+                  Rp {parseInt(paket.harga).toLocaleString()}/orang
+                </span>
+                <Link to="#" className="text-orange-600 font-semibold hover:underline">
+                  Pesan Sekarang →
+                </Link>
+              </div>
             </div>
-          </div>
-
-          {/* Paket 2 */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
-            <img
-              src="https://agievent.com/public/uploads/0000/1/2020/06/02/yogyakarta-heritage-tour-borobudur-and-prambanan-promo.jpg"
-              alt="Yogyakarta"
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-5">
-              <h3 className="text-xl font-bold mb-2">
-                Yogyakarta Heritage Tour
-              </h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Kunjungi candi, museum, dan tempat ikonik di Jogja bersama
-                pemandu lokal.
-              </p>
-              <span className="text-orange-600 font-bold text-lg block mb-2">
-                Rp 1.800.000/orang
-              </span>
-              <Link
-                to="#"
-                className="text-orange-600 font-semibold hover:underline"
-              >
-                Pesan Sekarang →
-              </Link>
-            </div>
-          </div>
-
-          {/* Paket 3 */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
-            <img
-              src="https://lingkarwilis.com/wp-content/uploads/2024/10/labuannnnnn.webp"
-              alt="Labuan Bajo"
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-5">
-              <h3 className="text-xl font-bold mb-2">
-                Labuan Bajo & Komodo Adventure
-              </h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Petualangan laut dan pulau eksotis, termasuk kunjungan ke Pulau
-                Komodo.
-              </p>
-              <span className="text-orange-600 font-bold text-lg block mb-2">
-                Rp 3.900.000/orang
-              </span>
-              <Link
-                to="#"
-                className="text-orange-600 font-semibold hover:underline"
-              >
-                Pesan Sekarang →
-              </Link>
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Selengkapnya Button */}
         <div className="text-center mt-10">
           <Link
-            to="/order-customer"
+            to="/order-customer/paket-wisata"
             className="inline-block border-2 border-orange-600 text-orange-600 font-semibold rounded-full px-8 py-3 hover:bg-orange-100 hover:text-orange-700 transition"
           >
             Lihat Semua Paket
@@ -221,91 +156,28 @@ const Home = () => {
 
       {/* Artikel Section */}
       <section className="mb-20 px-10 max-w-7xl mx-auto">
-        {/* Header with Orange Line Above */}
         <div className="mb-10">
-          <div className="w-16 h-1 bg-orange-600 mb-3"></div>{" "}
-          {/* Garis orange di atas */}
+          <div className="w-16 h-1 bg-orange-600 mb-3"></div>
           <h2 className="text-3xl font-extrabold text-left">
             Artikel & Tips Perjalanan
           </h2>
         </div>
 
-        {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Artikel 1 */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
-            <img
-              src="https://cdn1-production-images-kly.akamaized.net/vPpLKNpIZBz0UpEa7kTXo0leseU=/1200x675/smart/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/1573413/original/032386100_1492757560-Traveling4.jpg"
-              alt="Artikel 1"
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-5">
-              <h3 className="text-xl font-bold mb-2">
-                Tips Liburan Hemat di Musim Libur
-              </h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Pelajari cara mengatur budget agar liburan tetap menyenangkan
-                tanpa menguras dompet.
-              </p>
-              <Link
-                to="#"
-                className="text-orange-600 font-semibold hover:underline"
-              >
-                Baca Selengkapnya →
-              </Link>
+          {artikelList.map((artikel, index) => (
+            <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
+              <img src={artikel.gambar} alt={artikel.judul} className="w-full h-48 object-cover" />
+              <div className="p-5">
+                <h3 className="text-xl font-bold mb-2">{artikel.judul}</h3>
+                <p className="text-gray-600 text-sm mb-4">{artikel.deskripsi_artikel}</p>
+                <Link to="#" className="text-orange-600 font-semibold hover:underline">
+                  Baca Selengkapnya →
+                </Link>
+              </div>
             </div>
-          </div>
-
-          {/* Artikel 2 */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
-            <img
-              src="https://pagaralampos.bacakoran.co/upload/ea45770abc4e309f1913ae971f19a964.jpg"
-              alt="Artikel 2"
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-5">
-              <h3 className="text-xl font-bold mb-2">
-                Destinasi Alam Terbaik untuk Tahun Ini
-              </h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Jelajahi keindahan alam Indonesia yang wajib masuk dalam daftar
-                perjalananmu.
-              </p>
-              <Link
-                to="#"
-                className="text-orange-600 font-semibold hover:underline"
-              >
-                Baca Selengkapnya →
-              </Link>
-            </div>
-          </div>
-
-          {/* Artikel 3 */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
-            <img
-              src="https://assets-a1.kompasiana.com/items/album/2021/09/17/suku-melayu-6143ea1306310e657c711402.jpg"
-              alt="Artikel 3"
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-5">
-              <h3 className="text-xl font-bold mb-2">
-                Mengenal Budaya Lokal Saat Bepergian
-              </h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Panduan berinteraksi dengan penduduk lokal untuk pengalaman yang
-                lebih otentik.
-              </p>
-              <Link
-                to="#"
-                className="text-orange-600 font-semibold hover:underline"
-              >
-                Baca Selengkapnya →
-              </Link>
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Selengkapnya Button */}
         <div className="text-center mt-10">
           <Link
             to="/artikel"
