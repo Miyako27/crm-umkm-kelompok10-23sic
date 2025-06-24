@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from '../../supabase';
+import bcrypt from "bcryptjs";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -15,10 +16,9 @@ export default function Login() {
       .from("admin")
       .select("*")
       .eq("email", email)
-      .eq("password", password)
       .single();
 
-    if (admin) {
+    if (admin && await bcrypt.compare(password, admin.password)) {
       localStorage.setItem("user_login", JSON.stringify({ email: admin.email, role: "admin" }));
       return navigate("/dashboard");
     }
@@ -50,7 +50,7 @@ export default function Login() {
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-            <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)}  placeholder="Masukkan Email" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" required />
+            <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Masukkan Email" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" required />
           </div>
 
           <div className="mb-4">
