@@ -57,7 +57,7 @@ const FAQ = () => {
           {/* Ilustrasi kiri */}
           <div className="hidden md:flex justify-center items-center">
             <img
-              src="/faq-img.png"
+              src="/images/FAQ.png"
               alt="FAQ Illustration"
               className="max-w-sm"
             />
