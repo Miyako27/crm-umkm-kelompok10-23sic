@@ -1,50 +1,25 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function FormOrderTiketPesawat() {
+export default function FormCariTiketPesawat() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     dari: "",
     ke: "",
-    waktuPergi: "",
-    waktuPulang: "",
+    tanggalPergi: "",
+    tanggalPulang: "",
     maskapai: "",
     kelas: "",
     jumlahPenumpang: "1",
-    kursi: [""],
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    if (name === "jumlahPenumpang") {
-      if (value === "") {
-        setFormData((prev) => ({
-          ...prev,
-          jumlahPenumpang: "",
-          kursi: [],
-        }));
-      } else {
-        const jumlah = parseInt(value);
-        if (!isNaN(jumlah)) {
-          const kursiKosong = Array(jumlah).fill("");
-          setFormData((prev) => ({
-            ...prev,
-            jumlahPenumpang: value,
-            kursi: kursiKosong,
-          }));
-        } else {
-          setFormData((prev) => ({
-            ...prev,
-            jumlahPenumpang: value,
-            kursi: [],
-          }));
-        }
-      }
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleBlurJumlah = () => {
@@ -54,19 +29,15 @@ export default function FormOrderTiketPesawat() {
     setFormData((prev) => ({
       ...prev,
       jumlahPenumpang: jumlah.toString(),
-      kursi: Array(jumlah).fill(""),
     }));
-  };
-
-  const handleKursiChange = (index, value) => {
-    const newKursi = [...formData.kursi];
-    newKursi[index] = value;
-    setFormData((prev) => ({ ...prev, kursi: newKursi }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Tiket Pesawat Dipesan:", formData);
+    // Simpan data pencarian sementara jika perlu
+    localStorage.setItem("pencarianPesawat", JSON.stringify(formData));
+    // Navigasi ke halaman daftar tiket pesawat
+    navigate("/list-tiket-pesawat", { state: formData });
   };
 
   return (
@@ -76,7 +47,7 @@ export default function FormOrderTiketPesawat() {
     >
       <div className="max-w-xl w-full mx-4 p-6 bg-white rounded-xl shadow-md mb-20">
         <h2 className="text-2xl font-bold mb-6 text-center text-orange-500">
-          Form Order Tiket Pesawat
+          Cari Tiket Pesawat
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Dari */}
@@ -87,7 +58,7 @@ export default function FormOrderTiketPesawat() {
             <input
               type="text"
               name="dari"
-              placeholder="Contoh: Pekanbaru"
+              placeholder="Contoh: Jakarta"
               value={formData.dari}
               onChange={handleChange}
               required
@@ -103,7 +74,7 @@ export default function FormOrderTiketPesawat() {
             <input
               type="text"
               name="ke"
-              placeholder="Contoh: Bandung"
+              placeholder="Contoh: Bali"
               value={formData.ke}
               onChange={handleChange}
               required
@@ -111,43 +82,51 @@ export default function FormOrderTiketPesawat() {
             />
           </div>
 
-          {/* Maskapai */}
+          {/* Tanggal Pergi */}
           <div>
-            <label htmlFor="maskapai" className="block font-semibold text-gray-700 mb-1">
-              Maskapai
+            <label htmlFor="tanggalPergi" className="block font-semibold text-gray-700 mb-1">
+              Tanggal Pergi
             </label>
-            <select
-              name="maskapai"
-              value={formData.maskapai}
+            <input
+              type="date"
+              name="tanggalPergi"
+              value={formData.tanggalPergi}
               onChange={handleChange}
               required
               className="w-full border border-gray-300 rounded-md px-4 py-2"
-            >
-              <option value="">Pilih Maskapai</option>
-              <option value="Garuda Indonesia">Garuda Indonesia</option>
-              <option value="Lion Air">Lion Air</option>
-              <option value="Citilink">Citilink</option>
-              <option value="AirAsia">AirAsia</option>
-            </select>
+            />
+          </div>
+
+          {/* Tanggal Pulang (opsional) */}
+          <div>
+            <label htmlFor="tanggalPulang" className="block font-semibold text-gray-700 mb-1">
+              Tanggal Pulang <span className="text-sm text-gray-400">(opsional)</span>
+            </label>
+            <input
+              type="date"
+              name="tanggalPulang"
+              value={formData.tanggalPulang}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-md px-4 py-2"
+            />
           </div>
 
           {/* Kelas */}
           <div>
             <label htmlFor="kelas" className="block font-semibold text-gray-700 mb-1">
-              Kelas
+              Kelas (opsional)
             </label>
             <select
               name="kelas"
               value={formData.kelas}
               onChange={handleChange}
-              required
               className="w-full border border-gray-300 rounded-md px-4 py-2"
             >
-              <option value="">Pilih Kelas</option>
+              <option value="">Semua Kelas</option>
               <option value="Ekonomi">Ekonomi</option>
               <option value="Bisnis">Bisnis</option>
               <option value="First Class">First Class</option>
-              <option value="First Class">Premium Ekonomi</option>
+              <option value="Premium Ekonomi">Premium Ekonomi</option>
             </select>
           </div>
 
@@ -167,41 +146,12 @@ export default function FormOrderTiketPesawat() {
             />
           </div>
 
-          {/* Waktu Pergi */}
-          <div>
-            <label htmlFor="waktuPergi" className="block font-semibold text-gray-700 mb-1">
-              Waktu Pergi
-            </label>
-            <input
-              type="datetime-local"
-              name="waktuPergi"
-              value={formData.waktuPergi}
-              onChange={handleChange}
-              required
-              className="w-full border border-gray-300 rounded-md px-4 py-2"
-            />
-          </div>
-
-          {/* Waktu Pulang */}
-          <div>
-            <label htmlFor="waktuPulang" className="block font-semibold text-gray-700 mb-1">
-              Waktu Pulang <span className="text-sm text-gray-400">(opsional)</span>
-            </label>
-            <input
-              type="datetime-local"
-              name="waktuPulang"
-              value={formData.waktuPulang}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md px-4 py-2"
-            />
-          </div>
-
           {/* Tombol */}
           <button
             type="submit"
             className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded-md transition"
           >
-            Cari
+            Cari Tiket
           </button>
         </form>
       </div>

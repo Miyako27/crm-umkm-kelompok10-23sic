@@ -8,7 +8,8 @@ const defaultForm = {
   kelas: '',
   harga: '',
   jumlah_kursi: '',
-  waktu_berangkat: '' // format: YYYY-MM-DDTHH:MM
+  waktu_berangkat: '',
+  promo_tiketpesawat: false
 };
 
 export default function FormTiketPesawat({ addTiket = () => {}, updateTiket = () => {}, editingTiket = null }) {
@@ -25,7 +26,8 @@ export default function FormTiketPesawat({ addTiket = () => {}, updateTiket = ()
         kelas: editingTiket.kelas || '',
         harga: editingTiket.harga || '',
         jumlah_kursi: editingTiket.jumlah_kursi || '',
-        waktu_berangkat: waktu.toISOString().slice(0, 16) // YYYY-MM-DDTHH:MM
+        waktu_berangkat: waktu.toISOString().slice(0, 16),
+        promo_tiketpesawat: editingTiket.promo_tiketpesawat === 1
       });
     } else {
       setForm(defaultForm);
@@ -33,8 +35,9 @@ export default function FormTiketPesawat({ addTiket = () => {}, updateTiket = ()
   }, [editingTiket]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    const newValue = type === 'checkbox' ? checked : value;
+    setForm((prev) => ({ ...prev, [name]: newValue }));
   };
 
   const handleSubmit = (e) => {
@@ -47,23 +50,19 @@ export default function FormTiketPesawat({ addTiket = () => {}, updateTiket = ()
 
     const preparedData = {
       ...form,
+      id: editingTiket?.id,
       harga: parseFloat(form.harga),
       jumlah_kursi: parseInt(form.jumlah_kursi),
-      waktu_berangkat: new Date(form.waktu_berangkat).toISOString()
+      waktu_berangkat: new Date(form.waktu_berangkat).toISOString(),
+      promo_tiketpesawat: form.promo_tiketpesawat ? 1 : 0
     };
 
-    if (editingTiket) {
-      updateTiket(preparedData);
-    } else {
-      addTiket(preparedData);
-    }
-
+    editingTiket ? updateTiket(preparedData) : addTiket(preparedData);
     setForm(defaultForm);
   };
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6">
-
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-xl shadow-md border border-gray-200"
@@ -95,18 +94,33 @@ export default function FormTiketPesawat({ addTiket = () => {}, updateTiket = ()
             </div>
           ))}
 
-          <div className="md:col-span-2">
-            <label className="block text-sm font-medium mb-1">Waktu Berangkat</label>
-            <input
-              type="datetime-local"
-              name="waktu_berangkat"
-              value={form.waktu_berangkat}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md p-2"
-              required
-            />
+          {/* Waktu Berangkat + Promo checkbox */}
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+            <div>
+              <label className="block text-sm font-medium mb-1">Waktu Berangkat</label>
+              <input
+                type="datetime-local"
+                name="waktu_berangkat"
+                value={form.waktu_berangkat}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-md p-2"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Apakah Promo?</label>
+              <input
+                type="checkbox"
+                name="promo_tiketpesawat"
+                checked={form.promo_tiketpesawat}
+                onChange={handleChange}
+                className="w-6 h-6 text-orange-500 accent-orange-500 mt-1"
+              />
+            </div>
           </div>
 
+          {/* Kelas */}
           <div className="md:col-span-2">
             <label className="block text-sm font-medium mb-1">Kelas</label>
             <select

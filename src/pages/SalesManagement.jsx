@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../supabase';
 import { Link } from 'react-router-dom';
-import { FaEnvelope } from 'react-icons/fa';
+import { FaEnvelope, FaEdit } from 'react-icons/fa';
 
 function PenjualanTiketAdmin() {
   const [penjualan, setPenjualan] = useState([]);
@@ -17,8 +17,25 @@ function PenjualanTiketAdmin() {
   };
 
   const handleKirimEmail = (item) => {
-    // Ganti logika ini dengan pengiriman email aktual
     alert(`Kirim email ke: ${item.nama_pelanggan}`);
+  };
+
+  const handleUbahStatus = async (id_penjualan) => {
+    const konfirmasi = window.confirm('Yakin ingin mengubah status menjadi Lunas?');
+    if (!konfirmasi) return;
+
+    const { error } = await supabase
+      .from('penjualan')
+      .update({ status: 'lunas' })
+      .eq('id_penjualan', id_penjualan);
+
+    if (error) {
+      console.error(error);
+      alert('Gagal mengubah status');
+    } else {
+      alert('Status berhasil diubah menjadi Lunas');
+      fetchPenjualan(); // refresh data
+    }
   };
 
   useEffect(() => {
@@ -68,20 +85,28 @@ function PenjualanTiketAdmin() {
                   <td className="px-4 py-3">Rp {parseFloat(item.total_harga).toLocaleString()}</td>
                   <td className="px-4 py-3 capitalize">{item.metode_pembayaran}</td>
                   <td className="px-4 py-3 capitalize">{item.status}</td>
-                  <td className="px-4 py-3 text-center">
+                  <td className="px-4 py-3 text-center flex gap-2 justify-center">
                     {item.status.toLowerCase() !== 'lunas' ? (
-                      <button
-                        onClick={() => handleKirimEmail(item)}
-                        className="text-orange-600 hover:text-blue-800 text-xl"
-                        title="Kirim Email Pengingat"
-                      >
-                        <FaEnvelope />
-                      </button>
+                      <>
+                        <button
+                          onClick={() => handleUbahStatus(item.id_penjualan)}
+                          className="text-green-600 hover:text-green-800 text-xl"
+                          title="Tandai Lunas"
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          onClick={() => handleKirimEmail(item)}
+                          className="text-orange-600 hover:text-blue-800 text-xl"
+                          title="Kirim Email Pengingat"
+                        >
+                          <FaEnvelope />
+                        </button>
+                      </>
                     ) : (
                       <span className="text-gray-500">N/A</span>
                     )}
                   </td>
-
                 </tr>
               ))}
               {penjualan.length === 0 && (
