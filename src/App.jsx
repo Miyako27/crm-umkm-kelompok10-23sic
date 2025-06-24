@@ -34,9 +34,9 @@ import SalesReportAdmin from './pages/SalesReportAdmin';
 import TiketPesawat from './pages/TiketPesawatAdmin';
 import FormOrderTravel from './customers/pages/FormOrderTravel'; 
 import FormOrderTiketPesawat from './customers/pages/FormOrderTiketPesawat';
+import CheckoutPage from './customers/pages/CheckoutPage';
 import ListTiketTravelCustomer from './customers/pages/ListTiketTravelCustomer';
 import FormFinalTravel from './customers/pages/FormFinalTravel';
-
 
 function App() {
   return (
@@ -59,6 +59,8 @@ function App() {
         <Route path="/profilcustomer" element={<ProfilCustomer />} />
         <Route path="/order-customer/travel" element={<FormOrderTravel />} />
         <Route path="/order-customer/tiket-pesawat" element={< FormOrderTiketPesawat />} /> 
+        <Route path="/order-customer/paket-wisata" element={<Order />} />
+        <Route path="/checkout" element={<CheckoutPage />} /> 
         <Route path="/order-customer/travel/list" element={<ListTiketTravelCustomer />} />
         <Route path="/order-customer/travel/pemesanan" element={<FormFinalTravel />} />
       </Route>
