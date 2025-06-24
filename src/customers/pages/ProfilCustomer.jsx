@@ -52,7 +52,7 @@ const ProfilCustomer = () => {
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
               <img
-                src={userData.foto || 'https://via.placeholder.com/150'}
+                src={userData.foto || 'https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg'}
                 alt="Foto Profil"
                 className="w-20 h-20 rounded-full border-4 border-white shadow-md object-cover"
               />
