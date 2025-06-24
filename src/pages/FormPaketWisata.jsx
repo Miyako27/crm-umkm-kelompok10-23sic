@@ -12,12 +12,16 @@ export default function FormPaketWisata({ addProduk, updateProduk, editingProduk
     tanggal_berangkat: '',
     tanggal_kembali: '',
     kuota: '',
-    status: 'Aktif'
+    status: 'Aktif',
+    promo_paketwisata: false
   });
 
   useEffect(() => {
     if (editingProduk) {
-      setForm(editingProduk);
+      setForm({
+        ...editingProduk,
+        promo_paketwisata: editingProduk.promo_paketwisata === 1
+      });
     } else {
       setForm({
         nama_paket: '',
@@ -30,21 +34,30 @@ export default function FormPaketWisata({ addProduk, updateProduk, editingProduk
         tanggal_berangkat: '',
         tanggal_kembali: '',
         kuota: '',
-        status: 'Aktif'
+        status: 'Aktif',
+        promo_paketwisata: false
       });
     }
   }, [editingProduk]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    const newValue = type === 'checkbox' ? checked : value;
+    setForm((prev) => ({ ...prev, [name]: newValue }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.nama_paket || !form.harga) return;
 
-    editingProduk ? updateProduk(form) : addProduk(form);
+    const cleanData = {
+      ...form,
+      harga: parseFloat(form.harga),
+      kuota: form.kuota ? parseInt(form.kuota) : null,
+      promo_paketwisata: form.promo_paketwisata ? 1 : 0
+    };
+
+    editingProduk ? updateProduk(cleanData) : addProduk(cleanData);
 
     setForm({
       nama_paket: '',
@@ -57,25 +70,27 @@ export default function FormPaketWisata({ addProduk, updateProduk, editingProduk
       tanggal_berangkat: '',
       tanggal_kembali: '',
       kuota: '',
-      status: 'Aktif'
+      status: 'Aktif',
+      promo_paketwisata: false
     });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-md border border-gray-200 max-w-4xl mx-auto">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white p-6 rounded-xl shadow-md border border-gray-200 max-w-4xl mx-auto"
+    >
       <h2 className="text-lg font-semibold text-gray-700 mb-4">
         {editingProduk ? 'Edit Paket Wisata' : 'Tambah Paket Wisata'}
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {[
-          { label: 'Nama Paket', name: 'nama_paket' },
+        {[{ label: 'Nama Paket', name: 'nama_paket' },
           { label: 'Lokasi Tujuan', name: 'lokasi_tujuan' },
           { label: 'Durasi', name: 'durasi' },
           { label: 'Harga', name: 'harga' },
           { label: 'Gambar URL', name: 'gambar_url' },
-          { label: 'Kuota', name: 'kuota' }
-        ].map(({ label, name }) => (
+          { label: 'Kuota', name: 'kuota' }].map(({ label, name }) => (
           <div key={name}>
             <label className="block text-sm font-medium mb-1">{label}</label>
             <input
@@ -89,7 +104,6 @@ export default function FormPaketWisata({ addProduk, updateProduk, editingProduk
           </div>
         ))}
 
-        {/* Jenis Paket dan Status */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:col-span-2">
           <div>
             <label className="block text-sm font-medium mb-1">Jenis Paket</label>
@@ -120,12 +134,11 @@ export default function FormPaketWisata({ addProduk, updateProduk, editingProduk
           </div>
         </div>
 
-        {/* Tanggal Berangkat & Kembali */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:col-span-2">
           <div>
             <label className="block text-sm font-medium mb-1">Tanggal Berangkat</label>
             <input
-              type="date"
+              type="datetime-local"
               name="tanggal_berangkat"
               value={form.tanggal_berangkat}
               onChange={handleChange}
@@ -135,7 +148,7 @@ export default function FormPaketWisata({ addProduk, updateProduk, editingProduk
           <div>
             <label className="block text-sm font-medium mb-1">Tanggal Kembali</label>
             <input
-              type="date"
+              type="datetime-local"
               name="tanggal_kembali"
               value={form.tanggal_kembali}
               onChange={handleChange}
@@ -144,7 +157,19 @@ export default function FormPaketWisata({ addProduk, updateProduk, editingProduk
           </div>
         </div>
 
-        {/* Deskripsi */}
+        <div className="md:col-span-2 grid grid-cols-2 gap-4 items-start">
+          <div>
+            <label className="block text-sm font-medium mb-1">Apakah Promo?</label>
+            <input
+              type="checkbox"
+              name="promo_paketwisata"
+              checked={form.promo_paketwisata}
+              onChange={handleChange}
+              className="w-6 h-6 text-orange-500 accent-orange-500 mt-1"
+            />
+          </div>
+        </div>
+
         <div className="md:col-span-2">
           <label className="block text-sm font-medium mb-1">Deskripsi</label>
           <textarea

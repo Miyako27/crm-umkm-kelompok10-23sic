@@ -38,7 +38,9 @@ import ListTiketPesawatCustomer from './customers/pages/ListTiketPesawatCustomer
 import FormFinalTiketPesawat from './customers/pages/FormFinalTiketPesawat';
 import KonfirmasiPembayaran from './customers/pages/KonfirmasiPembayaranTiketPesawat';
 import DaftarAdmin from './pages/DaftarAdmin';
-
+import CheckoutPage from './customers/pages/CheckoutPage';
+import ListTiketTravelCustomer from './customers/pages/ListTiketTravelCustomer';
+import FormFinalTravel from './customers/pages/FormFinalTravel';
 
 function App() {
   return (
@@ -64,6 +66,10 @@ function App() {
         <Route path="/list-tiket-pesawat" element={< ListTiketPesawatCustomer />} /> 
         <Route path="/form-final-tiket" element={<FormFinalTiketPesawat />} />
         <Route path="/konfirmasi-pembayaran" element={<KonfirmasiPembayaran />} />
+        <Route path="/order-customer/paket-wisata" element={<Order />} />
+        <Route path="/checkout" element={<CheckoutPage />} /> 
+        <Route path="/order-customer/travel/list" element={<ListTiketTravelCustomer />} />
+        <Route path="/order-customer/travel/pemesanan" element={<FormFinalTravel />} />
       </Route>
 
       {/* Admin Routes */}

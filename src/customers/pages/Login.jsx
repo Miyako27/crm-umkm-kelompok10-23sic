@@ -1,48 +1,44 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { supabase } from '../../supabase';
 
 export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Data Dummy
-    const dummyAccounts = [
-      { email: "admin@gmail.com", password: "123", role: "admin" },
-      { email: "user@gmail.com", password: "123", role: "user" },
-    ];
+    // Cek apakah admin
+    const { data: admin } = await supabase
+      .from("admin")
+      .select("*")
+      .eq("email", email)
+      .eq("password", password)
+      .single();
 
-    const foundAccount = dummyAccounts.find(
-      (acc) => acc.email === email && acc.password === password
-    );
+    if (admin) {
+      localStorage.setItem("user_login", JSON.stringify({ email: admin.email, role: "admin" }));
+      return navigate("/dashboard");
+    }
 
-    if (foundAccount) {
-      localStorage.setItem(
-        "user_login",
-        JSON.stringify({
-          email: foundAccount.email,
-          role: foundAccount.role,
-        })
-      );
+    // Login pelanggan via Supabase Auth
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-      if (foundAccount.role === "admin") {
-        navigate("/dashboard");
-      } else {
-        navigate("/");
-      }
-    } else {
+    if (error) {
       alert("Email atau password salah");
+    } else {
+      localStorage.setItem("user_login", JSON.stringify({ email, role: "user" }));
+      navigate("/");
     }
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center"
-      style={{ backgroundImage: "url('/images/loginBg.png')" }}
-    >
+    <div className="min-h-screen flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: "url('/images/loginBg.png')" }}>
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm">
         <div className="flex justify-center mb-6">
           <img src="/images/logoo.png" alt="Logo MJM" className="h-12" />
@@ -53,37 +49,16 @@ export default function Login() {
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              placeholder="Masukkan Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)}  placeholder="Masukkan Email" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" required />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+            <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" required />
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-md"
-          >
+          <button type="submit" className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-md">
             Login
           </button>
         </form>

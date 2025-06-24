@@ -19,15 +19,25 @@ function PaketWisataAdmin() {
   };
 
   const addProduk = async (newData) => {
-    const { error } = await supabase.from('paketwisata').insert(newData);
+    const cleanData = {
+      ...newData,
+      promo_paketwisata: newData.promo_paketwisata ? 1 : 0,
+    };
+
+    const { error } = await supabase.from('paketwisata').insert(cleanData);
     if (error) console.error(error);
     else fetchPaket();
   };
 
   const updateProduk = async (updatedData) => {
+    const cleanData = {
+      ...updatedData,
+      promo_paketwisata: updatedData.promo_paketwisata ? 1 : 0,
+    };
+
     const { error } = await supabase
       .from('paketwisata')
-      .update(updatedData)
+      .update(cleanData)
       .eq('id_paket', updatedData.id_paket);
 
     if (error) console.error(error);
@@ -87,6 +97,7 @@ function PaketWisataAdmin() {
                 <th className="px-4 py-3 font-semibold">Lokasi</th>
                 <th className="px-4 py-3 font-semibold">Harga</th>
                 <th className="px-4 py-3 font-semibold">Kuota</th>
+                <th className="px-4 py-3 font-semibold">Promo</th>
                 <th className="px-4 py-3 font-semibold">Status</th>
                 <th className="px-4 py-3 text-center font-semibold">Aksi</th>
               </tr>
@@ -100,18 +111,25 @@ function PaketWisataAdmin() {
                   <td className="px-4 py-2">{p.lokasi_tujuan}</td>
                   <td className="px-4 py-2">Rp{parseInt(p.harga).toLocaleString()}</td>
                   <td className="px-4 py-2">{p.kuota}</td>
+                  <td className="px-4 py-2">
+                    {p.promo_paketwisata === 1 ? (
+                      <span className="text-green-600 font-semibold">Promo</span>
+                    ) : (
+                      <span className="text-gray-500">Tidak Promo</span>
+                    )}
+                  </td>
                   <td className="px-4 py-2">{p.status}</td>
                   <td className="px-4 py-2 text-center">
                     <button
                       onClick={() => setEditingProduk(p)}
-                      className="text-blue-600 hover:text-blue-800 mx-1"
+                      className="text-blue-600 hover:text-blue-800 mx-1 text-lg"
                       aria-label="Edit"
                     >
                       <FaEdit />
                     </button>
                     <button
                       onClick={() => deleteProduk(p.id_paket)}
-                      className="text-red-600 hover:text-red-800 mx-1"
+                      className="text-red-600 hover:text-red-800 mx-1 text-lg"
                       aria-label="Hapus"
                     >
                       <FaTrash />
@@ -121,7 +139,7 @@ function PaketWisataAdmin() {
               ))}
               {paket.length === 0 && (
                 <tr>
-                  <td colSpan="8" className="px-4 py-4 text-center text-gray-500">
+                  <td colSpan="9" className="px-4 py-4 text-center text-gray-500">
                     Belum ada data paket wisata.
                   </td>
                 </tr>

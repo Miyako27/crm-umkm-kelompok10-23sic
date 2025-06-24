@@ -38,11 +38,7 @@ function TravelAdmin() {
   };
 
   const deleteTravel = async (id) => {
-    const { error } = await supabase
-      .from('travel')
-      .delete()
-      .eq('id_travel', id);
-
+    const { error } = await supabase.from('travel').delete().eq('id_travel', id);
     if (error) console.error(error);
     else fetchTravel();
   };
@@ -68,11 +64,7 @@ function TravelAdmin() {
 
       {/* Form */}
       <div className="max-w-5xl mx-auto">
-        <FormTravel
-          addTravel={addTravel}
-          updateTravel={updateTravel}
-          editingTravel={editingTravel}
-        />
+        <FormTravel addTravel={addTravel} updateTravel={updateTravel} editingTravel={editingTravel} />
       </div>
 
       {/* Table */}
@@ -88,6 +80,7 @@ function TravelAdmin() {
                 <th className="px-4 py-3 font-semibold">Berangkat</th>
                 <th className="px-4 py-3 font-semibold">Harga</th>
                 <th className="px-4 py-3 font-semibold">Kapasitas</th>
+                <th className="px-4 py-3 font-semibold">Promo</th>
                 <th className="px-4 py-3 text-center font-semibold">Aksi</th>
               </tr>
             </thead>
@@ -101,6 +94,13 @@ function TravelAdmin() {
                   <td className="px-4 py-2">{t.tanggal_berangkat}</td>
                   <td className="px-4 py-2">Rp{parseInt(t.harga).toLocaleString()}</td>
                   <td className="px-4 py-2">{t.kapasitas}</td>
+                  <td className="px-4 py-2">
+                    {t.promo_travel === 1 ? (
+                      <span className="text-green-600 font-semibold">Promo</span>
+                    ) : (
+                      <span className="text-gray-500">Tidak Promo</span>
+                    )}
+                  </td>
                   <td className="px-4 py-2 text-center">
                     <button
                       onClick={() => setEditingTravel(t)}
