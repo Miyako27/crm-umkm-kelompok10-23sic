@@ -41,7 +41,7 @@ import DaftarAdmin from './pages/DaftarAdmin';
 import CheckoutPage from './customers/pages/CheckoutPage';
 import ListTiketTravelCustomer from './customers/pages/ListTiketTravelCustomer';
 import FormFinalTravel from './customers/pages/FormFinalTravel';
-import Daming from './pages/daming';
+import Daming from './pages/Daming';
 import Loyalitas from './pages/Loyalitas';
 import LoyaltyPage from './pages/LoyaltyPage';
 
