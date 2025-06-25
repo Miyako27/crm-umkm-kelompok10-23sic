@@ -41,6 +41,9 @@ import DaftarAdmin from './pages/DaftarAdmin';
 import CheckoutPage from './customers/pages/CheckoutPage';
 import ListTiketTravelCustomer from './customers/pages/ListTiketTravelCustomer';
 import FormFinalTravel from './customers/pages/FormFinalTravel';
+import Daming from './pages/daming';
+import Loyalitas from './pages/Loyalitas';
+import LoyaltyPage from './pages/LoyaltyPage';
 
 function App() {
   return (
@@ -90,6 +93,9 @@ function App() {
         <Route path="/produk/tiket-pesawat" element={< TiketPesawat />} />
         <Route path="/produk/travel" element={< TravelAdmin />} /> 
         <Route path="/daftar-admin" element={< DaftarAdmin />} /> 
+        <Route path="/daming" element={< Daming />} /> 
+        <Route path="/loyalitas" element={< Loyalitas />} /> 
+        <Route path="/loyalitas-grafik" element={< LoyaltyPage />} />
       </Route>
     </Routes>
   );

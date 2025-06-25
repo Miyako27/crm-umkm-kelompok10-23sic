@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 export default function FormTravel({ addTravel, updateTravel, editingTravel }) {
   const [form, setForm] = useState({
+    id_travel: null,
     nama_travel: '',
     deskripsi: '',
     asal: '',
@@ -10,26 +11,29 @@ export default function FormTravel({ addTravel, updateTravel, editingTravel }) {
     tanggal_pulang: '',
     harga: '',
     kapasitas: '',
-    promo_travel: false
+    promo_travel: false,
   });
 
   useEffect(() => {
+    const formatDate = (dateString) => {
+      if (!dateString) return '';
+      const date = new Date(dateString);
+      const offset = date.getTimezoneOffset() * 60000;
+      return new Date(date.getTime() - offset).toISOString().slice(0, 16);
+    };
+
     if (editingTravel) {
       setForm({
-        ...editingTravel,
-        promo_travel: editingTravel.promo_travel === 1
-      });
-    } else {
-      setForm({
-        nama_travel: '',
-        deskripsi: '',
-        asal: '',
-        tujuan: '',
-        tanggal_berangkat: '',
-        tanggal_pulang: '',
-        harga: '',
-        kapasitas: '',
-        promo_travel: false
+        id_travel: editingTravel.id_travel ?? null,
+        nama_travel: editingTravel.nama_travel ?? '',
+        deskripsi: editingTravel.deskripsi ?? '',
+        asal: editingTravel.asal ?? '',
+        tujuan: editingTravel.tujuan ?? '',
+        tanggal_berangkat: formatDate(editingTravel.tanggal_berangkat),
+        tanggal_pulang: formatDate(editingTravel.tanggal_pulang),
+        harga: editingTravel.harga ?? '',
+        kapasitas: editingTravel.kapasitas ?? '',
+        promo_travel: editingTravel.promo_travel === 1,
       });
     }
   }, [editingTravel]);
@@ -40,20 +44,31 @@ export default function FormTravel({ addTravel, updateTravel, editingTravel }) {
     setForm((prev) => ({ ...prev, [name]: newValue }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.nama_travel || !form.asal || !form.tujuan || !form.harga || !form.tanggal_berangkat) return;
+
+    if (!form.nama_travel || !form.asal || !form.tujuan || !form.harga || !form.tanggal_berangkat) {
+      alert('Mohon lengkapi data wajib');
+      return;
+    }
 
     const cleanData = {
       ...form,
       harga: parseFloat(form.harga),
       kapasitas: form.kapasitas ? parseInt(form.kapasitas) : null,
-      promo_travel: form.promo_travel ? 1 : 0
+      promo_travel: form.promo_travel ? 1 : 0,
     };
 
-    editingTravel ? updateTravel(cleanData) : addTravel(cleanData);
+    if (form.id_travel) {
+      console.log('Mengirim UPDATE:', cleanData);
+      await updateTravel(cleanData);
+    } else {
+      console.log('Mengirim INSERT:', cleanData);
+      await addTravel(cleanData);
+    }
 
     setForm({
+      id_travel: null,
       nama_travel: '',
       deskripsi: '',
       asal: '',
@@ -62,7 +77,7 @@ export default function FormTravel({ addTravel, updateTravel, editingTravel }) {
       tanggal_pulang: '',
       harga: '',
       kapasitas: '',
-      promo_travel: false
+      promo_travel: false,
     });
   };
 
@@ -72,14 +87,16 @@ export default function FormTravel({ addTravel, updateTravel, editingTravel }) {
       className="bg-white p-6 rounded-xl shadow-md border border-gray-200 max-w-4xl mx-auto"
     >
       <h2 className="text-lg font-semibold text-gray-700 mb-4">
-        {editingTravel ? 'Edit Data Travel' : 'Tambah Data Travel'}
+        {form.id_travel ? 'Edit Data Travel' : 'Tambah Data Travel'}
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {[{ label: 'Nama Travel', name: 'nama_travel' },
+        {[
+          { label: 'Nama Travel', name: 'nama_travel' },
           { label: 'Harga', name: 'harga', type: 'number' },
           { label: 'Asal', name: 'asal' },
-          { label: 'Tujuan', name: 'tujuan' }].map(({ label, name, type = 'text' }) => (
+          { label: 'Tujuan', name: 'tujuan' },
+        ].map(({ label, name, type = 'text' }) => (
           <div key={name}>
             <label className="block text-sm font-medium mb-1">{label}</label>
             <input
@@ -114,9 +131,7 @@ export default function FormTravel({ addTravel, updateTravel, editingTravel }) {
           />
         </div>
 
-        {/* Kapasitas & Promo dalam satu baris */}
         <div className="md:col-span-2 grid grid-cols-2 gap-4 items-start">
-          {/* Kapasitas */}
           <div>
             <label className="block text-sm font-medium mb-1">Kapasitas</label>
             <input
@@ -129,7 +144,6 @@ export default function FormTravel({ addTravel, updateTravel, editingTravel }) {
             />
           </div>
 
-          {/* Promo */}
           <div>
             <label className="block text-sm font-medium mb-1">Apakah Promo?</label>
             <input
@@ -142,7 +156,6 @@ export default function FormTravel({ addTravel, updateTravel, editingTravel }) {
           </div>
         </div>
 
-        {/* Deskripsi */}
         <div className="md:col-span-2">
           <label className="block text-sm font-medium mb-1">Deskripsi</label>
           <textarea
@@ -160,7 +173,7 @@ export default function FormTravel({ addTravel, updateTravel, editingTravel }) {
           type="submit"
           className="w-full bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-semibold"
         >
-          {editingTravel ? 'Perbarui' : 'Simpan'}
+          {form.id_travel ? 'Perbarui' : 'Simpan'}
         </button>
       </div>
     </form>

@@ -14,24 +14,36 @@ function TravelAdmin() {
       .select('*')
       .order('tanggal_berangkat', { ascending: false });
 
-    if (error) console.error(error);
+    if (error) console.error('Error fetch travel:', error);
     else setTravelList(data);
   };
 
   const addTravel = async (newData) => {
     const { error } = await supabase.from('travel').insert(newData);
-    if (error) console.error(error);
-    else fetchTravel();
+    if (error) {
+      console.error('Error insert travel:', error);
+    } else {
+      fetchTravel();
+    }
   };
 
   const updateTravel = async (updatedData) => {
+    if (!updatedData.id_travel) {
+      console.error('id_travel tidak ada. Tidak bisa update.');
+      return;
+    }
+
     const { error } = await supabase
       .from('travel')
-      .update({ ...updatedData, updated_at: new Date().toISOString() })
+      .update({
+        ...updatedData,
+        updated_at: new Date().toISOString(),
+      })
       .eq('id_travel', updatedData.id_travel);
 
-    if (error) console.error(error);
-    else {
+    if (error) {
+      console.error('Error update travel:', error);
+    } else {
       fetchTravel();
       setEditingTravel(null);
     }
@@ -39,8 +51,11 @@ function TravelAdmin() {
 
   const deleteTravel = async (id) => {
     const { error } = await supabase.from('travel').delete().eq('id_travel', id);
-    if (error) console.error(error);
-    else fetchTravel();
+    if (error) {
+      console.error('Error delete travel:', error);
+    } else {
+      fetchTravel();
+    }
   };
 
   useEffect(() => {
@@ -62,12 +77,16 @@ function TravelAdmin() {
         </div>
       </div>
 
-      {/* Form */}
+      {/* Form Travel */}
       <div className="max-w-5xl mx-auto">
-        <FormTravel addTravel={addTravel} updateTravel={updateTravel} editingTravel={editingTravel} />
+        <FormTravel
+          addTravel={addTravel}
+          updateTravel={updateTravel}
+          editingTravel={editingTravel}
+        />
       </div>
 
-      {/* Table */}
+      {/* Tabel Data Travel */}
       <div className="mt-10 overflow-x-auto">
         <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
           <table className="min-w-full divide-y divide-gray-200 text-sm">
@@ -91,7 +110,7 @@ function TravelAdmin() {
                   <td className="px-4 py-2">{t.nama_travel}</td>
                   <td className="px-4 py-2">{t.asal}</td>
                   <td className="px-4 py-2">{t.tujuan}</td>
-                  <td className="px-4 py-2">{t.tanggal_berangkat}</td>
+                  <td className="px-4 py-2">{new Date(t.tanggal_berangkat).toLocaleString()}</td>
                   <td className="px-4 py-2">Rp{parseInt(t.harga).toLocaleString()}</td>
                   <td className="px-4 py-2">{t.kapasitas}</td>
                   <td className="px-4 py-2">
