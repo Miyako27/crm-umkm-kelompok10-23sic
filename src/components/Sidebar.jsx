@@ -35,7 +35,7 @@ const Sidebar = () => {
         { name: 'Paket Wisata', path: '/produk/paket-wisata' },
       ]
     },
-    { name: 'Prediksi', icon: <BarChart2 size={20} />, path: '/loyalitas' },
+    { name: 'Prediksi', icon: <BarChart2 size={20} />, path: '/loyalitas-grafik' },
     { name: 'Artikel', icon: <Newspaper size={20} />, path: '/artikel_admin' },
     { name: 'Daftar Admin', icon: <RiAdminLine size={20} />, path: '/daftar-admin' },
     { name: 'Testimoni', icon: <MessageSquare size={20} />, path: '/testimoni-admin' },
