@@ -44,6 +44,7 @@ import FormFinalTravel from './customers/pages/FormFinalTravel';
 import Daming from './pages/Daming';
 import Loyalitas from './pages/Loyalitas';
 import LoyaltyPage from './pages/LoyaltyPage';
+import RekomendasiDestinasi from './customers/pages/RekomendasiDestinasi';
 
 function App() {
   return (
@@ -73,6 +74,7 @@ function App() {
         <Route path="/checkout" element={<CheckoutPage />} /> 
         <Route path="/order-customer/travel/list" element={<ListTiketTravelCustomer />} />
         <Route path="/order-customer/travel/pemesanan" element={<FormFinalTravel />} />
+        <Route path="/rekomendasi-wisata" element={<RekomendasiDestinasi />} /> 
       </Route>
 
       {/* Admin Routes */}
