@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // Import Link di sini!
 import { supabase } from '../../supabase';
 import { ShoppingCart, LogOut, Star } from 'lucide-react';
 
@@ -105,10 +105,14 @@ const ProfilCustomer = () => {
 
         {/* Menu */}
         <div className="bg-white mt-5 p-5 rounded-xl shadow-md space-y-4 border border-gray-100">
-          <button className="flex items-center w-full text-left text-gray-800 hover:text-blue-600 font-medium">
+          {/* UBAH DARI BUTTON MENJADI LINK */}
+          <Link
+            to="/keranjang" // Ini adalah path ke halaman keranjang Anda
+            className="flex items-center w-full text-left text-gray-800 hover:text-blue-600 font-medium"
+          >
             <ShoppingCart size={22} className="mr-3" />
             Keranjang
-          </button>
+          </Link>
 
           <button
             onClick={handleLogout}

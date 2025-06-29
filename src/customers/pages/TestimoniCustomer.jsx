@@ -1,0 +1,148 @@
+// src/customers/pages/TestimoniCustomer.jsx
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+
+// Untuk tujuan demonstrasi, kita akan menggunakan mock Supabase.
+// Di aplikasi sebenarnya, GANTI ini dengan impor Supabase Anda yang sebenarnya:
+// import { supabase } from '../../supabaseClient'; // Sesuaikan path
+
+const supabase = {
+  from: (tableName) => ({
+    insert: async (data) => {
+      console.log(`[MOCK SUPABASE] Inserting into ${tableName}:`, data);
+      // Simulasikan respons sukses atau error
+      if (Math.random() > 0.1) {
+        return { data: null, error: null };
+      } else {
+        return { data: null, error: { message: 'Mock Error: Gagal menyimpan testimoni.' } };
+      }
+    }
+  })
+};
+
+
+function TestimoniCustomer() {
+  const [testimoniContent, setTestimoniContent] = useState('');
+  const [customerName, setCustomerName] = useState(''); // Anda mungkin ingin mengambil ini dari sesi pengguna
+  const [rating, setRating] = useState(0); // Rating 1-5
+  const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState(null); // 'success' atau 'error'
+
+  // Hapus useEffect untuk mengambil testimoni yang sudah ada, karena tidak lagi dibutuhkan
+
+  const showMessage = (msg, type) => {
+    setMessage(msg);
+    setMessageType(type);
+    setTimeout(() => {
+      setMessage(null);
+      setMessageType(null);
+    }, 5000);
+  };
+
+  const handleSubmitTestimoni = async (e) => {
+    e.preventDefault();
+    setMessage(null);
+    setMessageType(null);
+
+    if (!customerName || !testimoniContent || rating === 0) {
+      showMessage('Nama, ulasan, dan rating harus diisi!', 'error');
+      return;
+    }
+
+    try {
+      const { error } = await supabase.from('testimoni').insert([
+        {
+          nama_customer: customerName,
+          tanggal_testimoni: new Date().toISOString().split('T')[0], // Tanggal hari ini
+          isi_testimoni: testimoniContent,
+          rating: rating,
+        },
+      ]);
+
+      if (error) throw error;
+
+      showMessage('Testimoni berhasil dikirim!', 'success');
+      setTestimoniContent('');
+      setCustomerName(''); // Reset nama juga, atau pertimbangkan untuk mengambil dari user session
+      setRating(0); // Reset rating
+
+      // Tidak perlu lagi memperbarui daftar testimoni setelah pengiriman sukses
+
+    } catch (err) {
+      console.error('Error submitting testimoni:', err.message);
+      showMessage('Terjadi kesalahan saat mengirim testimoni: ' + err.message, 'error');
+    }
+  };
+
+  return (
+    <div className="w-full max-w-4xl mx-auto p-6 min-h-screen bg-gray-50 flex items-center justify-center"> {/* Ubah max-w dan tambahkan flex untuk centering */}
+      <div className="flex flex-col w-full"> {/* Gunakan flex-col dan w-full untuk layout */}
+        {/* Breadcrumb */}
+        <div className="py-4 mb-8 text-center"> {/* Pusatkan breadcrumb */}
+          <h2 className="text-3xl font-extrabold text-gray-800">Testimoni Pelanggan</h2>
+          <div className="text-sm text-gray-600">
+            <Link to="/" className="hover:underline text-orange-600 font-semibold">
+              Beranda
+            </Link>{' '}
+            / <span className="text-gray-700">Testimoni</span>
+          </div>
+        </div>
+
+        {/* Form Testimoni - kini menjadi satu-satunya konten utama */}
+        <div className="w-full bg-white p-6 rounded-xl shadow-md border border-gray-200"> {/* Gunakan w-full */}
+          <h3 className="text-xl font-semibold text-gray-700 mb-4">Berikan Ulasan Anda</h3>
+
+          {message && (
+            <div className={`p-3 mb-4 rounded-md text-center ${
+              messageType === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+            }`}>
+              {message}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmitTestimoni}>
+            <div className="mb-4">
+            </div>
+            <div className="mb-4">
+              <textarea
+                id="testimoniContent"
+                value={testimoniContent}
+                onChange={(e) => setTestimoniContent(e.target.value)}
+                rows="5"
+                placeholder="Ceritakan pengalaman Anda..."
+                className="w-full border border-gray-300 rounded-md p-2 focus:ring-orange-500 focus:border-orange-500"
+                required
+              ></textarea>
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Rating</label>
+              <div className="flex items-center space-x-1">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <svg
+                    key={star}
+                    onClick={() => setRating(star)}
+                    className={`h-8 w-8 cursor-pointer ${
+                      star <= rating ? 'text-yellow-400' : 'text-gray-300'
+                    }`}
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.785.57-1.84-.197-1.54-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.462a1 1 0 00.95-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-semibold mt-4 transition duration-200 ease-in-out shadow-lg"
+            >
+              Kirim Testimoni
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default TestimoniCustomer;

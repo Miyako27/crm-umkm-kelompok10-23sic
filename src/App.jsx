@@ -19,6 +19,7 @@ import PaketWisataAdmin from './pages/PaketWisataAdmin';
 
 // Customer Pages
 import Home from './customers/pages/Home';
+
 import Login from './customers/pages/Login';
 import Artikel from './customers/pages/Artikel';
 import ArtikelDetail from './customers/pages/ArtikelDetail';
@@ -45,6 +46,10 @@ import Daming from './pages/Daming';
 import Loyalitas from './pages/Loyalitas';
 import LoyaltyPage from './pages/LoyaltyPage';
 import RekomendasiDestinasi from './customers/pages/RekomendasiDestinasi';
+import KeranjangSaya from './customers/pages/keranjang';
+import TestimoniCustomer from './customers/pages/TestimoniCustomer'; 
+
+
 
 function App() {
   return (
@@ -57,7 +62,7 @@ function App() {
       <Route element={<CustomerLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/kontak" element={<Kontak />} />
-        <Route path="/testimoni" element={<Testimoni />} />
+        <Route path="/testimoni" element={<Testimoni />} /> {/* Ini rute ke Testimoni umum, bukan TestimoniCustomer */}
         <Route path="/artikel" element={<Artikel />} />
         <Route path="/artikel/:id" element={<ArtikelDetail />} />
         <Route path="/profil" element={<Profil />} />
@@ -75,6 +80,9 @@ function App() {
         <Route path="/order-customer/travel/list" element={<ListTiketTravelCustomer />} />
         <Route path="/order-customer/travel/pemesanan" element={<FormFinalTravel />} />
         <Route path="/rekomendasi-wisata" element={<RekomendasiDestinasi />} /> 
+        <Route path="/keranjang" element={<KeranjangSaya/>} /> 
+        <Route path="/testimoni-customer" element={<TestimoniCustomer />} />
+        <Route path="/testimoni" element={<Testimoni />} />
       </Route>
 
       {/* Admin Routes */}
