@@ -1,13 +1,64 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Order = () => {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openIndex, setOpenIndex] = useState(null); // Ini masih tidak digunakan
+  const navigate = useNavigate();
 
-  // This function and state are currently unused in the rendered JSX,
-  // but kept as they were in your original code.
-  const toggleFAQ = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
+  // Data paket wisata yang lebih terstruktur
+  const packages = [
+    {
+      id: "bali4d3n",
+      name: "Bali 4 Hari 3 Malam",
+      price: 2500000,
+      description: "Eksplorasi keindahan Bali dari pantai hingga budaya lokal. Termasuk hotel & transportasi.",
+      image: "https://cdn.audleytravel.com/2478/1770/79/16027396-pura-ulun-danu-bratan-bali.jpg",
+    },
+    {
+      id: "yogyakartaht",
+      name: "Yogyakarta Heritage Tour",
+      price: 1800000,
+      description: "Kunjungi candi, museum, dan tempat ikonik di Jogja bersama pemandu lokal.",
+      image: "https://agievent.com/public/uploads/0000/1/2020/06/02/yogyakarta-heritage-tour-borobudur-and-prambanan-promo.jpg",
+    },
+    {
+      id: "labuanbkomodo",
+      name: "Labuan Bajo & Komodo Adventure",
+      price: 3900000,
+      description: "Petualangan laut dan pulau eksotis, termasuk kunjungan ke Pulau Komodo.",
+      image: "https://lingkarwilis.com/wp-content/uploads/2024/10/labuannnnnn.webp",
+    },
+    {
+      id: "bandungcl",
+      name: "Bandung City Leisure",
+      price: 1200000,
+      description: "Jalan-jalan santai di Lembang, Dago, dan pusat belanja Bandung. Termasuk akomodasi hotel bintang 3.",
+      image: "https://cozzy.id/uploads/0000/630/2024/08/05/cozzyid-hotel-murah-hotel-terdekat-penginapan-murah-penginapan-terdekat-booking-hotel-dusun-bambu-family-leisure-park-surga-keluarga-di-bandung-sumber-gambar-dirgantaracarrental.jpg",
+    },
+    {
+      id: "rajaampatde",
+      name: "Raja Ampat Diving Experience",
+      price: 5500000,
+      description: "Nikmati diving di spot terindah dunia, Raja Ampat. Termasuk peralatan diving dan guide profesional.",
+      image: "https://res.cloudinary.com/zublu/image/fetch/f_webp,w_1200,q_auto/https://www.zubludiving.com/images/Indonesia/West-Papua/Raja-Ampat/Raja-Ampat-Wayag-Diving.jpg",
+    },
+    {
+      id: "bromosunrise",
+      name: "Bromo Sunrise Trekking",
+      price: 900000,
+      description: "Saksikan sunrise dari puncak Bromo, plus jeep tour dan pemandu lokal profesional.",
+      image: "https://image.popbela.com/content-images/post/20231225/8aa929d9b2986a7c68fc365585a28ceb.jpg?width=1600&format=webp&w=1600",
+    },
+  ];
+
+  const handlePesanSekarang = (packageName, packagePrice) => {
+    // MODIFIKASI HANYA PADA BARIS INI: Ganti '/pemesanan-wisata' menjadi '/checkout'
+    navigate('/checkout', {
+      state: {
+        jenisPaket: packageName,
+        hargaPaket: packagePrice,
+      },
+    });
   };
 
   return (
@@ -49,126 +100,30 @@ const Order = () => {
 
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Paket 1 */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
-            <img
-              src="https://cdn.audleytravel.com/2478/1770/79/16027396-pura-ulun-danu-bratan-bali.jpg"
-              alt="Bali"
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-5">
-              <h3 className="text-xl font-bold mb-2">Bali 4 Hari 3 Malam</h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Eksplorasi keindahan Bali dari pantai hingga budaya lokal. Termasuk hotel & transportasi.
-              </p>
-              <span className="text-orange-600 font-bold text-lg block mb-2">Rp 2.500.000/orang</span>
-              {/* Updated Link to /checkout */}
-              <Link to="/checkout" className="text-orange-600 font-semibold hover:underline">
-                Pesan Sekarang →
-              </Link>
+          {packages.map((pkg) => (
+            <div key={pkg.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
+              <img
+                src={pkg.image}
+                alt={pkg.name}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-5">
+                <h3 className="text-xl font-bold mb-2">{pkg.name}</h3>
+                <p className="text-gray-600 text-sm mb-4">
+                  {pkg.description}
+                </p>
+                <span className="text-orange-600 font-bold text-lg block mb-2">
+                  Rp {pkg.price.toLocaleString('id-ID')}/orang
+                </span>
+                <button
+                  onClick={() => handlePesanSekarang(pkg.name, pkg.price)}
+                  className="text-orange-600 font-semibold hover:underline"
+                >
+                  Pesan Sekarang →
+                </button>
+              </div>
             </div>
-          </div>
-
-          {/* Paket 2 */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
-            <img
-              src="https://agievent.com/public/uploads/0000/1/2020/06/02/yogyakarta-heritage-tour-borobudur-and-prambanan-promo.jpg"
-              alt="Yogyakarta"
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-5">
-              <h3 className="text-xl font-bold mb-2">Yogyakarta Heritage Tour</h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Kunjungi candi, museum, dan tempat ikonik di Jogja bersama pemandu lokal.
-              </p>
-              <span className="text-orange-600 font-bold text-lg block mb-2">Rp 1.800.000/orang</span>
-              {/* Updated Link to /checkout */}
-              <Link to="/checkout" className="text-orange-600 font-semibold hover:underline">
-                Pesan Sekarang →
-              </Link>
-            </div>
-          </div>
-
-          {/* Paket 3 */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
-            <img
-            
-              src="https://lingkarwilis.com/wp-content/uploads/2024/10/labuannnnnn.webp"
-              alt="Labuan Bajo"
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-5">
-              <h3 className="text-xl font-bold mb-2">Labuan Bajo & Komodo Adventure</h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Petualangan laut dan pulau eksotis, termasuk kunjungan ke Pulau Komodo.
-              </p>
-              <span className="text-orange-600 font-bold text-lg block mb-2">Rp 3.900.000/orang</span>
-              {/* Updated Link to /checkout */}
-              <Link to="/checkout" className="text-orange-600 font-semibold hover:underline">
-                Pesan Sekarang →
-              </Link>
-            </div>
-          </div>
-
-          {/* Paket 4 */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
-            <img
-              src="https://cozzy.id/uploads/0000/630/2024/08/05/cozzyid-hotel-murah-hotel-terdekat-penginapan-murah-penginapan-terdekat-booking-hotel-dusun-bambu-family-leisure-park-surga-keluarga-di-bandung-sumber-gambar-dirgantaracarrental.jpg"
-              alt="Bandung"
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-5">
-              <h3 className="text-xl font-bold mb-2">Bandung City Leisure</h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Jalan-jalan santai di Lembang, Dago, dan pusat belanja Bandung. Termasuk akomodasi hotel bintang 3.
-              </p>
-              <span className="text-orange-600 font-bold text-lg block mb-2">Rp 1.200.000/orang</span>
-              {/* Updated Link to /checkout */}
-              <Link to="/checkout" className="text-orange-600 font-semibold hover:underline">
-                Pesan Sekarang →
-              </Link>
-            </div>
-          </div>
-
-          {/* Paket 5 */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
-            <img
-              src="https://res.cloudinary.com/zublu/image/fetch/f_webp,w_1200,q_auto/https://www.zubludiving.com/images/Indonesia/West-Papua/Raja-Ampat/Raja-Ampat-Wayag-Diving.jpg"
-              alt="Raja Ampat"
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-5">
-              <h3 className="text-xl font-bold mb-2">Raja Ampat Diving Experience</h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Nikmati diving di spot terindah dunia, Raja Ampat. Termasuk peralatan diving dan guide profesional.
-              </p>
-              <span className="text-orange-600 font-bold text-lg block mb-2">Rp 5.500.000/orang</span>
-              {/* Updated Link to /checkout */}
-              <Link to="/checkout" className="text-orange-600 font-semibold hover:underline">
-                Pesan Sekarang →
-              </Link>
-            </div>
-          </div>
-
-          {/* Paket 6 */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
-            <img
-              src="https://image.popbela.com/content-images/post/20231225/8aa929d9b2986a7c68fc365585a28ceb.jpg?width=1600&format=webp&w=1600"
-              alt="Bromo"
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-5">
-              <h3 className="text-xl font-bold mb-2">Bromo Sunrise Trekking</h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Saksikan sunrise dari puncak Bromo, plus jeep tour dan pemandu lokal profesional.
-              </p>
-              <span className="text-orange-600 font-bold text-lg block mb-2">Rp 900.000/orang</span>
-              {/* Updated Link to /checkout */}
-              <Link to="/checkout" className="text-orange-600 font-semibold hover:underline">
-                Pesan Sekarang →
-              </Link>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
     </div>

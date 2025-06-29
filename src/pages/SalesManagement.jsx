@@ -90,7 +90,7 @@ function PenjualanTiketAdmin() {
                       <>
                         <button
                           onClick={() => handleUbahStatus(item.id_penjualan)}
-                          className="text-green-600 hover:text-green-800 text-xl"
+                          className="text-blue-600 hover:text-blue-800 text-xl"
                           title="Tandai Lunas"
                         >
                           <FaEdit />
