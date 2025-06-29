@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,6 +12,7 @@ import {
   ArcElement,
 } from "chart.js";
 import { Bar, Line, Pie } from "react-chartjs-2";
+import { supabase } from '../supabase';
 
 ChartJS.register(
   CategoryScale,
@@ -26,11 +27,172 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
+  const [leadSources, setLeadSources] = useState({
+    labels: ["Website", "Instagram", "TikTok", "Rekomendasi Orang Lain", "Lainnya"],
+    datasets: [
+      {
+        label: "Jumlah Leads",
+        data: [0, 0, 0, 0, 0],
+        backgroundColor: ["#f43f5e", "#f87171", "#fb7185", "#fda4af", "#fbcfe8"],
+      },
+    ],
+  });
+
+  const [customerSegments, setCustomerSegments] = useState({
+    labels: ["Member Classic", "Member Silver", "Member Gold", "Member Platinum"],
+    datasets: [
+      {
+        label: "Segmentasi",
+        data: [0, 0, 0, 0],
+        backgroundColor: ["#8b5cf6", "#6366f1", "#a78bfa", "#c4b5fd"],
+      },
+    ],
+  });
+
+  const [totalPengguna, setTotalPengguna] = useState(0);
+  const [totalPemesanan, setTotalPemesanan] = useState(0);
+  const [totalBelumLunas, setTotalBelumLunas] = useState(0);
+  const [totalDikeranjang, setTotalDikeranjang] = useState(0);
+
+  const [funnelData, setFunnelData] = useState({
+    labels: ["Lunas", "Belum Lunas", "Tertarik", "Pengunjung"],
+    datasets: [
+      {
+        label: "Funnel Tahapan Pemesanan",
+        data: [0, 0, 0, 0],
+        backgroundColor: ["#1d4ed8", "#3b82f6", "#60a5fa", "#93c5fd"],
+        barPercentage: 0.5,
+        categoryPercentage: 1.0,
+      },
+    ],
+  });
+
+  const [paymentMethods, setPaymentMethods] = useState({
+    labels: ["Transfer Bank", "Kartu Kredit", "E-Wallet", "Tunai"],
+    datasets: [
+      {
+        data: [0, 0, 0, 0],
+        backgroundColor: ["#0284c7", "#eab308", "#10b981", "#f87171"],
+      },
+    ],
+  });
+
+  useEffect(() => {
+    const fetchLeadSources = async () => {
+      const { data, error } = await supabase.from("pelanggan").select("sumber_masuk");
+      if (error) {
+        console.error("Gagal fetch sumber_masuk:", error);
+        return;
+      }
+
+      const kategori = ["Website", "Instagram", "Tiktok", "Rekomendasi Orang Lain", "Lainnya"];
+      const jumlah = kategori.map(
+        (kategori) =>
+          data.filter((item) => item.sumber_masuk === kategori).length
+      );
+
+      setLeadSources((prev) => ({
+        ...prev,
+        datasets: [{
+          ...prev.datasets[0],
+          data: jumlah,
+        }],
+      }));
+    };
+
+    const fetchCustomerSegments = async () => {
+      const { data, error } = await supabase.from("pelanggan").select("status");
+      if (error) {
+        console.error("Gagal fetch status pelanggan:", error);
+        return;
+      }
+
+      const segmen = ["Member Classic", "Member Silver", "Member Gold", "Member Platinum"];
+      const jumlah = segmen.map(
+        (s) => data.filter((item) => item.status === s).length
+      );
+
+      setCustomerSegments((prev) => ({
+        ...prev,
+        datasets: [{
+          ...prev.datasets[0],
+          data: jumlah,
+        }],
+      }));
+    };
+
+    const fetchTotalPengguna = async () => {
+      const { count, error } = await supabase
+        .from("pelanggan")
+        .select("*", { count: "exact", head: true });
+
+      if (error) {
+        console.error("Gagal fetch total pengguna:", error);
+      } else {
+        setTotalPengguna(count);
+      }
+    };
+
+    const fetchStatusPenjualan = async () => {
+      const { data, error } = await supabase.from("penjualan").select("status");
+      if (error) {
+        console.error("Gagal fetch status penjualan:", error);
+        return;
+      }
+
+      const jumlahLunas = data.filter((item) => item.status === "Lunas").length;
+      const jumlahBelumLunas = data.filter((item) => item.status === "Belum Lunas").length;
+      const jumlahKeranjang = data.filter((item) => item.status === "Di Keranjang").length;
+      const jumlahTotal = data.length;
+
+      setTotalPemesanan(jumlahLunas);
+      setTotalBelumLunas(jumlahBelumLunas);
+      setTotalDikeranjang(jumlahKeranjang);
+
+      setFunnelData((prev) => ({
+        ...prev,
+        datasets: [{
+          ...prev.datasets[0],
+          data: [jumlahLunas, jumlahBelumLunas, jumlahKeranjang, jumlahTotal],
+        }],
+      }));
+    };
+
+    const fetchPaymentMethods = async () => {
+      const { data, error } = await supabase.from("penjualan").select("metode_pembayaran");
+
+      if (error) {
+        console.error("Gagal fetch metode pembayaran:", error);
+        return;
+      }
+
+      const kategori = ["Transfer Bank", "Kartu Kredit", "E-Wallet", "Tunai"];
+      const jumlah = kategori.map(
+        (kategori) =>
+          data.filter((item) => item.metode_pembayaran === kategori).length
+      );
+
+      setPaymentMethods((prev) => ({
+        ...prev,
+        datasets: [{
+          ...prev.datasets[0],
+          data: jumlah,
+        }],
+      }));
+    };
+
+    fetchLeadSources();
+    fetchCustomerSegments();
+    fetchTotalPengguna();
+    fetchStatusPenjualan();
+    fetchPaymentMethods();
+  }, []);
+
   const keyStats = [
-    { label: "Total Pengguna", value: "100", color: "sky" },
-    { label: "Total Pemesanan", value: "220", color: "green" },
-    { label: "Total Pendapatan", value: "Rp 1,2M", color: "violet" },
-    { label: "Jadwal Terkonfirmasi", value: "220", color: "amber" },
+    { label: "Total Pengguna", value: totalPengguna, color: "sky" },
+    { label: "Total Pemesanan", value: totalPemesanan, color: "green" },
+    { label: "Total Dikeranjang", value: totalDikeranjang, color: "violet" },
+    { label: "Total Belum Lunas", value: totalBelumLunas, color: "amber" },
     { label: "Kepuasan Pelanggan", value: "92%", color: "emerald" },
   ];
 
@@ -44,19 +206,6 @@ const Dashboard = () => {
         borderColor: "#3b82f6",
         backgroundColor: "rgba(59, 130, 246, 0.3)",
         tension: 0.4,
-      },
-    ],
-  };
-
-  const funnelData = {
-    labels: ["Selesai", "Bayar", "Tertarik", "Pengunjung"],
-    datasets: [
-      {
-        label: "Funnel Tahapan Pemesanan",
-        data: [2300, 2500, 5000, 10000],
-        backgroundColor: ["#1d4ed8", "#3b82f6", "#60a5fa", "#93c5fd"],
-        barPercentage: 0.5,
-        categoryPercentage: 1.0,
       },
     ],
   };
@@ -105,38 +254,6 @@ const Dashboard = () => {
     ],
   };
 
-  const paymentMethods = {
-    labels: ["Transfer Bank", "E-Wallet", "Kartu Kredit"],
-    datasets: [
-      {
-        data: [5000, 3000, 1800],
-        backgroundColor: ["#0284c7", "#10b981", "#eab308"],
-      },
-    ],
-  };
-
-  const customerSegments = {
-    labels: ["Mahasiswa", "Karyawan", "Keluarga", "Wisatawan Asing"],
-    datasets: [
-      {
-        label: "Segmentasi",
-        data: [2500, 3400, 2100, 1600],
-        backgroundColor: ["#8b5cf6", "#6366f1", "#a78bfa", "#c4b5fd"],
-      },
-    ],
-  };
-
-  const leadSources = {
-    labels: ["Instagram", "Google Ads", "Referral", "TikTok"],
-    datasets: [
-      {
-        label: "Jumlah Leads",
-        data: [1300, 1100, 900, 750],
-        backgroundColor: ["#f43f5e", "#f87171", "#fb7185", "#fda4af"],
-      },
-    ],
-  };
-
   const chartOptions = (title, horizontal = false) => ({
     indexAxis: horizontal ? 'y' : 'x',
     responsive: true,
@@ -160,10 +277,7 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow p-6 min-h-[350px]">
-          <Line data={bookingLine} options={chartOptions("Booking per Bulan")} />
-        </div>
-
+      
         <div className="bg-white rounded-xl shadow p-6 min-h-[350px]">
           <Bar data={funnelData} options={chartOptions("Funnel Tahapan Pemesanan", true)} />
         </div>
@@ -173,15 +287,19 @@ const Dashboard = () => {
         </div>
 
         <div className="bg-white rounded-xl shadow p-6 min-h-[350px]">
-          <Bar data={leadSources} options={chartOptions("Sumber Leads / Referral")} />
-        </div>
-
-        <div className="bg-white rounded-xl shadow p-6 min-h-[350px]">
-          <Bar data={popularDestinations} options={chartOptions("Destinasi Terpopuler")} />
+          <Bar data={leadSources} options={chartOptions("Sumber Tahu Tripenya")} />
         </div>
 
         <div className="bg-white rounded-xl shadow p-6 min-h-[350px]">
           <Pie data={paymentMethods} options={chartOptions("Metode Pembayaran Terbanyak")} />
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-6 min-h-[350px]">
+          <Line data={bookingLine} options={chartOptions("Booking per Bulan")} />
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-6 min-h-[350px]">
+          <Bar data={popularDestinations} options={chartOptions("Destinasi Terpopuler")} />
         </div>
 
         <div className="bg-white rounded-xl shadow p-6 min-h-[350px]">

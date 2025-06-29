@@ -11,7 +11,7 @@ import {
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
-const API_URL = 'https://c354-35-236-178-45.ngrok-free.app'; // Ganti dengan URL ngrok kamu
+const API_URL = 'https://eb3c-34-125-119-24.ngrok-free.app'; // Ganti dengan URL ngrok kamu
 
 export default function RekomendasiDestinasi() {
   const [formData, setFormData] = useState({

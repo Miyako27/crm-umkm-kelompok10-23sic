@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { supabase } from '../../supabase';
 import CryptoJS from 'crypto-js';
+import { Link } from 'react-router-dom';
 
 export default function Registrasi() {
   const [form, setForm] = useState({
@@ -31,7 +32,6 @@ export default function Registrasi() {
     }
 
     try {
-      // 1. Registrasi ke Supabase Auth (pakai password asli)
       const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email: form.email,
         password: form.password,
@@ -43,10 +43,8 @@ export default function Registrasi() {
         return;
       }
 
-      // 2. Hash password sebelum disimpan ke tabel pelanggan
       const hashedPassword = CryptoJS.SHA256(form.password).toString();
 
-      // 3. Insert ke tabel pelanggan
       const { error: insertError } = await supabase.from('pelanggan').insert([
         {
           email: form.email,
@@ -125,9 +123,21 @@ export default function Registrasi() {
               </select>
             </div>
 
-            <div className="md:col-span-2">
+            <div>
               <label className="block text-sm font-medium mb-1">Tanggal Lahir</label>
               <input type="date" name="tanggal_lahir" value={form.tanggal_lahir} onChange={handleChange} className="w-full border border-gray-300 rounded-md p-2" />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Dari Mana Tahu Tripenya?</label>
+              <select name="sumber_masuk" value={form.sumber_masuk} onChange={handleChange} className="w-full border border-gray-300 rounded-md p-2">
+                <option value="">Pilih Sumber</option>
+                <option value="Website">Website</option>
+                <option value="Instagram">Instagram</option>
+                <option value="Tiktok">Tiktok</option>
+                <option value="Rekomendasi Orang Lain">Rekomendasi Orang Lain</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
             </div>
           </div>
 
@@ -136,6 +146,12 @@ export default function Registrasi() {
               Simpan
             </button>
           </div>
+          <p className="mt-4 text-center text-sm text-gray-600">
+          Sudah punya akun?{" "}
+          <Link to="/login" className="text-orange-500 hover:underline">
+            Login di sini
+          </Link>
+        </p>
         </form>
       </div>
     </div>
