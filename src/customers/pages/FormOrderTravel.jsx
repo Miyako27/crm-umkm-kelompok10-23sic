@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from '../../supabase'; // Menggunakan import Supabase sesuai permintaan
 
 export default function FormOrderTravel() {
   const navigate = useNavigate();
@@ -7,8 +8,8 @@ export default function FormOrderTravel() {
   const [formData, setFormData] = useState({
     dari: "",
     ke: "",
-    waktuPergi: "",
-    waktuPulang: "",
+    waktuPergi: "", // Format: YYYY-MM-DDTHH:mm
+    waktuPulang: "", // Format: YYYY-MM-DDTHH:mm
     jumlahPenumpang: "1",
     kursi: [""],
   });
@@ -56,10 +57,44 @@ export default function FormOrderTravel() {
     setFormData((prev) => ({ ...prev, kursi: newKursi }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Travel Dipesan:", formData);
-    navigate("/order-customer/travel/list"); // ✅ redirect setelah klik tombol
+    console.log("Mencari travel dengan data:", formData);
+
+    try {
+      const { dari, ke, waktuPergi } = formData;
+      // Ambil hanya bagian tanggal (YYYY-MM-DD) dari input datetime-local
+      const tanggalBerangkat = waktuPergi ? waktuPergi.split("T")[0] : null;
+
+      let query = supabase.from("travel").select("*");
+
+      if (dari) {
+        query = query.ilike("asal", `%${dari}%`); // Pencarian case-insensitive pada kolom 'asal'
+      }
+      if (ke) {
+        query = query.ilike("tujuan", `%${ke}%`); // Pencarian case-insensitive pada kolom 'tujuan'
+      }
+      if (tanggalBerangkat) {
+        // Menggunakan 'tanggal_berangkat' sesuai dengan nama kolom di Supabase Anda
+        query = query.eq("tanggal_berangkat", tanggalBerangkat);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        console.error("Error fetching travel data:", error);
+        alert("Terjadi kesalahan saat mencari travel. Silakan coba lagi.");
+      } else {
+        console.log("Data travel ditemukan:", data);
+        // Arahkan ke halaman list dengan membawa data hasil pencarian dan parameter pencarian
+        navigate("/order-customer/travel/list", {
+          state: { searchResults: data, searchParams: formData },
+        });
+      }
+    } catch (error) {
+      console.error("Kesalahan saat submit form:", error);
+      alert("Terjadi kesalahan. Silakan coba lagi.");
+    }
   };
 
   return (

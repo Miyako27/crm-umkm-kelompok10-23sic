@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
-import { supabase } from '../../supabase'; // PASTIKAN PATH INI BENAR!
+import { useNavigate, useLocation } from 'react-router-dom';
+import { supabase } from '../../supabase'; 
 
 // Fungsi helper untuk mendapatkan tanggal hari ini dalam format YYYY-MM-DD
 const getTodayDate = () => {
