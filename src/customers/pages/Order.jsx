@@ -1,65 +1,71 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // Tambahkan useEffect
 import { Link, useNavigate } from "react-router-dom";
+import { supabase } from '../../supabase'; // PASTIKAN PATH INI BENAR SESUAI STRUKTUR PROYEK ANDA
 
 const Order = () => {
-  const [openIndex, setOpenIndex] = useState(null); // Ini masih tidak digunakan
   const navigate = useNavigate();
 
-  // Data paket wisata yang lebih terstruktur
-  const packages = [
-    {
-      id: "bali4d3n",
-      name: "Bali 4 Hari 3 Malam",
-      price: 2500000,
-      description: "Eksplorasi keindahan Bali dari pantai hingga budaya lokal. Termasuk hotel & transportasi.",
-      image: "https://cdn.audleytravel.com/2478/1770/79/16027396-pura-ulun-danu-bratan-bali.jpg",
-    },
-    {
-      id: "yogyakartaht",
-      name: "Yogyakarta Heritage Tour",
-      price: 1800000,
-      description: "Kunjungi candi, museum, dan tempat ikonik di Jogja bersama pemandu lokal.",
-      image: "https://agievent.com/public/uploads/0000/1/2020/06/02/yogyakarta-heritage-tour-borobudur-and-prambanan-promo.jpg",
-    },
-    {
-      id: "labuanbkomodo",
-      name: "Labuan Bajo & Komodo Adventure",
-      price: 3900000,
-      description: "Petualangan laut dan pulau eksotis, termasuk kunjungan ke Pulau Komodo.",
-      image: "https://lingkarwilis.com/wp-content/uploads/2024/10/labuannnnnn.webp",
-    },
-    {
-      id: "bandungcl",
-      name: "Bandung City Leisure",
-      price: 1200000,
-      description: "Jalan-jalan santai di Lembang, Dago, dan pusat belanja Bandung. Termasuk akomodasi hotel bintang 3.",
-      image: "https://cozzy.id/uploads/0000/630/2024/08/05/cozzyid-hotel-murah-hotel-terdekat-penginapan-murah-penginapan-terdekat-booking-hotel-dusun-bambu-family-leisure-park-surga-keluarga-di-bandung-sumber-gambar-dirgantaracarrental.jpg",
-    },
-    {
-      id: "rajaampatde",
-      name: "Raja Ampat Diving Experience",
-      price: 5500000,
-      description: "Nikmati diving di spot terindah dunia, Raja Ampat. Termasuk peralatan diving dan guide profesional.",
-      image: "https://res.cloudinary.com/zublu/image/fetch/f_webp,w_1200,q_auto/https://www.zubludiving.com/images/Indonesia/West-Papua/Raja-Ampat/Raja-Ampat-Wayag-Diving.jpg",
-    },
-    {
-      id: "bromosunrise",
-      name: "Bromo Sunrise Trekking",
-      price: 900000,
-      description: "Saksikan sunrise dari puncak Bromo, plus jeep tour dan pemandu lokal profesional.",
-      image: "https://image.popbela.com/content-images/post/20231225/8aa929d9b2986a7c68fc365585a28ceb.jpg?width=1600&format=webp&w=1600",
-    },
-  ];
+  // Ubah state 'packages' untuk menyimpan data dari Supabase
+  const [packages, setPackages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const handlePesanSekarang = (packageName, packagePrice) => {
-    // MODIFIKASI HANYA PADA BARIS INI: Ganti '/pemesanan-wisata' menjadi '/checkout'
-    navigate('/checkout', {
+  // Efek untuk mengambil data paket wisata dari Supabase saat komponen dimuat
+  useEffect(() => {
+    const fetchPackages = async () => {
+      setIsLoading(true);
+      const { data, error } = await supabase
+        .from('paketwisata') // Nama tabel paket wisata Anda
+        .select('id_paket, nama_paket, harga, deskripsi, gambar_url'); // Pilih kolom yang Anda butuhkan sesuai skema
+        // Anda bisa menambahkan .order('nama_paket', { ascending: true }) jika ingin diurutkan
+
+      if (error) {
+        console.error("Error fetching packages:", error);
+        setError("Gagal memuat data paket wisata.");
+      } else {
+        setPackages(data); // Simpan data paket dari Supabase ke state
+      }
+      setIsLoading(false);
+    };
+
+    fetchPackages();
+  }, []); // Array dependensi kosong agar hanya berjalan sekali saat mount
+
+  const handlePesanSekarang = (selectedPackageId, selectedPackageName, selectedPackagePrice) => {
+    // Pastikan Anda meneruskan id_paket yang sebenarnya (UUID)
+    navigate('/checkout', { // PASTIKAN ROUTE INI BENAR (misal: '/checkout' atau '/pemesanan-wisata')
       state: {
-        jenisPaket: packageName,
-        hargaPaket: packagePrice,
+        idPaket: selectedPackageId,       // <--- INI PENTING: ID Paket (UUID) dari Supabase
+        jenisPaket: selectedPackageName,  // Nama paket
+        hargaPaket: selectedPackagePrice, // Harga paket
       },
     });
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-700">Memuat daftar paket wisata...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-red-500">Error: {error}</p>
+      </div>
+    );
+  }
+
+  // Jika tidak ada paket ditemukan
+  if (packages.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-700">Tidak ada paket wisata yang tersedia saat ini.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="font-sans min-h-screen">
@@ -101,22 +107,23 @@ const Order = () => {
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {packages.map((pkg) => (
-            <div key={pkg.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
+            <div key={pkg.id_paket} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-orange-200 transition-shadow duration-300">
               <img
-                src={pkg.image}
-                alt={pkg.name}
+                src={pkg.gambar_url} // Gunakan gambar_url dari Supabase
+                alt={pkg.nama_paket}
                 className="w-full h-48 object-cover"
               />
               <div className="p-5">
-                <h3 className="text-xl font-bold mb-2">{pkg.name}</h3>
+                <h3 className="text-xl font-bold mb-2">{pkg.nama_paket}</h3> {/* Gunakan nama_paket */}
                 <p className="text-gray-600 text-sm mb-4">
-                  {pkg.description}
+                  {pkg.deskripsi} {/* Gunakan deskripsi */}
                 </p>
                 <span className="text-orange-600 font-bold text-lg block mb-2">
-                  Rp {pkg.price.toLocaleString('id-ID')}/orang
+                  Rp {pkg.harga.toLocaleString('id-ID')}/orang {/* Gunakan harga */}
                 </span>
                 <button
-                  onClick={() => handlePesanSekarang(pkg.name, pkg.price)}
+                  // Kirim id_paket, nama_paket, dan harga saat tombol diklik
+                  onClick={() => handlePesanSekarang(pkg.id_paket, pkg.nama_paket, pkg.harga)}
                   className="text-orange-600 font-semibold hover:underline"
                 >
                   Pesan Sekarang →
