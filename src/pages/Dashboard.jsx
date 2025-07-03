@@ -140,7 +140,7 @@ const Dashboard = () => {
         return;
       }
 
-      const jumlahLunas = data.filter((item) => item.status === "Lunas").length;
+      const jumlahLunas = data.filter((item) => item.status === "lunas").length;
       const jumlahBelumLunas = data.filter((item) => item.status === "Belum Lunas").length;
       const jumlahKeranjang = data.filter((item) => item.status === "Di Keranjang").length;
       const jumlahTotal = data.length;

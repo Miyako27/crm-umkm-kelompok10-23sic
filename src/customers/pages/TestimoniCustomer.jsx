@@ -1,29 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
-
-const supabase = {
-  from: (tableName) => ({
-    insert: async (data) => {
-      console.log(`[MOCK SUPABASE] Inserting into ${tableName}:`, data);
-      // Simulasikan respons sukses atau error
-      if (Math.random() > 0.1) {
-        return { data: null, error: null };
-      } else {
-        return { data: null, error: { message: 'Mock Error: Gagal menyimpan testimoni.' } };
-      }
-    }
-  })
-};
-
+import { supabase } from '../../supabase';
 
 function TestimoniCustomer() {
   const [testimoniContent, setTestimoniContent] = useState('');
-  const [customerName, setCustomerName] = useState(''); 
-  const [rating, setRating] = useState(0); 
+  const [customerName, setCustomerName] = useState('');
+  const [rating, setRating] = useState(0);
   const [message, setMessage] = useState(null);
   const [messageType, setMessageType] = useState(null);
 
+  useEffect(() => {
+    const fetchCustomerName = async () => {
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError || !user) return;
+
+      const { data, error } = await supabase
+        .from('pelanggan')
+        .select('nama')
+        .eq('email', user.email)
+        .single();
+
+      if (!error && data?.nama) {
+        setCustomerName(data.nama);
+      }
+    };
+
+    fetchCustomerName();
+  }, []);
 
   const showMessage = (msg, type) => {
     setMessage(msg);
@@ -36,21 +39,39 @@ function TestimoniCustomer() {
 
   const handleSubmitTestimoni = async (e) => {
     e.preventDefault();
-    setMessage(null);
-    setMessageType(null);
 
     if (!customerName || !testimoniContent || rating === 0) {
-      showMessage('Nama, ulasan, dan rating harus diisi!', 'error');
+      showMessage('Ulasan dan rating wajib diisi!', 'error');
       return;
     }
 
     try {
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError || !user) {
+        showMessage('Gagal mengambil data pengguna.', 'error');
+        return;
+      }
+
+      const { data: pelangganData, error: pelangganError } = await supabase
+        .from('pelanggan')
+        .select('id_pelanggan')
+        .eq('email', user.email)
+        .single();
+
+      if (pelangganError || !pelangganData) {
+        showMessage('Data pelanggan tidak ditemukan.', 'error');
+        return;
+      }
+
       const { error } = await supabase.from('testimoni').insert([
         {
-          nama_customer: customerName,
-          tanggal_testimoni: new Date().toISOString().split('T')[0], // Tanggal hari ini
-          isi_testimoni: testimoniContent,
+          nama_pengirim: customerName,
+          email_pengirim: user.email,
+          pesan: testimoniContent,
           rating: rating,
+          id_pelanggan: pelangganData.id_pelanggan,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         },
       ]);
 
@@ -58,45 +79,48 @@ function TestimoniCustomer() {
 
       showMessage('Testimoni berhasil dikirim!', 'success');
       setTestimoniContent('');
-      setCustomerName(''); 
-      setRating(0); 
-
-
+      setRating(0);
     } catch (err) {
       console.error('Error submitting testimoni:', err.message);
-      showMessage('Terjadi kesalahan saat mengirim testimoni: ' + err.message, 'error');
+      showMessage('Gagal mengirim testimoni: ' + err.message, 'error');
     }
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 min-h-screen bg-gray-50 flex items-center justify-center"> {/* Ubah max-w dan tambahkan flex untuk centering */}
-      <div className="flex flex-col w-full"> 
-        {/* Breadcrumb */}
-        <div className="py-4 mb-8 text-center">
-          <h2 className="text-3xl font-extrabold text-gray-800">Testimoni Pelanggan</h2>
-          <div className="text-sm text-gray-600">
-            <Link to="/" className="hover:underline text-orange-600 font-semibold">
-              Beranda
-            </Link>{' '}
-            / <span className="text-gray-700">Testimoni</span>
+    <div className="min-h-screen bg-gray-50">
+      {/* Breadcrumb */}
+      <div className="bg-gray-50 py-4 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-5 flex flex-wrap md:flex-nowrap items-center justify-between gap-5">
+          <div className="flex flex-col space-y-1">
+            <h2 className="text-3xl font-extrabold text-gray-800">Testimoni Pelanggan</h2>
+            <div className="text-sm text-gray-600">
+              <Link to="/" className="hover:underline text-orange-600 font-semibold">
+                Beranda
+              </Link>{' '}
+              / <span className="text-gray-700">Testimoni</span>
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Form Testimoni - kini menjadi satu-satunya konten utama */}
-        <div className="w-full bg-white p-6 rounded-xl shadow-md border border-gray-200"> {/* Gunakan w-full */}
+      {/* Form */}
+      <div className="w-full max-w-4xl mx-auto p-6 flex justify-center">
+        <div className="w-full bg-white p-6 rounded-xl shadow-md border border-gray-200">
           <h3 className="text-xl font-semibold text-gray-700 mb-4">Berikan Ulasan Anda</h3>
 
           {message && (
-            <div className={`p-3 mb-4 rounded-md text-center ${
-              messageType === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-            }`}>
+            <div
+              className={`p-3 mb-4 rounded-md text-center ${
+                messageType === 'success'
+                  ? 'bg-green-100 text-green-700'
+                  : 'bg-red-100 text-red-700'
+              }`}
+            >
               {message}
             </div>
           )}
 
           <form onSubmit={handleSubmitTestimoni}>
-            <div className="mb-4">
-            </div>
             <div className="mb-4">
               <textarea
                 id="testimoniContent"
@@ -108,6 +132,7 @@ function TestimoniCustomer() {
                 required
               ></textarea>
             </div>
+
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-1">Rating</label>
               <div className="flex items-center space-x-1">
@@ -126,6 +151,7 @@ function TestimoniCustomer() {
                 ))}
               </div>
             </div>
+
             <button
               type="submit"
               className="w-full bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-semibold mt-4 transition duration-200 ease-in-out shadow-lg"
