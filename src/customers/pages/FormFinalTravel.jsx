@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../../supabase'; 
-import { useLocation } from 'react-router-dom'; 
+import { supabase } from '../../supabase';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function FormFinalTravel() {
   const location = useLocation();
+  const navigate = useNavigate();
   const selectedTravel = location.state?.selectedTravel;
 
   const [currentUser, setCurrentUser] = useState(null);
   const [form, setForm] = useState({
-    nama_pelanggan: '',
+    nama: '',
     tanggal_transaksi: '',
     jenis_pesanan: '',
     jumlah_pesanan: 1,
@@ -20,26 +21,40 @@ export default function FormFinalTravel() {
   const [message, setMessage] = useState(null);
   const [messageType, setMessageType] = useState(null);
 
-  // Effect to fetch current user and pre-fill initial form values
   useEffect(() => {
     const fetchUserAndPrefillForm = async () => {
       const { data: { user }, error: userError } = await supabase.auth.getUser();
-      if (userError) {
-        console.error("Error fetching user:", userError.message);
+      if (userError || !user) {
+        console.error("Gagal mendapatkan user:", userError?.message);
         return;
       }
       setCurrentUser(user);
 
-      const today = new Date();
-      const formattedDate = today.toISOString().slice(0, 16);
+      // Ambil nama pelanggan dari tabel pelanggan
+      const { data: pelangganData, error: pelangganError } = await supabase
+        .from('pelanggan')
+        .select('nama')
+        .eq('email', user.email)
+        .single();
+
+      if (pelangganError) {
+        console.error("Gagal mendapatkan data pelanggan:", pelangganError.message);
+        return;
+      }
+
+      // Format tanggal lokal
+      const localDate = new Date();
+      const offset = localDate.getTimezoneOffset();
+      const adjustedDate = new Date(localDate.getTime() - offset * 60000);
+      const formattedDate = adjustedDate.toISOString().slice(0, 16);
 
       setForm((prev) => ({
         ...prev,
-        nama_pelanggan: user ? user.user_metadata.full_name || user.email : '',
+        nama: pelangganData?.nama || '',
         tanggal_transaksi: formattedDate,
         jenis_pesanan: selectedTravel ? `Travel ${selectedTravel.asal} - ${selectedTravel.tujuan}` : '',
-        jumlah_pesanan: 1, // Always reset to 1 on initial load
-        total_harga: selectedTravel ? (selectedTravel.harga * 1) : '', // Initial total price for 1 quantity
+        jumlah_pesanan: 1,
+        total_harga: selectedTravel ? (selectedTravel.harga * 1) : '',
         id_travel: selectedTravel?.id_travel || null,
       }));
     };
@@ -47,21 +62,14 @@ export default function FormFinalTravel() {
     fetchUserAndPrefillForm();
   }, [selectedTravel]);
 
-  // Effect to update total_harga when jumlah_pesanan changes
   useEffect(() => {
     if (selectedTravel && form.jumlah_pesanan) {
-      const calculatedTotal = parseFloat(selectedTravel.harga) * parseInt(form.jumlah_pesanan, 10);
-      setForm((prev) => ({
-        ...prev,
-        total_harga: calculatedTotal,
-      }));
+      const total = parseFloat(selectedTravel.harga) * parseInt(form.jumlah_pesanan, 10);
+      setForm((prev) => ({ ...prev, total_harga: total }));
     } else if (!form.jumlah_pesanan) {
-      setForm((prev) => ({
-        ...prev,
-        total_harga: 0, // Set to 0 if quantity is empty or invalid
-      }));
+      setForm((prev) => ({ ...prev, total_harga: 0 }));
     }
-  }, [form.jumlah_pesanan, selectedTravel]); // Depend on jumlah_pesanan and selectedTravel
+  }, [form.jumlah_pesanan, selectedTravel]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -74,17 +82,14 @@ export default function FormFinalTravel() {
     setTimeout(() => {
       setMessage(null);
       setMessageType(null);
-    }, 5000);
+    }, 3000);
   };
 
   const submitOrder = async (e, orderStatus) => {
     e.preventDefault();
 
-    setMessage(null);
-    setMessageType(null);
-
     const requiredFields = [
-      'nama_pelanggan',
+      'nama',
       'tanggal_transaksi',
       'jenis_pesanan',
       'jumlah_pesanan',
@@ -92,7 +97,7 @@ export default function FormFinalTravel() {
       'metode_pembayaran',
     ];
 
-    const hasEmpty = requiredFields.some((field) => !form[field] && field !== 'total_harga'); // total_harga is calculated
+    const hasEmpty = requiredFields.some((field) => !form[field]);
     if (hasEmpty) {
       showMessage('Harap lengkapi semua data yang wajib diisi.', 'error');
       return;
@@ -100,41 +105,43 @@ export default function FormFinalTravel() {
 
     try {
       const totalHargaNum = parseFloat(form.total_harga);
-      if (isNaN(totalHargaNum) || totalHargaNum <= 0) { // Ensure total_harga is a valid positive number
-        showMessage('Total harga tidak valid. Pastikan jumlah pesanan benar.', 'error');
+      if (isNaN(totalHargaNum) || totalHargaNum <= 0) {
+        showMessage('Total harga tidak valid.', 'error');
         return;
       }
 
-      const { error } = await supabase.from('penjualan').insert([
-        {
-          ...form,
-          jumlah_pesanan: parseInt(form.jumlah_pesanan, 10),
-          total_harga: totalHargaNum,
-          status: orderStatus,
-          id_travel: form.id_travel,
-        },
-      ]);
+      const { error } = await supabase.from('penjualan').insert([{
+        nama_pelanggan: form.nama,
+        tanggal_transaksi: form.tanggal_transaksi,
+        jenis_pesanan: form.jenis_pesanan,
+        jumlah_pesanan: parseInt(form.jumlah_pesanan, 10),
+        total_harga: totalHargaNum,
+        metode_pembayaran: form.metode_pembayaran,
+        status: orderStatus,
+        id_travel: form.id_travel,
+      }]);
+
+      
       if (error) throw error;
 
       if (orderStatus === 'Di Keranjang') {
         showMessage('Pesanan berhasil ditambahkan ke keranjang!', 'success');
       } else {
         showMessage('Pemesanan berhasil dibuat!', 'success');
+        setTimeout(() => {
+          navigate('/testimoni-customer');
+        }, 2000);
       }
 
-      // Reset form after successful submission
       setForm((prev) => ({
         ...prev,
-        jenis_pesanan: selectedTravel ? `Travel ${selectedTravel.asal} - ${selectedTravel.tujuan}` : '', // Keep filled
-        jumlah_pesanan: 1, // Reset quantity to 1
-        total_harga: selectedTravel ? (parseFloat(selectedTravel.harga) * 1) : '', // Recalculate for 1 quantity
+        jumlah_pesanan: 1,
+        total_harga: selectedTravel ? (selectedTravel.harga * 1) : '',
         metode_pembayaran: '',
-        id_travel: selectedTravel?.id_travel || null, // Keep filled
       }));
-
     } catch (err) {
       console.error(err);
-      showMessage('Terjadi kesalahan saat menyimpan data: ' + err.message, 'error');
+      showMessage('Gagal menyimpan data: ' + err.message, 'error');
     }
   };
 
@@ -147,14 +154,9 @@ export default function FormFinalTravel() {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center"
-      style={{ backgroundImage: "url('/images/loginBg.png')" }}
-    >
+    <div className="min-h-screen flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: "url('/images/loginBg.png')" }}>
       <div className="w-full max-w-4xl mx-auto p-4">
-        <form
-          className="bg-white p-6 rounded-xl shadow-md border border-gray-200"
-        >
+        <form className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
           <h2 className="text-lg font-semibold text-gray-700 mb-4">Form Pemesanan Travel</h2>
 
           {message && (
@@ -167,12 +169,12 @@ export default function FormFinalTravel() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="nama_pelanggan" className="block text-sm font-medium mb-1">Nama Pelanggan</label>
+              <label htmlFor="nama" className="block text-sm font-medium mb-1">Nama Pelanggan</label>
               <input
                 type="text"
-                id="nama_pelanggan"
-                name="nama_pelanggan"
-                value={form.nama_pelanggan}
+                id="nama"
+                name="nama"
+                value={form.nama}
                 className="w-full border border-gray-300 rounded-md p-2 bg-gray-100"
                 readOnly
                 required
@@ -222,16 +224,12 @@ export default function FormFinalTravel() {
             <div>
               <label htmlFor="total_harga" className="block text-sm font-medium mb-1">Total Harga</label>
               <input
-                type="text" // Change to type="text" for displaying formatted currency
+                type="text"
                 id="total_harga"
                 name="total_harga"
-                value={
-                  typeof form.total_harga === 'number'
-                    ? `Rp ${form.total_harga.toLocaleString('id-ID')}`
-                    : ''
-                }
+                value={typeof form.total_harga === 'number' ? `Rp ${form.total_harga.toLocaleString('id-ID')}` : ''}
                 className="w-full border border-gray-300 rounded-md p-2 bg-gray-100"
-                readOnly // Make it read-only as it's calculated
+                readOnly
                 required
               />
             </div>
