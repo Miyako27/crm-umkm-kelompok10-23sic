@@ -82,7 +82,6 @@ function App() {
         <Route path="/rekomendasi-wisata" element={<RekomendasiDestinasi />} /> 
         <Route path="/keranjang" element={<KeranjangSaya/>} /> 
         <Route path="/testimoni-customer" element={<TestimoniCustomer />} />
-        <Route path="/testimoni" element={<Testimoni />} />
       </Route>
 
       {/* Admin Routes */}

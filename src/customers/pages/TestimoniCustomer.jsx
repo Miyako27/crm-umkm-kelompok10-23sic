@@ -1,10 +1,6 @@
-// src/customers/pages/TestimoniCustomer.jsx
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-// Untuk tujuan demonstrasi, kita akan menggunakan mock Supabase.
-// Di aplikasi sebenarnya, GANTI ini dengan impor Supabase Anda yang sebenarnya:
-// import { supabase } from '../../supabaseClient'; // Sesuaikan path
 
 const supabase = {
   from: (tableName) => ({
@@ -23,12 +19,11 @@ const supabase = {
 
 function TestimoniCustomer() {
   const [testimoniContent, setTestimoniContent] = useState('');
-  const [customerName, setCustomerName] = useState(''); // Anda mungkin ingin mengambil ini dari sesi pengguna
-  const [rating, setRating] = useState(0); // Rating 1-5
+  const [customerName, setCustomerName] = useState(''); 
+  const [rating, setRating] = useState(0); 
   const [message, setMessage] = useState(null);
-  const [messageType, setMessageType] = useState(null); // 'success' atau 'error'
+  const [messageType, setMessageType] = useState(null);
 
-  // Hapus useEffect untuk mengambil testimoni yang sudah ada, karena tidak lagi dibutuhkan
 
   const showMessage = (msg, type) => {
     setMessage(msg);
@@ -63,10 +58,9 @@ function TestimoniCustomer() {
 
       showMessage('Testimoni berhasil dikirim!', 'success');
       setTestimoniContent('');
-      setCustomerName(''); // Reset nama juga, atau pertimbangkan untuk mengambil dari user session
-      setRating(0); // Reset rating
+      setCustomerName(''); 
+      setRating(0); 
 
-      // Tidak perlu lagi memperbarui daftar testimoni setelah pengiriman sukses
 
     } catch (err) {
       console.error('Error submitting testimoni:', err.message);
@@ -76,9 +70,9 @@ function TestimoniCustomer() {
 
   return (
     <div className="w-full max-w-4xl mx-auto p-6 min-h-screen bg-gray-50 flex items-center justify-center"> {/* Ubah max-w dan tambahkan flex untuk centering */}
-      <div className="flex flex-col w-full"> {/* Gunakan flex-col dan w-full untuk layout */}
+      <div className="flex flex-col w-full"> 
         {/* Breadcrumb */}
-        <div className="py-4 mb-8 text-center"> {/* Pusatkan breadcrumb */}
+        <div className="py-4 mb-8 text-center">
           <h2 className="text-3xl font-extrabold text-gray-800">Testimoni Pelanggan</h2>
           <div className="text-sm text-gray-600">
             <Link to="/" className="hover:underline text-orange-600 font-semibold">
