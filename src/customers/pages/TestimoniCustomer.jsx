@@ -87,7 +87,7 @@ function TestimoniCustomer() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       {/* Breadcrumb */}
       <div className="bg-gray-50 py-4 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-5 flex flex-wrap md:flex-nowrap items-center justify-between gap-5">
