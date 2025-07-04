@@ -134,9 +134,17 @@ const Home = () => {
                 <span className="text-orange-600 font-bold text-lg block mb-2">
                   Rp {parseInt(paket.harga).toLocaleString()}/orang
                 </span>
-                <Link to="/checkout" className="text-orange-600 font-semibold hover:underline">
+                <Link
+                  to="/checkout"
+                  state={{
+                    jenisPaket: paket.nama_paket,
+                    hargaPaket: paket.harga
+                  }}
+                  className="text-orange-600 font-semibold hover:underline"
+                >
                   Pesan Sekarang →
                 </Link>
+
               </div>
             </div>
           ))}
