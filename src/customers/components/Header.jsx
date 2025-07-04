@@ -68,7 +68,7 @@ export default function Header() {
         to="/profilcustomer"
         className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-5 rounded-md transition"
       >
-        Profil
+        Profil Saya
       </NavLink>
     );
   };
