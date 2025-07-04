@@ -176,7 +176,8 @@ const Home = () => {
               <div className="p-5">
                 <h3 className="text-xl font-bold mb-2">{artikel.judul}</h3>
                 <p className="text-gray-600 text-sm mb-4">{artikel.deskripsi_artikel}</p>
-                <Link to="#" className="text-orange-600 font-semibold hover:underline">
+                <Link to={`/artikel/${artikel.id_artikel}`}
+                 className="text-orange-600 font-semibold hover:underline">
                   Baca Selengkapnya →
                 </Link>
               </div>
