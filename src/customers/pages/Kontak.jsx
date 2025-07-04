@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FiPhone, FiMail, FiMapPin, FiClock } from "react-icons/fi";
+import { BiChat } from "react-icons/bi";
 
 const Kontak = () => {
   return (
@@ -53,13 +54,19 @@ const Kontak = () => {
 
             {/* Card Kontak */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div className="flex items-start bg-white p-4 rounded-lg shadow-md border">
+              {/* WhatsApp */}
+              <a
+                href="https://wa.me/6285766351957?text=Halo%20saya%20ingin%20bertanya"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start bg-white p-4 rounded-lg shadow-md border hover:shadow-lg transition-shadow duration-300"
+              >
                 <FiPhone className="text-orange-500 text-2xl mt-1 mr-3" />
                 <div>
-                  <h4 className="font-bold text-gray-800">Telepon</h4>
-                  <p className="text-gray-700">+62 812-3456-7890</p>
+                  <h4 className="font-bold text-gray-800">WhatsApp</h4>
+                  <p className="text-gray-700">+62 857-6635-1957</p>
                 </div>
-              </div>
+              </a>
 
               <div className="flex items-start bg-white p-4 rounded-lg shadow-md border">
                 <FiMail className="text-orange-500 text-2xl mt-1 mr-3" />
@@ -92,6 +99,16 @@ const Kontak = () => {
           </div>
         </div>
       </section>
+      {/* Floating Live Chat Button */}
+      <a
+        href="https://wa.me/6285766351957?text=Halo%20saya%20ingin%20bertanya%20tentang%20paket%20wisata"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 w-[60px] h-[60px] bg-yellow-400 rounded-full shadow-lg flex items-center justify-center hover:bg-orange-500 transition duration-300"
+        title="Tanya via WhatsApp"
+      >
+        <BiChat className="text-white text-3xl" />
+      </a>
     </div>
   );
 };
