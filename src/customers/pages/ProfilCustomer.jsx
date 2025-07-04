@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Import Link di sini!
+import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../../supabase';
 import { ShoppingCart, LogOut, Star } from 'lucide-react';
+import { BiChat } from "react-icons/bi";
 
 const ProfilCustomer = () => {
   const navigate = useNavigate();
@@ -123,6 +124,16 @@ const ProfilCustomer = () => {
           </button>
         </div>
       </div>
+      {/* Floating Live Chat Button */}
+            <a
+              href="https://wa.me/6285766351957?text=Halo%20saya%20ingin%20bertanya%20tentang%20paket%20wisata"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="fixed bottom-6 right-6 z-50 w-[60px] h-[60px] bg-yellow-400 rounded-full shadow-lg flex items-center justify-center hover:bg-orange-500 transition duration-300"
+              title="Tanya via WhatsApp"
+            >
+              <BiChat className="text-white text-3xl" />
+            </a>
     </div>
   );
 };

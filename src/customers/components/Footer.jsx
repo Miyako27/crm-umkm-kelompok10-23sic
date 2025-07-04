@@ -56,7 +56,7 @@ export default function Footer() {
         {/* Kontak dan Jam Buka */}
         <div className="md:w-1/3">
           <h3 className="font-bold text-xl mb-2">Hubungi Kami</h3>
-          <p>Telp: +62 812-3456-7890</p>
+          <p>Telp: +62 857-6635-1957</p>
           <p>Alamat: Jl. Sudirman No.123, Pekanbaru, Riau</p>
           <p>Jam Buka: Senin - Minggu, 08.00 - 20.00 WIB</p>
         </div>

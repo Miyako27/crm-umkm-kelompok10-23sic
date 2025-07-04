@@ -3,6 +3,7 @@ import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
 const navItems = [
   { label: 'Beranda', path: '/' },
+  { label: 'Profil', path: '/profil' },
   { label: 'Promo', path: '/promo' },
   { label: 'Rekomendasi', path: '/rekomendasi-wisata' },
   { label: 'Artikel', path: '/artikel' },

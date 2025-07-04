@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { BiChat } from "react-icons/bi";
 import { supabase } from '../../supabase';
 
 const Home = () => {
@@ -28,7 +29,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="font-sans">
+    <div className="font-sans relative">
       {/* Hero Banner */}
       <div className="relative w-full h-full">
         <img
@@ -36,7 +37,6 @@ const Home = () => {
           alt="Hero Banner"
           className="w-full h-full object-cover"
         />
-
         <div className="absolute bottom-12 left-5 z-10 text-white"></div>
       </div>
 
@@ -88,7 +88,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Tentang Kami Section */}
+      {/* Tentang Kami */}
       <section className="mb-20 px-10 max-w-7xl mx-auto">
         <h2 className="text-4xl font-extrabold text-center mb-10">
           Selamat Datang di <span className="text-orange-600">Tripenya</span>!
@@ -117,13 +117,11 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Paket Wisata Section */}
+      {/* Paket Wisata */}
       <section className="mb-20 px-10 max-w-7xl mx-auto">
         <div className="mb-10">
           <div className="w-16 h-1 bg-orange-600 mb-3"></div>
-          <h2 className="text-3xl font-extrabold text-left">
-            Paket Wisata Populer
-          </h2>
+          <h2 className="text-3xl font-extrabold text-left">Paket Wisata Populer</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -136,7 +134,7 @@ const Home = () => {
                 <span className="text-orange-600 font-bold text-lg block mb-2">
                   Rp {parseInt(paket.harga).toLocaleString()}/orang
                 </span>
-                <Link to="#" className="text-orange-600 font-semibold hover:underline">
+                <Link to="/checkout" className="text-orange-600 font-semibold hover:underline">
                   Pesan Sekarang →
                 </Link>
               </div>
@@ -154,7 +152,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Artikel Section */}
+      {/* Artikel */}
       <section className="mb-20 px-10 max-w-7xl mx-auto">
         <div className="mb-10">
           <div className="w-16 h-1 bg-orange-600 mb-3"></div>
@@ -187,6 +185,17 @@ const Home = () => {
           </Link>
         </div>
       </section>
+
+      {/* Floating Live Chat Button */}
+      <a
+        href="https://wa.me/6285766351957?text=Halo%20saya%20ingin%20bertanya%20tentang%20paket%20wisata"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 w-[60px] h-[60px] bg-yellow-400 rounded-full shadow-lg flex items-center justify-center hover:bg-orange-500 transition duration-300"
+        title="Tanya via WhatsApp"
+      >
+        <BiChat className="text-white text-3xl" />
+      </a>
     </div>
   );
 };
