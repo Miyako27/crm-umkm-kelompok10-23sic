@@ -34,7 +34,10 @@ export default function FormArtikel({ addArtikel, updateArtikel, editingArtikel 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!form.judul || !form.slug || !form.isi) return;
+    if (!form.judul || !form.slug || !form.isi) {
+      alert('Judul, Slug, dan Isi Artikel wajib diisi!');
+      return;
+    }
 
     editingArtikel ? updateArtikel(form) : addArtikel(form);
 
@@ -50,8 +53,13 @@ export default function FormArtikel({ addArtikel, updateArtikel, editingArtikel 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-md border border-gray-200 max-w-4xl mx-auto">
-      <h2 className="text-lg font-semibold text-gray-700 mb-4">{editingArtikel ? 'Edit Artikel' : 'Tambah Artikel'}</h2>
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white p-6 rounded-xl shadow-md border border-gray-200 max-w-4xl mx-auto"
+    >
+      <h2 className="text-lg font-semibold text-gray-700 mb-4">
+        {editingArtikel ? 'Edit Artikel' : 'Tambah Artikel'}
+      </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {[{ label: 'Judul', name: 'judul' },
@@ -82,7 +90,6 @@ export default function FormArtikel({ addArtikel, updateArtikel, editingArtikel 
           />
         </div>
 
-        {/* Deskripsi Artikel di atas Isi Artikel */}
         <div className="md:col-span-2">
           <label className="block text-sm font-medium mb-1">Deskripsi Artikel</label>
           <textarea
@@ -94,14 +101,15 @@ export default function FormArtikel({ addArtikel, updateArtikel, editingArtikel 
           />
         </div>
 
+        {/* ✅ Tambahan: Isi Artikel */}
         <div className="md:col-span-2">
           <label className="block text-sm font-medium mb-1">Isi Artikel</label>
           <textarea
             name="isi"
             value={form.isi}
             onChange={handleChange}
-            placeholder="Isi Artikel"
-            className="w-full border border-gray-300 rounded-md p-2 h-40 resize-none"
+            placeholder="Tulis isi lengkap artikel di sini..."
+            className="w-full border border-gray-300 rounded-md p-2 h-40 resize-y"
           />
         </div>
       </div>

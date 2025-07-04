@@ -1,38 +1,35 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../supabase'; // Assuming '../supabase' is correctly configured
+import { supabase } from '../supabase'; // Pastikan konfigurasi supabase sudah benar
 import FormArtikel from './FormArtikel';
 import { Link } from 'react-router-dom';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 function ArtikelAdmin() {
   const [artikel, setArtikel] = useState([]);
-  // editingArtikel now stores the ID of the article being edited, not the object itself
   const [editingArtikelId, setEditingArtikelId] = useState(null);
 
   const fetchArtikel = async () => {
     const { data, error } = await supabase
       .from('artikel')
       .select('*')
-      .order('tanggal_terbit', { ascending: false }); // Ensure 'tanggal_terbit' exists in your Supabase table
+      .order('tanggal_terbit', { ascending: false });
 
     if (error) {
       console.error('Error fetching artikel:', error);
-      // Handle error gracefully, e.g., show a message to the user
     } else {
       setArtikel(data);
     }
   };
 
   const addArtikel = async (newArtikel) => {
-    // Supabase will typically handle ID generation for new inserts
-    const { data, error } = await supabase.from('artikel').insert(newArtikel).select(); // .select() to get the inserted data back
+    const { data, error } = await supabase.from('artikel').insert(newArtikel).select();
 
     if (error) {
       console.error('Error adding artikel:', error);
       alert('Gagal menambahkan artikel: ' + error.message);
     } else {
       alert('Artikel berhasil ditambahkan!');
-      fetchArtikel(); // Refresh the list
+      fetchArtikel();
     }
   };
 
@@ -40,33 +37,32 @@ function ArtikelAdmin() {
     const { error } = await supabase
       .from('artikel')
       .update(updatedArtikel)
-      .eq('id', updatedArtikel.id); // Assuming 'id' is your primary key in Supabase.
-                                   // If your primary key is 'id_artikel' as previously implied, use that here:
-                                   // .eq('id_artikel', updatedArtikel.id_artikel);
+      .eq('id_artikel', updatedArtikel.id_artikel); // gunakan 'id_artikel' jika itu PK kamu
 
     if (error) {
       console.error('Error updating artikel:', error);
       alert('Gagal memperbarui artikel: ' + error.message);
     } else {
       alert('Artikel berhasil diperbarui!');
-      fetchArtikel(); // Refresh the list
-      setEditingArtikelId(null); // Exit editing mode
+      fetchArtikel();
+      setEditingArtikelId(null);
     }
   };
 
   const deleteArtikel = async (id_artikel) => {
     if (window.confirm('Apakah Anda yakin ingin menghapus artikel ini?')) {
+      console.log("Menghapus ID:", id_artikel); // log ID untuk debugging
       const { error } = await supabase
         .from('artikel')
         .delete()
-        .eq('id', id_artikel); // Assuming 'id' is primary key, otherwise use 'id_artikel'
+        .eq('id_artikel', id_artikel); // gunakan 'id_artikel' jika itu kolom PK
 
       if (error) {
         console.error('Error deleting artikel:', error);
         alert('Gagal menghapus artikel: ' + error.message);
       } else {
         alert('Artikel berhasil dihapus!');
-        fetchArtikel(); // Refresh the list
+        fetchArtikel();
       }
     }
   };
@@ -75,9 +71,8 @@ function ArtikelAdmin() {
     fetchArtikel();
   }, []);
 
-  // Find the article object that is currently being edited based on its ID
   const currentEditingArtikel = editingArtikelId
-    ? artikel.find(a => a.id === editingArtikelId) // Use 'id' if that's your PK
+    ? artikel.find(a => a.id_artikel === editingArtikelId) // cocokkan ID edit
     : null;
 
   return (
@@ -99,12 +94,12 @@ function ArtikelAdmin() {
       </div>
 
       {/* Form */}
-      <div className="max-w-5xl mx-auto mb-8"> {/* Added mb-8 for spacing */}
+      <div className="max-w-5xl mx-auto mb-8">
         <FormArtikel
           addArtikel={addArtikel}
           updateArtikel={updateArtikel}
-          editingArtikel={currentEditingArtikel} // Pass the actual article object
-          setEditingArtikel={setEditingArtikelId} // Pass the setter for editing ID
+          editingArtikel={currentEditingArtikel}
+          setEditingArtikel={setEditingArtikelId}
         />
       </div>
 
@@ -115,7 +110,7 @@ function ArtikelAdmin() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-100">
               <tr>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">No</th> {/* Added No column header */}
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">No</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Judul</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Slug</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Penulis</th>
@@ -125,24 +120,24 @@ function ArtikelAdmin() {
             </thead>
             <tbody className="bg-white divide-y divide-gray-100">
               {artikel.length > 0 ? (
-                artikel.map((a, index) => ( // Use index from map for numbering
-                  <tr key={a.id} className="hover:bg-gray-50"> {/* Assuming 'id' is your primary key */}
-                    <td className="px-4 py-4 whitespace-nowrap text-gray-800">{index + 1}</td> {/* No column data */}
+                artikel.map((a, index) => (
+                  <tr key={a.id_artikel} className="hover:bg-gray-50">
+                    <td className="px-4 py-4 whitespace-nowrap text-gray-800">{index + 1}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-gray-800">{a.judul}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-gray-800">{a.slug}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-gray-800">{a.penulis}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-gray-800">{a.tanggal_terbit}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-center flex gap-2 justify-center"> {/* Added flex and gap for icons */}
+                    <td className="px-6 py-4 whitespace-nowrap text-center flex gap-2 justify-center">
                       <button
-                        onClick={() => setEditingArtikelId(a.id)} // Pass the ID for editing
-                        className="text-blue-600 hover:text-blue-800 text-xl" // Changed mx-2 to text-xl for icons
+                        onClick={() => setEditingArtikelId(a.id_artikel)}
+                        className="text-blue-600 hover:text-blue-800 text-xl"
                         title="Edit Artikel"
                       >
                         <FaEdit />
                       </button>
                       <button
-                        onClick={() => deleteArtikel(a.id)} // Pass the ID for deleting
-                        className="text-red-600 hover:text-red-800 text-xl" // Changed mx-2 to text-xl for icons
+                        onClick={() => deleteArtikel(a.id_artikel)}
+                        className="text-red-600 hover:text-red-800 text-xl"
                         title="Hapus Artikel"
                       >
                         <FaTrash />
@@ -152,7 +147,7 @@ function ArtikelAdmin() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6" className="text-center py-6 text-gray-500"> {/* Adjusted colSpan to 6 */}
+                  <td colSpan="6" className="text-center py-6 text-gray-500">
                     Belum ada artikel.
                   </td>
                 </tr>
