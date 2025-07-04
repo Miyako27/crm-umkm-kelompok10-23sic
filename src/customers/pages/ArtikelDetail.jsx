@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { supabase } from "../../supabase"; // Pastikan path ke file supabase.js benar
+import { BiChat } from "react-icons/bi";
+import { supabase } from "../../supabase";
 
 const ArtikelDetail = () => {
   const { id } = useParams(); // ID artikel dari URL
@@ -109,7 +110,7 @@ const ArtikelDetail = () => {
         <img
           src={artikel.gambar}
           alt={artikel.judul}
-          className="w-full h-64 object-cover rounded-lg mb-6"
+          className="w-full h-[400px] md:h-[500px] object-cover rounded-xl mb-6"
         />
         <p className="text-lg text-gray-700 mb-6">{artikel.deskripsi_artikel}</p>
         <div className="prose prose-lg max-w-none text-justify text-gray-800 whitespace-pre-line">
@@ -132,6 +133,16 @@ const ArtikelDetail = () => {
             </div>
           </div>
         )}
+        {/* Floating Live Chat Button */}
+            <a
+              href="https://wa.me/6285766351957?text=Halo%20saya%20ingin%20bertanya%20tentang%20paket%20wisata"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="fixed bottom-6 right-6 z-50 w-[60px] h-[60px] bg-yellow-400 rounded-full shadow-lg flex items-center justify-center hover:bg-orange-500 transition duration-300"
+              title="Tanya via WhatsApp"
+            >
+              <BiChat className="text-white text-3xl" />
+            </a>
       </div>
     </>
   );
