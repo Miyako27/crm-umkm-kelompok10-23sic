@@ -1,27 +1,80 @@
-import { useState } from 'react';
-import { supabase } from '../../supabase';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { supabase } from "../../supabase";
+import { useLocation, useNavigate } from "react-router-dom";
 
-export default function FormPemesanan() {
+export default function FormFinalTiketPesawat() {
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const selectedFlight = state?.selectedFlight;
+
+  const [currentUser, setCurrentUser] = useState(null);
   const [form, setForm] = useState({
-    nama_pelanggan: '',
+    nama: '',
     tanggal_transaksi: '',
     jenis_pesanan: '',
     jumlah_pesanan: 1,
     total_harga: '',
     metode_pembayaran: '',
+    id_tiketpesawat: selectedFlight?.id || null,
   });
 
-  const navigate = useNavigate();
+  const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState(null);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      setCurrentUser(user);
+
+      const { data: pelangganData } = await supabase
+        .from("pelanggan")
+        .select("nama")
+        .eq("email", user.email)
+        .single();
+
+      const localDate = new Date();
+      const offset = localDate.getTimezoneOffset();
+      const adjustedDate = new Date(localDate.getTime() - offset * 60000);
+      const formattedDate = adjustedDate.toISOString().slice(0, 16);
+
+      setForm((prev) => ({
+        ...prev,
+        nama: pelangganData?.nama || '',
+        tanggal_transaksi: formattedDate,
+        jenis_pesanan: selectedFlight
+          ? `Pesawat ${selectedFlight.asal} - ${selectedFlight.tujuan}`
+          : '',
+        total_harga: selectedFlight?.harga || '',
+        id_tiketpesawat: selectedFlight?.id || null,
+      }));
+    };
+
+    fetchUser();
+  }, [selectedFlight]);
+
+  useEffect(() => {
+    if (selectedFlight && form.jumlah_pesanan) {
+      const total = parseFloat(selectedFlight.harga) * parseInt(form.jumlah_pesanan, 10);
+      setForm((prev) => ({ ...prev, total_harga: total }));
+    }
+  }, [form.jumlah_pesanan]);
+
+  const showMessage = (text, type) => {
+    setMessage(text);
+    setMessageType(type);
+    setTimeout(() => {
+      setMessage(null);
+      setMessageType(null);
+    }, 3000);
   };
 
-  const handleSubmit = async (isOrderNow = false) => {
+  const submitOrder = async (e, orderStatus) => {
+    e.preventDefault();
+
     const requiredFields = [
-      'nama_pelanggan',
+      'nama',
       'tanggal_transaksi',
       'jenis_pesanan',
       'jumlah_pesanan',
@@ -29,101 +82,84 @@ export default function FormPemesanan() {
       'metode_pembayaran',
     ];
 
-    const hasEmptyFields = requiredFields.some((field) => !form[field]);
-    if (hasEmptyFields) {
-      alert('Semua field wajib diisi');
+    const hasEmpty = requiredFields.some((field) => !form[field]);
+    if (hasEmpty) {
+      showMessage('Harap lengkapi semua data yang wajib diisi.', 'error');
       return;
     }
 
     try {
-      const { error } = await supabase.from('penjualan').insert([
-        {
-          ...form,
-          status: 'belum lunas',
-        },
-      ]);
-      if (error) throw error;
-
-      alert(isOrderNow ? 'Pesanan berhasil dibuat!' : 'Berhasil ditambahkan ke keranjang');
-
-      // Reset form jika perlu
-      setForm({
-        nama_pelanggan: '',
-        tanggal_transaksi: '',
-        jenis_pesanan: '',
-        jumlah_pesanan: 1,
-        total_harga: '',
-        metode_pembayaran: '',
-      });
-
-      // Redirect jika pesan sekarang
-      if (isOrderNow) {
-        navigate('/konfirmasi-pembayaran');
+      const totalHargaNum = parseFloat(form.total_harga);
+      if (isNaN(totalHargaNum) || totalHargaNum <= 0) {
+        showMessage('Total harga tidak valid.', 'error');
+        return;
       }
 
+      const { error } = await supabase.from("penjualan").insert([{
+        nama_pelanggan: form.nama,
+        tanggal_transaksi: form.tanggal_transaksi,
+        jenis_pesanan: form.jenis_pesanan,
+        jumlah_pesanan: parseInt(form.jumlah_pesanan, 10),
+        total_harga: totalHargaNum,
+        metode_pembayaran: form.metode_pembayaran,
+        status: orderStatus,
+        id: form.id,
+      }]);
+
+      if (error) throw error;
+
+      if (orderStatus === 'Di Keranjang') {
+        showMessage('Pesanan berhasil ditambahkan ke keranjang!', 'success');
+      } else {
+        showMessage('Pemesanan berhasil dibuat!', 'success');
+        setTimeout(() => {
+          navigate('/testimoni-customer');
+        }, 2000);
+      }
+
+      setForm((prev) => ({
+        ...prev,
+        jumlah_pesanan: 1,
+        total_harga: selectedFlight ? (selectedFlight.harga * 1) : '',
+        metode_pembayaran: '',
+      }));
     } catch (err) {
       console.error(err);
-      alert('Terjadi kesalahan saat menyimpan data');
+      showMessage('Gagal menyimpan data: ' + err.message, 'error');
     }
   };
 
-  const handleAddToCart = (e) => {
-    e.preventDefault();
-    handleSubmit(false); // hanya simpan ke database
-  };
 
-  const handleOrderNow = (e) => {
-    e.preventDefault();
-    handleSubmit(true); // simpan lalu redirect
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center"
-      style={{ backgroundImage: "url('/images/loginBg.png')" }}
-    >
-      <div className="w-full max-w-2xl mx-auto p-4">
-        <form
-          className="bg-white p-6 rounded-xl shadow-md border border-gray-200"
-        >
-          <h2 className="text-lg font-semibold text-gray-700 mb-4">Form Pemesanan Tiket</h2>
+    <div className="min-h-screen flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: "url('/images/loginBg.png')" }}>
+      <div className="w-full max-w-4xl mx-auto p-4">
+        <form className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-700 mb-4">Form Pemesanan Tiket Pesawat</h2>
+
+          {message && (
+            <div className={`p-3 mb-4 rounded-md text-center ${messageType === "success" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+              {message}
+            </div>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium mb-1">Nama Pelanggan</label>
-              <input
-                type="text"
-                name="nama_pelanggan"
-                value={form.nama_pelanggan}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md p-2"
-                placeholder="Nama lengkap"
-              />
+              <input type="text" value={form.nama} readOnly className="w-full p-2 border rounded-md bg-gray-100" />
             </div>
-
             <div>
               <label className="block text-sm font-medium mb-1">Tanggal Transaksi</label>
-              <input
-                type="date"
-                name="tanggal_transaksi"
-                value={form.tanggal_transaksi}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md p-2"
-              />
+              <input type="datetime-local" value={form.tanggal_transaksi} readOnly className="w-full p-2 border rounded-md bg-gray-100" />
             </div>
-
             <div>
               <label className="block text-sm font-medium mb-1">Jenis Pesanan</label>
-              <input
-                type="text"
-                name="jenis_pesanan"
-                value={form.jenis_pesanan}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md p-2"
-                placeholder="Contoh: Tiket Pesawat"
-              />
+              <input type="text" value={form.jenis_pesanan} readOnly className="w-full p-2 border rounded-md bg-gray-100" />
             </div>
-
             <div>
               <label className="block text-sm font-medium mb-1">Jumlah Pesanan</label>
               <input
@@ -131,30 +167,26 @@ export default function FormPemesanan() {
                 name="jumlah_pesanan"
                 value={form.jumlah_pesanan}
                 onChange={handleChange}
-                min="1"
-                className="w-full border border-gray-300 rounded-md p-2"
+                min={1}
+                className="w-full p-2 border rounded-md"
               />
             </div>
-
             <div>
               <label className="block text-sm font-medium mb-1">Total Harga</label>
               <input
-                type="number"
-                name="total_harga"
-                value={form.total_harga}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md p-2"
-                placeholder="Contoh: 750000"
+                type="text"
+                value={`Rp ${Number(form.total_harga).toLocaleString("id-ID")}`}
+                readOnly
+                className="w-full p-2 border rounded-md bg-gray-100"
               />
             </div>
-
             <div>
               <label className="block text-sm font-medium mb-1">Metode Pembayaran</label>
               <select
                 name="metode_pembayaran"
                 value={form.metode_pembayaran}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md p-2"
+                className="w-full p-2 border rounded-md"
               >
                 <option value="">Pilih Metode</option>
                 <option value="Transfer Bank">Transfer Bank</option>
@@ -164,16 +196,18 @@ export default function FormPemesanan() {
             </div>
           </div>
 
-          <div className="mt-6 flex gap-4 justify-between">
+          <div className="mt-6 flex flex-col sm:flex-row gap-4">
             <button
-              onClick={handleAddToCart}
-              className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-md font-semibold"
+              type="button"
+              onClick={(e) => submitOrder(e, "Di Keranjang")}
+              className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-md font-semibold text-lg transition duration-200 ease-in-out shadow-lg"
             >
               Masukkan Keranjang
             </button>
             <button
-              onClick={handleOrderNow}
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-semibold"
+              type="button"
+              onClick={(e) => submitOrder(e, "Belum Lunas")}
+              className="flex-1 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-semibold text-lg transition duration-200 ease-in-out shadow-lg"
             >
               Pesan Sekarang
             </button>
