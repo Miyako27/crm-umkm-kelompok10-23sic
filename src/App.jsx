@@ -48,6 +48,7 @@ import LoyaltyPage from './pages/LoyaltyPage';
 import RekomendasiDestinasi from './customers/pages/RekomendasiDestinasi';
 import KeranjangSaya from './customers/pages/keranjang';
 import TestimoniCustomer from './customers/pages/TestimoniCustomer'; 
+import LogAktivitasAdmin from './pages/LogAktivitasAdmin';
 
 
 
@@ -105,6 +106,7 @@ function App() {
         <Route path="/daming" element={< Daming />} /> 
         <Route path="/loyalitas" element={< Loyalitas />} /> 
         <Route path="/loyalitas-grafik" element={< LoyaltyPage />} />
+        <Route path="/aktivitas" element={< LogAktivitasAdmin />} />
       </Route>
     </Routes>
   );

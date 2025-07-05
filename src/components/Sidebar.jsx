@@ -1,3 +1,4 @@
+import { AiOutlineHistory } from "react-icons/ai"; 
 import {
   LayoutDashboard,
   Box,
@@ -41,7 +42,7 @@ const Sidebar = () => {
     { name: 'Testimoni', icon: <MessageSquare size={20} />, path: '/testimoni-admin' },
     { name: 'Penjualan', icon: <ClipboardList size={20} />, path: '/penjualan' },
     { name: 'Pelanggan', icon: <Users size={20} />, path: '/pelanggan' },
-    { name: 'Mitra', icon: <Car size={20} />, path: '/mitra' },
+    { name: 'Log Aktivitas', icon: <AiOutlineHistory size={20} />, path: '/aktivitas' },
     { name: 'FAQ', icon: <HelpCircle size={20} />, path: '/faqadmin' },
   ];
 
