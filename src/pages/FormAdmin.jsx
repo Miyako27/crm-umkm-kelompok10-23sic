@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { FaLock, FaEnvelope } from "react-icons/fa";
-import bcrypt from "bcryptjs";
+import { supabase } from "../supabase";
 
-export default function FormAdmin({ addAdmin, updateAdmin, editingAdmin }) {
+export default function FormAdmin({ updateAdmin, editingAdmin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isEditing, setIsEditing] = useState(false);
@@ -11,11 +11,10 @@ export default function FormAdmin({ addAdmin, updateAdmin, editingAdmin }) {
     document.title = "Login Admin Travel";
   }, []);
 
-  // Isi form saat mode edit
   useEffect(() => {
     if (editingAdmin) {
       setEmail(editingAdmin.email);
-      setPassword(""); // kosongkan password untuk keamanan
+      setPassword("");
       setIsEditing(true);
     } else {
       setEmail("");
@@ -29,30 +28,35 @@ export default function FormAdmin({ addAdmin, updateAdmin, editingAdmin }) {
 
     try {
       if (isEditing) {
-        // Jika mode edit
-        const updatedData = {
-          id_admin: editingAdmin.id_admin,
-          email: email,
-          ...(password && { password: bcrypt.hashSync(password, 10) }),
-        };
-        await updateAdmin(updatedData);
+        // Jika edit hanya ubah email (tidak bisa ubah password via dashboard ini)
+        await updateAdmin({ id_admin: editingAdmin.id_admin, email });
+        alert("Admin berhasil diupdate");
       } else {
-        // Jika tambah baru
-        const hashedPassword = bcrypt.hashSync(password, 10);
-        const newData = {
-          email: email,
-          password: hashedPassword,
-        };
-        await addAdmin([newData]);
+        // 1. Buat akun Auth
+        const { data: signupData, error: signupError } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+
+        if (signupError) throw signupError;
+
+        // 2. Tambahkan ke tabel admin (role)
+        const { error: insertError } = await supabase.from("admin").insert([
+          { email: email }, // hanya email, tidak simpan password
+        ]);
+
+        if (insertError) throw insertError;
+
+        alert("Admin berhasil ditambahkan.");
       }
 
-      // Reset form
+      // Reset
       setEmail("");
       setPassword("");
       setIsEditing(false);
     } catch (err) {
-      console.error("Terjadi kesalahan:", err.message);
-      alert("Gagal menyimpan data admin.");
+      console.error("Gagal simpan admin:", err.message);
+      alert("Terjadi kesalahan: " + err.message);
     }
   };
 
@@ -83,26 +87,24 @@ export default function FormAdmin({ addAdmin, updateAdmin, editingAdmin }) {
           </div>
 
           {/* Password */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {isEditing ? "Password Baru (Opsional)" : "Password"}
-            </label>
-            <div className="flex items-center border rounded-md px-3 py-2 bg-gray-50">
-              <FaLock className="text-gray-400 mr-2" />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-transparent outline-none text-sm"
-                placeholder={
-                  isEditing
-                    ? "Kosongkan jika tidak ingin mengganti password"
-                    : "Masukkan password"
-                }
-                required={!isEditing}
-              />
+          {!isEditing && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Password
+              </label>
+              <div className="flex items-center border rounded-md px-3 py-2 bg-gray-50">
+                <FaLock className="text-gray-400 mr-2" />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full bg-transparent outline-none text-sm"
+                  placeholder="Masukkan password"
+                  required
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Tombol */}
           <button

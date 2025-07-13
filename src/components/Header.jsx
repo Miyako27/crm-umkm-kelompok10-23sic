@@ -1,9 +1,43 @@
-import { Search, User } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { Search, User } from "lucide-react";
+import { supabase } from "../supabase";
 
 const Header = () => {
+  const [adminName, setAdminName] = useState("Admin");
+
+  useEffect(() => {
+    const fetchAdmin = async () => {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        console.error("Gagal mendapatkan user:", userError);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("admin")
+        .select("email")
+        .eq("email", user.email)
+        .single();
+
+      if (error) {
+        console.error("Gagal fetch admin:", error);
+        return;
+      }
+
+      const email = data.email || "";
+      const name = email.split("@")[0];
+      setAdminName(name.charAt(0).toUpperCase() + name.slice(1)); // Kapitalisasi
+    };
+
+    fetchAdmin();
+  }, []);
+
   return (
     <header className="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-white to-gray-50 shadow-sm border-b sticky top-0 z-10">
-      
       {/* Search - kiri */}
       <div className="relative w-full max-w-xs">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -17,7 +51,7 @@ const Header = () => {
       {/* Sign In - kanan */}
       <div className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-orange-500 transition cursor-pointer">
         <User className="w-4 h-4" />
-        Admin
+        {adminName}
       </div>
     </header>
   );

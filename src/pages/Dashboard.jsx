@@ -33,18 +33,18 @@ const Dashboard = () => {
       {
         label: "Jumlah Leads",
         data: [0, 0, 0, 0, 0],
-        backgroundColor: ["#f43f5e", "#f87171", "#fb7185", "#fda4af", "#fbcfe8"],
+        backgroundColor: ["#0EA5E9", "#E1306C", "#010101", "#10B981", "#A855F7"],
       },
     ],
   });
 
   const [customerSegments, setCustomerSegments] = useState({
-    labels: ["Member Classic", "Member Silver", "Member Gold", "Member Platinum"],
+    labels: ["Member Classic", "Member Silver", "Member Gold"],
     datasets: [
       {
         label: "Segmentasi",
         data: [0, 0, 0, 0],
-        backgroundColor: ["#8b5cf6", "#6366f1", "#a78bfa", "#c4b5fd"],
+        backgroundColor: ["#8b5cf6", "#6366f1", "#a78bfa"],
       },
     ],
   });
@@ -53,6 +53,7 @@ const Dashboard = () => {
   const [totalPemesanan, setTotalPemesanan] = useState(0);
   const [totalBelumLunas, setTotalBelumLunas] = useState(0);
   const [totalDikeranjang, setTotalDikeranjang] = useState(0);
+  const [kepuasanPelanggan, setKepuasanPelanggan] = useState("0%");
 
   const [funnelData, setFunnelData] = useState({
     labels: ["Lunas", "Belum Lunas", "Tertarik", "Pengunjung"],
@@ -133,31 +134,6 @@ const Dashboard = () => {
       }
     };
 
-    const fetchStatusPenjualan = async () => {
-      const { data, error } = await supabase.from("penjualan").select("status");
-      if (error) {
-        console.error("Gagal fetch status penjualan:", error);
-        return;
-      }
-
-      const jumlahLunas = data.filter((item) => item.status === "lunas").length;
-      const jumlahBelumLunas = data.filter((item) => item.status === "Belum Lunas").length;
-      const jumlahKeranjang = data.filter((item) => item.status === "Di Keranjang").length;
-      const jumlahTotal = data.length;
-
-      setTotalPemesanan(jumlahLunas);
-      setTotalBelumLunas(jumlahBelumLunas);
-      setTotalDikeranjang(jumlahKeranjang);
-
-      setFunnelData((prev) => ({
-        ...prev,
-        datasets: [{
-          ...prev.datasets[0],
-          data: [jumlahLunas, jumlahBelumLunas, jumlahKeranjang, jumlahTotal],
-        }],
-      }));
-    };
-
     const fetchPaymentMethods = async () => {
       const { data, error } = await supabase.from("penjualan").select("metode_pembayaran");
 
@@ -181,19 +157,66 @@ const Dashboard = () => {
       }));
     };
 
+    const fetchKepuasanPelanggan = async () => {
+      const { data, error } = await supabase
+        .from("testimoni")
+        .select("rating");
+
+      if (error) {
+        console.error("Gagal fetch testimoni:", error);
+        return;
+      }
+
+      const total = data.length;
+      const puas = data.filter((t) => parseFloat(t.rating) >= 4).length;
+      const persen = total === 0 ? 0 : Math.round((puas / total) * 100);
+      setKepuasanPelanggan(`${persen}%`);
+    };
+
     fetchLeadSources();
     fetchCustomerSegments();
     fetchTotalPengguna();
-    fetchStatusPenjualan();
     fetchPaymentMethods();
+    fetchKepuasanPelanggan();
   }, []);
+
+  useEffect(() => {
+    if (totalPengguna > 0) {
+      fetchStatusPenjualan();
+    }
+  }, [totalPengguna]);
+
+  const fetchStatusPenjualan = async () => {
+    const { data, error } = await supabase.from("penjualan").select("status");
+    if (error) {
+      console.error("Gagal fetch status penjualan:", error);
+      return;
+    }
+
+    const jumlahLunas = data.filter((item) => item.status === "lunas").length;
+    const jumlahBelumLunas = data.filter((item) => item.status === "Belum Lunas").length;
+    const jumlahKeranjang = data.filter((item) => item.status === "Di Keranjang").length;
+    const jumlahTotal = totalPengguna;
+
+    setTotalPemesanan(jumlahLunas);
+    setTotalBelumLunas(jumlahBelumLunas);
+    setTotalDikeranjang(jumlahKeranjang);
+
+    setFunnelData((prev) => ({
+      ...prev,
+      datasets: [{
+        ...prev.datasets[0],
+        data: [jumlahLunas, jumlahBelumLunas, jumlahKeranjang, jumlahTotal],
+      }],
+    }));
+  };
 
   const keyStats = [
     { label: "Total Pengguna", value: totalPengguna, color: "sky" },
     { label: "Total Pemesanan", value: totalPemesanan, color: "green" },
     { label: "Total Dikeranjang", value: totalDikeranjang, color: "violet" },
     { label: "Total Belum Lunas", value: totalBelumLunas, color: "amber" },
-    { label: "Kepuasan Pelanggan", value: "92%", color: "emerald" },
+    { label: "Kepuasan Pelanggan", value: kepuasanPelanggan, color: "emerald" },
   ];
 
   const bookingLine = {
@@ -277,7 +300,6 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      
         <div className="bg-white rounded-xl shadow p-6 min-h-[350px]">
           <Bar data={funnelData} options={chartOptions("Funnel Tahapan Pemesanan", true)} />
         </div>
