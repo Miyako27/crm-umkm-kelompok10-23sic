@@ -35,7 +35,7 @@ export default function LoyaltyPage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const API_BASE_URL = 'https://5ae3-34-127-107-112.ngrok-free.app';
+  const API_BASE_URL = 'https://b2a522422230.ngrok-free.app';
 
   const handleSubmit = async (event) => {
     event.preventDefault();
