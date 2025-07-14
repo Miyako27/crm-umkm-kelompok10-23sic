@@ -116,7 +116,7 @@ const ProfilCustomer = () => {
             </div>
             <button
               onClick={() => navigate('/edit-profil')}
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-full shadow hover:bg-blue-600 transition"
+              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded-full shadow hover:bg-orange-600 transition"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -148,7 +148,7 @@ const ProfilCustomer = () => {
         <div className="bg-white mt-6 p-6 rounded-2xl shadow border border-gray-100">
           <div className="flex justify-between items-center mb-5">
             <h2 className="text-lg font-bold text-gray-800">Pesanan Saya</h2>
-            <button className="text-blue-500 text-sm font-medium hover:underline">Lihat Riwayat &gt;</button>
+            <button className="text-orange-500 text-sm font-medium hover:underline">Lihat Riwayat &gt;</button>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center text-sm text-gray-700">
             <div className="flex flex-col items-center p-2 hover:bg-gray-50 rounded">
