@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../supabase';
 import FormTravel from './FormTravel';
+import { Link } from 'react-router-dom';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 export default function TravelAdmin() {
@@ -72,6 +73,19 @@ export default function TravelAdmin() {
   }, []);
 
   return (
+    <div className="w-full max-w-7xl mx-auto p-6">
+      {/* Breadcrumb */}
+      <div className="py-4 mb-8">
+        <div className="max-w-7xl mx-auto px-5 flex flex-col space-y-1">
+          <h2 className="text-3xl font-extrabold text-gray-800">Data Travel</h2>
+          <div className="text-sm text-gray-600">
+            <Link to="/dashboard" className="hover:underline text-orange-600 font-semibold">
+              Dashboard
+            </Link>{' '}
+            / <span className="text-gray-700">Travel</span>
+          </div>
+        </div>
+      </div>
     <div className="max-w-6xl mx-auto p-6 space-y-10">
         <FormTravel
           addTravel={addTravel}
@@ -141,7 +155,7 @@ export default function TravelAdmin() {
             </tbody>
           </table>
         </div>
-
+      </div>
     </div>
   );
 }

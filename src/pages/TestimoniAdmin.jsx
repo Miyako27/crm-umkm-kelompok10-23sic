@@ -60,29 +60,29 @@ function TestimoniAdmin() {
 
       <div className="mt-10 overflow-x-auto">
         <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
-          <table className="min-w-full divide-y divide-gray-200">
+          <table className="table-fixed w-full text-sm text-left">
             <thead className="bg-gray-100">
               <tr>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">No</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Nama</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Email</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Pesan</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Rating</th>
+                <th className="px-4 py-3 font-semibold text-gray-700 w-12">No</th>
+                <th className="px-6 py-3 font-semibold text-gray-700 w-48">Nama</th>
+                <th className="px-6 py-3 font-semibold text-gray-700 w-64">Email</th>
+                <th className="px-6 py-3 font-semibold text-gray-700 w-[300px]">Pesan</th>
+                <th className="px-6 py-3 font-semibold text-gray-700 w-20">Rating</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-100">
+            <tbody className="divide-y divide-gray-100">
               {testimoni.map((item, index) => (
                 <tr key={item.id_testimoni} className="hover:bg-gray-50">
-                  <td className="px-4 py-4 whitespace-nowrap text-gray-800">{index + 1}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-800">{item.nama_pengirim}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-800">{item.email_pengirim}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-800">{item.pesan}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-800">{item.rating}</td>
+                  <td className="px-4 py-4 text-gray-800">{index + 1}</td>
+                  <td className="px-6 py-4 text-gray-800">{item.nama_pengirim}</td>
+                  <td className="px-6 py-4 text-gray-800">{item.email_pengirim}</td>
+                  <td className="px-6 py-4 text-gray-800 truncate">{item.pesan}</td>
+                  <td className="px-6 py-4 text-gray-800">{item.rating}</td>
                 </tr>
               ))}
               {testimoni.length === 0 && (
                 <tr>
-                  <td colSpan="6" className="text-center py-6 text-gray-500">
+                  <td colSpan="5" className="text-center py-6 text-gray-500">
                     Belum ada testimoni.
                   </td>
                 </tr>
