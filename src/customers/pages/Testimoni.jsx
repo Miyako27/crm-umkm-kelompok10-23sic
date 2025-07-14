@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { supabase } from "../../supabase";
+import { supabase } from "../../supabase"; // Pastikan path ini benar sesuai struktur proyek Anda
 import { BiChat } from "react-icons/bi";
+import { FaStar } from "react-icons/fa"; // Import ikon bintang
 
 const Testimoni = () => {
   const [testimonials, setTestimonials] = useState([]);
@@ -11,7 +12,7 @@ const Testimoni = () => {
     const fetchTestimonials = async () => {
       const { data, error } = await supabase
         .from("testimoni")
-        .select("nama_pengirim, foto_url, pesan")
+        .select("nama_pengirim, foto_url, pesan, rating") // Tambahkan 'rating' di sini
         .order("created_at", { ascending: false })
         .limit(4); // Hanya ambil 4 testimoni terbaru
 
@@ -26,6 +27,20 @@ const Testimoni = () => {
 
     fetchTestimonials();
   }, []);
+
+  // Fungsi untuk merender bintang
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <FaStar
+          key={i}
+          className={i <= rating ? "text-yellow-400" : "text-gray-300"}
+        />
+      );
+    }
+    return <div className="flex text-lg">{stars}</div>; // Sesuaikan ukuran bintang jika perlu
+  };
 
   return (
     <div className="font-sans">
@@ -64,7 +79,7 @@ const Testimoni = () => {
                   key={index}
                   className="bg-white p-6 rounded-xl shadow-md border hover:shadow-lg transition-shadow duration-300"
                 >
-                  <div className="flex items-center space-x-4 mb-4">
+                  <div className="flex items-center space-x-4 mb-2">
                     <img
                       src={
                         t.foto_url ||
@@ -73,7 +88,10 @@ const Testimoni = () => {
                       alt={t.nama_pengirim}
                       className="w-12 h-12 rounded-full object-cover border-2 border-orange-500"
                     />
-                    <h4 className="font-bold text-gray-800">{t.nama_pengirim}</h4>
+                    <div>
+                      <h4 className="font-bold text-gray-800">{t.nama_pengirim}</h4>
+                      {t.rating && renderStars(t.rating)} {/* Tampilkan bintang di sini */}
+                    </div>
                   </div>
                   <p className="text-gray-700 text-sm">"{t.pesan}"</p>
                 </div>
@@ -83,15 +101,15 @@ const Testimoni = () => {
         </div>
       </section>
       {/* Floating Live Chat Button */}
-            <a
-              href="https://wa.me/6285766351957?text=Halo%20saya%20ingin%20bertanya%20tentang%20paket%20wisata"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="fixed bottom-6 right-6 z-50 w-[60px] h-[60px] bg-yellow-400 rounded-full shadow-lg flex items-center justify-center hover:bg-orange-500 transition duration-300"
-              title="Tanya via WhatsApp"
-            >
-              <BiChat className="text-white text-3xl" />
-            </a>
+      <a
+        href="https://wa.me/6285766351957?text=Halo%20saya%20ingin%20bertanya%20tentang%20paket%20wisata"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 w-[60px] h-[60px] bg-yellow-400 rounded-full shadow-lg flex items-center justify-center hover:bg-orange-500 transition duration-300"
+        title="Tanya via WhatsApp"
+      >
+        <BiChat className="text-white text-3xl" />
+      </a>
     </div>
   );
 };

@@ -12,7 +12,7 @@ const Order = () => {
     const fetchPackages = async () => {
       const { data, error } = await supabase
         .from("paketwisata")
-        .select("id_paket, nama_paket, deskripsi, harga, gambar_url");
+        .select("id_paket, nama_paket, deskripsi, harga, gambar_url"); // Pastikan id_paket diambil di sini
 
       if (error) {
         console.error("Gagal mengambil data paket wisata:", error.message);
@@ -24,9 +24,11 @@ const Order = () => {
     fetchPackages();
   }, []);
 
-  const handlePesanSekarang = (packageName, packagePrice) => {
+  // --- PERUBAHAN UTAMA DI SINI ---
+  const handlePesanSekarang = (packageId, packageName, packagePrice) => {
     navigate("/checkout", {
       state: {
+        idPaket: packageId, // <--- INI YANG PERLU DITAMBAHKAN
         jenisPaket: packageName,
         hargaPaket: packagePrice,
       },
@@ -95,7 +97,10 @@ const Order = () => {
                   Rp {Number(pkg.harga).toLocaleString("id-ID")}/orang
                 </span>
                 <button
-                  onClick={() => handlePesanSekarang(pkg.nama_paket, pkg.harga)}
+                  // --- PERUBAHAN UTAMA DI SINI ---
+                  onClick={() =>
+                    handlePesanSekarang(pkg.id_paket, pkg.nama_paket, pkg.harga)
+                  }
                   className="text-orange-600 font-semibold hover:underline"
                 >
                   Pesan Sekarang →
@@ -106,15 +111,15 @@ const Order = () => {
         </div>
       </section>
       {/* Floating Live Chat Button */}
-                  <a
-                    href="https://wa.me/6285766351957?text=Halo%20saya%20ingin%20bertanya%20tentang%20paket%20wisata"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="fixed bottom-6 right-6 z-50 w-[60px] h-[60px] bg-yellow-400 rounded-full shadow-lg flex items-center justify-center hover:bg-orange-500 transition duration-300"
-                    title="Tanya via WhatsApp"
-                  >
-                    <BiChat className="text-white text-3xl" />
-                  </a>
+      <a
+        href="https://wa.me/6285766351957?text=Halo%20saya%20ingin%20bertanya%20tentang%20paket%20wisata"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 w-[60px] h-[60px] bg-yellow-400 rounded-full shadow-lg flex items-center justify-center hover:bg-orange-500 transition duration-300"
+        title="Tanya via WhatsApp"
+      >
+        <BiChat className="text-white text-3xl" />
+      </a>
     </div>
   );
 };
