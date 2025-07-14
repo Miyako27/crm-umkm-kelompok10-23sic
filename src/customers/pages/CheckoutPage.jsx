@@ -17,13 +17,15 @@ export default function PemesananWisata() {
   const location = useLocation(); // Gunakan useLocation untuk mengakses state yang dilewatkan
 
   // Dapatkan data paket dari state lokasi (jika ada)
-  const { jenisPaket, hargaPaket } = location.state || {}; // Destructure, default ke objek kosong
+  // --- PERUBAHAN DI SINI: Tambahkan idPaket ke destructuring ---
+  const { jenisPaket, hargaPaket, idPaket } = location.state || {}; // Destructure, default ke objek kosong
 
   // State untuk mengelola input form
   const [form, setForm] = useState({
     nama_pelanggan: '', // Otomatis terisi dari akun yang login (disembunyikan)
     tanggal_transaksi: getTodayDate(), // Otomatis terisi tanggal hari ini (disembunyikan)
     jenis_pesanan: jenisPaket || '', // <<-- Inisialisasi dari props/state lokasi
+    id_paket: idPaket || null, // <--- PERUBAHAN DI SINI: Inisialisasi id_paket dari state lokasi
     jumlah_pesanan: 1,
     total_harga: 0, // <<-- Default ke 0, akan dihitung otomatis
     status: 'Belum Lunas',
@@ -130,7 +132,8 @@ export default function PemesananWisata() {
     setMessageType(null);
 
     // Validasi tambahan untuk jenis_pesanan dan total_harga yang sekarang otomatis
-    if (!form.nama_pelanggan || !form.tanggal_transaksi || !form.jenis_pesanan || !form.jumlah_pesanan || form.total_harga <= 0 || !form.metode_pembayaran) {
+    // --- PERUBAHAN DI SINI: Tambahkan validasi untuk form.id_paket ---
+    if (!form.nama_pelanggan || !form.tanggal_transaksi || !form.jenis_pesanan || !form.jumlah_pesanan || form.total_harga <= 0 || !form.metode_pembayaran || !form.id_paket) {
       showMessage('Harap lengkapi semua detail pemesanan, termasuk memilih paket wisata.', 'error');
       return;
     }
@@ -148,6 +151,7 @@ export default function PemesananWisata() {
           nama_pelanggan: form.nama_pelanggan,
           tanggal_transaksi: form.tanggal_transaksi,
           jenis_pesanan: form.jenis_pesanan,
+          id_paket: form.id_paket, // <--- PERUBAHAN DI SINI: id_paket disertakan dalam insert
           jumlah_pesanan: parseInt(form.jumlah_pesanan, 10),
           total_harga: totalHargaNum,
           status: orderStatus,
@@ -187,7 +191,8 @@ export default function PemesananWisata() {
     submitOrder(e, 'Belum Lunas');
   };
 
-  if (isLoadingUser || !jenisPaket || !hargaPaket) { // Tambahkan kondisi loading untuk paket
+  // --- PERUBAHAN DI SINI: Tambahkan kondisi loading untuk idPaket ---
+  if (isLoadingUser || !jenisPaket || !hargaPaket || !idPaket) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <p className="text-gray-700">Memuat data atau menunggu pemilihan paket...</p>
@@ -228,6 +233,8 @@ export default function PemesananWisata() {
               />
               {/* Input sebenarnya untuk jenis_pesanan di state, disembunyikan */}
               <input type="hidden" name="jenis_pesanan" value={form.jenis_pesanan} />
+              {/* <--- PERUBAHAN DI SINI: Tambahkan input hidden untuk id_paket --> */}
+              <input type="hidden" name="id_paket" value={form.id_paket || ''} />
             </div>
 
             <div>
@@ -272,7 +279,6 @@ export default function PemesananWisata() {
                 <option value="Transfer Bank">Transfer Bank</option>
                 <option value="Kartu Kredit">Kartu Kredit</option>
                 <option value="E-Wallet">E-Wallet</option>
-                <option value="Tunai">Tunai</option>
               </select>
             </div>
           </div>

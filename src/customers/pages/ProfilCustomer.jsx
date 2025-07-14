@@ -17,13 +17,16 @@ const getStatusStyle = (status) => {
 const ProfilCustomer = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true); // Add a loading state
 
   useEffect(() => {
     const fetchUserData = async () => {
+      setLoading(true); // Set loading to true when fetching starts
       const { data: sessionData, error: sessionError } = await supabase.auth.getUser();
       if (sessionError || !sessionData?.user) {
         console.error('Gagal mengambil session:', sessionError);
         navigate('/login');
+        setLoading(false); // Set loading to false on error/redirect
         return;
       }
 
@@ -33,14 +36,20 @@ const ProfilCustomer = () => {
         .from('pelanggan')
         .select('*')
         .eq('email', email)
-        .single();
+        .single(); // Keep .single() if you expect exactly one, but handle no results
 
-      if (error) {
+      if (error && error.code === 'PGRST116') {
+        // PGRST116 is the code for "The result contains 0 rows" or "multiple (or no) rows returned"
+        console.warn('Pelanggan data not found for email:', email);
+        // You might want to redirect to a registration page, or show a specific message
+        // For now, we'll just set userData to null and let the loading state handle the message.
+        setUserData(null);
+      } else if (error) {
         console.error('Gagal ambil data pelanggan:', error);
-        return;
+      } else {
+        setUserData(data);
       }
-
-      setUserData(data);
+      setLoading(false); // Set loading to false when fetching ends
     };
 
     fetchUserData();
@@ -53,7 +62,25 @@ const ProfilCustomer = () => {
     navigate('/');
   };
 
-  if (!userData) return <div className="p-10 text-center">Memuat data...</div>;
+  if (loading) {
+    return <div className="p-10 text-center">Memuat data...</div>;
+  }
+
+  if (!userData) {
+    // This block will be executed if userData is null after fetching (e.g., if PGRST116 error occurred)
+    return (
+      <div className="min-h-screen pb-10 flex flex-col items-center justify-center">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Data Profil Tidak Ditemukan</h2>
+        <p className="text-gray-600 mb-6">Sepertinya Anda belum memiliki data profil pelanggan. Silakan lengkapi profil Anda.</p>
+        <button
+          onClick={() => navigate('/edit-profil')} // Assuming /edit-profil is where they can add their data
+          className="inline-flex items-center px-6 py-3 text-lg font-medium text-white bg-green-600 rounded-full shadow-lg hover:bg-green-700 transition"
+        >
+          Lengkapi Profil Sekarang
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pb-10">
