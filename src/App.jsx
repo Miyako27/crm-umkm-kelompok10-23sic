@@ -15,6 +15,7 @@ import FAQAdmin from './pages/FAQAdmin';
 import User from './pages/User';
 import TravelAdmin from './pages/TravelAdmin';
 import PaketWisataAdmin from './pages/PaketWisataAdmin';
+import LogAktivitasAdmin from './pages/LogAktivitasAdmin';
 
 
 // Customer Pages
@@ -48,7 +49,7 @@ import LoyaltyPage from './pages/LoyaltyPage';
 import RekomendasiDestinasi from './customers/pages/RekomendasiDestinasi';
 import KeranjangSaya from './customers/pages/keranjang';
 import TestimoniCustomer from './customers/pages/TestimoniCustomer'; 
-import LogAktivitasAdmin from './pages/LogAktivitasAdmin';
+import EditProfil from './customers/pages/EditProfil';
 
 
 
@@ -83,6 +84,7 @@ function App() {
         <Route path="/rekomendasi-wisata" element={<RekomendasiDestinasi />} /> 
         <Route path="/keranjang" element={<KeranjangSaya/>} /> 
         <Route path="/testimoni-customer" element={<TestimoniCustomer />} />
+        <Route path="/edit-profil" element={<EditProfil/>} />
       </Route>
 
       {/* Admin Routes */}

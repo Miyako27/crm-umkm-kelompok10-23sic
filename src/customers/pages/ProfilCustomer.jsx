@@ -73,7 +73,7 @@ const ProfilCustomer = () => {
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Data Profil Tidak Ditemukan</h2>
         <p className="text-gray-600 mb-6">Sepertinya Anda belum memiliki data profil pelanggan. Silakan lengkapi profil Anda.</p>
         <button
-          onClick={() => navigate('/edit-profil')} // Assuming /edit-profil is where they can add their data
+          onClick={() => navigate('/edit-profil')} 
           className="inline-flex items-center px-6 py-3 text-lg font-medium text-white bg-green-600 rounded-full shadow-lg hover:bg-green-700 transition"
         >
           Lengkapi Profil Sekarang
