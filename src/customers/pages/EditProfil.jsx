@@ -205,7 +205,7 @@ export default function EditProfil() {
 
                     <div className="mt-6">
                         <button type="submit" className="w-full bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-semibold">
-                            Simpan
+                            Perbarui
                         </button>
                     </div>
                 </form>
